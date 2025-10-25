@@ -1,31 +1,5 @@
-import React from 'react';
 
-// Utility functions for PKCE
-function generateRandomString(length) {
-  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~';
-  let text = '';
-  for (let i = 0; i < length; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  return text;
-}
-
-async function sha256(plain) {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(plain);
-  const hash = await window.crypto.subtle.digest('SHA-256', data);
-  return new Uint8Array(hash);
-}
-
-function base64UrlEncode(arrayBuffer) {
-  let str = String.fromCharCode.apply(null, Array.from(arrayBuffer));
-  return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-}
-
-async function generateCodeChallenge(codeVerifier) {
-  const hashed = await sha256(codeVerifier);
-  return base64UrlEncode(hashed);
-}
+import { generateRandomString, generateCodeChallenge } from './api/pkce.js';
 
 
 const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
