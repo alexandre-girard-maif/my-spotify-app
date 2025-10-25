@@ -16,7 +16,8 @@ import Layout from './Layout.jsx';
 
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter>
+    <App />
+    {/* <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<App />} />
@@ -28,6 +29,6 @@ createRoot(document.getElementById('root')).render(
           <Route path="playlists" element={<Playlists />} />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </BrowserRouter> */}
   </React.StrictMode>
 );
