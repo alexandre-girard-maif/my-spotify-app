@@ -1,4 +1,6 @@
+
 import React, { useEffect, useState } from 'react';
+import TrackItem from './TrackItem.jsx';
 
 export default function TopTracks() {
   const [tracks, setTracks] = useState([]);
@@ -12,7 +14,7 @@ export default function TopTracks() {
       setLoading(false);
       return;
     }
-    fetch('https://api.spotify.com/v1/me/top/tracks?limit=25', {
+    fetch('https://api.spotify.com/v1/me/top/tracks?limit=10', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -32,23 +34,15 @@ export default function TopTracks() {
       });
   }, []);
 
-  if (loading) return <div style={{ marginTop: '20vh', textAlign: 'center' }}>Loading top tracks...</div>;
-  if (error) return <div style={{ color: 'red', marginTop: '20vh', textAlign: 'center' }}>Error: {error}</div>;
+  if (loading) return <div className="tracks-loading">Loading top tracks...</div>;
+  if (error) return <div className="tracks-error">Error: {error}</div>;
 
   return (
-    <div style={{ margin: '5vh auto', maxWidth: 800 }}>
-      <h1 style={{ textAlign: 'center' }}>Your Top 25 Tracks</h1>
-      <ol style={{ padding: 0, listStyle: 'decimal inside' }}>
-        {tracks.map((track, idx) => (
-          <li key={track.id} style={{ margin: '1.5em 0', display: 'flex', alignItems: 'center', gap: 16 }}>
-            <img src={track.album.images[2]?.url || track.album.images[0]?.url} alt="cover" style={{ width: 56, height: 56, borderRadius: 8, objectFit: 'cover' }} />
-            <div>
-              <div style={{ fontWeight: 'bold', fontSize: '1.1em' }}>{track.name}</div>
-              <div style={{ color: '#666' }}>{track.artists.map(a => a.name).join(', ')}</div>
-              <div style={{ fontSize: '0.9em' }}>{track.album.name}</div>
-            </div>
-            <a href={track.external_urls.spotify} target="_blank" rel="noopener noreferrer" style={{ marginLeft: 'auto', color: '#1DB954', textDecoration: 'none', fontWeight: 'bold' }}>Open</a>
-          </li>
+    <div className="tracks-container">
+      <h1 className="tracks-title">Your Top 10 Tracks</h1>
+      <ol className="tracks-list">
+        {tracks.map((track) => (
+          <TrackItem key={track.id} track={track} />
         ))}
       </ol>
     </div>
