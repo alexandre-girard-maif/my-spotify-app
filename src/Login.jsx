@@ -27,8 +27,9 @@ async function generateCodeChallenge(codeVerifier) {
   return base64UrlEncode(hashed);
 }
 
-const clientId = '26f6c42b39424f27b64b208d55506267'; // TODO: Replace with your Spotify client ID
-const redirectUri = 'http://127.0.0.1:5173/callback'; // TODO: Set this in your Spotify app settings
+
+const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
+const redirectUri = import.meta.env.VITE_SPOTIFY_REDIRECT_URI;
 const scope = 'user-read-private user-read-email user-top-read';
 
 export default function Login() {
