@@ -101,7 +101,15 @@ export default function TopTracks() {
       .attr('fill', '#1DB954')
       .on('mouseover', function (event, d) {
         tooltip.transition().duration(150).style('opacity', 0.95);
-        tooltip.html(d.name);
+        tooltip.html(`
+          <div style='font-weight:bold;font-size:1.05em;'>${d.name}</div>
+          <div>Artist: ${d.artists.map(a=>a.name).join(', ')}</div>
+          <div>Album: ${d.album?.name || ''}</div>
+          <div>Release: ${d.album?.release_date || ''}</div>
+          <div>Duration: ${d.duration_ms ? (Math.floor(d.duration_ms/60000)+":"+String(Math.floor((d.duration_ms%60000)/1000)).padStart(2,'0')) : ''}</div>
+          <div>Popularity: ${d.popularity}</div>
+          <div>${d.explicit ? '🚨 Explicit' : ''}</div>
+        `);
         d3.select(this).attr('fill', '#14833b');
       })
       .on('mousemove', function (event) {
