@@ -7,6 +7,8 @@ export default function TopTracks() {
   const [tracks, setTracks] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [limit, setLimit] = useState(10);
+  const [timeRange, setTimeRange] = useState('short_term');
   const chartRef = useRef(null);
 
   useEffect(() => {
@@ -16,7 +18,9 @@ export default function TopTracks() {
       setLoading(false);
       return;
     }
-    fetch('https://api.spotify.com/v1/me/top/tracks?limit=10', {
+    setLoading(true);
+    setError(null);
+    fetch(`https://api.spotify.com/v1/me/top/tracks?limit=${limit}&time_range=${timeRange}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -34,7 +38,7 @@ export default function TopTracks() {
         setError('Failed to fetch top tracks.');
         setLoading(false);
       });
-  }, []);
+  }, [limit, timeRange]);
 
   useEffect(() => {
     if (!tracks.length) return;
@@ -141,7 +145,25 @@ export default function TopTracks() {
 
   return (
     <div className="tracks-container">
-      <h1 className="tracks-title">Your Top 25 Tracks</h1>
+      <h1 className="tracks-title">Your Top {limit} Tracks</h1>
+      <form style={{ display: 'flex', gap: 16, alignItems: 'center', marginBottom: 24 }} onSubmit={e => e.preventDefault()}>
+        <label>
+          Limit:
+          <select value={limit} onChange={e => setLimit(Number(e.target.value))} style={{ marginLeft: 8 }}>
+            {[5, 10, 15, 20, 25, 50].map(n => (
+              <option key={n} value={n}>{n}</option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Time Range:
+          <select value={timeRange} onChange={e => setTimeRange(e.target.value)} style={{ marginLeft: 8 }}>
+            <option value="short_term">Last 4 weeks</option>
+            <option value="medium_term">Last 6 months</option>
+            <option value="long_term">All time</option>
+          </select>
+        </label>
+      </form>
       <div style={{ overflowX: 'auto', marginBottom: 32 }}>
         <svg ref={chartRef} style={{ background: '#fff', borderRadius: 8, boxShadow: '0 2px 8px #0001' }} />
       </div>
