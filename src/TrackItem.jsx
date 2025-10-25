@@ -12,6 +12,7 @@ export default function TrackItem({ track }) {
         <div className="track-title">{track.name}</div>
         <div className="track-artists">{track.artists.map(a => a.name).join(', ')}</div>
         <div className="track-album">{track.album.name}</div>
+        <div className="track-popularity">Popularity: {track.popularity}</div>
       </div>
       <a
         href={track.external_urls.spotify}
