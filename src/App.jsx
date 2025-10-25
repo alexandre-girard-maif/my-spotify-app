@@ -18,6 +18,9 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
+        <a href="/login" style={{ display: 'inline-block', margin: '1em 0', padding: '0.5em 1em', background: '#1DB954', color: '#fff', borderRadius: '5px', textDecoration: 'none' }}>
+          Login with Spotify
+        </a>
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
         </button>
