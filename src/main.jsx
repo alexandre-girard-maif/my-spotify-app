@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Account from './Account.jsx';
 import App from './App.jsx';
 import Login from './Login.jsx';
+import TopTracks from './TopTracks.jsx';
 import Callback from './Callback.jsx';
 
 createRoot(document.getElementById('root')).render(
@@ -16,6 +17,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/login" element={<Login />} />
         <Route path="/callback" element={<Callback />} />
         <Route path="/account" element={<Account />} />
+        <Route path="/top-tracks" element={<TopTracks />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
