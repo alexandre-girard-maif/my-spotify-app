@@ -1,3 +1,44 @@
+/* Layout styles */
+.layout-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.layout-header {
+  background: #1DB954;
+  color: #fff;
+  padding: 1em 0;
+  text-align: center;
+}
+
+.layout-nav {
+  margin-top: 0.5em;
+}
+
+.nav-link {
+  color: #fff;
+  margin: 0 1em;
+  text-decoration: none;
+  font-weight: normal;
+  transition: text-decoration 0.2s, font-weight 0.2s;
+}
+
+.nav-link.active {
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.layout-main {
+  flex: 1;
+}
+
+.layout-footer {
+  background: #222;
+  color: #fff;
+  text-align: center;
+  padding: 1em 0;
+}
 #root {
   max-width: 1280px;
   margin: 0 auto;
