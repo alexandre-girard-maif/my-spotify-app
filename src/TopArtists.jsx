@@ -12,7 +12,7 @@ export default function TopArtists() {
       setLoading(false);
       return;
     }
-    fetch('https://api.spotify.com/v1/me/top/artists?limit=25', {
+    fetch('https://api.spotify.com/v1/me/top/artists?limit=25&time_range=short_term', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
