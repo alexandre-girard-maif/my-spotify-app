@@ -26,7 +26,7 @@ const POSSIBLE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789
  * @throws {Error} when crypto.getRandomValues is unavailable.
  */
 function getCrypto() {
-  if (globalThis.crypto && globalThis.crypto.getRandomValues) {
+  if (globalThis.crypto?.getRandomValues) {
     return globalThis.crypto;
   }
   // Fallback intentionally omitted; enforce secure environment.
