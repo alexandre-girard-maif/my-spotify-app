@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
-let redirectUri = `${window.location.origin}/callback`;
+let redirectUri = `${globalThis.location.origin}/callback`;
 
 export default function Callback() {
   const [error, setError] = useState(null);
@@ -47,7 +47,7 @@ export default function Callback() {
           const storedNext = localStorage.getItem('post_auth_redirect');
           const target = storedNext && storedNext.startsWith('/') ? storedNext : '/';
           localStorage.removeItem('post_auth_redirect');
-          window.location.replace(window.location.origin + target);
+          globalThis.location.replace(globalThis.location.origin + target);
         } else {
           setError(data.error_description || 'Failed to get access token.');
         }

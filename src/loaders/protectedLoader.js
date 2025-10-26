@@ -1,4 +1,4 @@
-import { redirect } from 'react-router-dom';
+import { redirect } from "react-router-dom";
 
 /**
  * Factory for protected route loaders that require a valid spotify_access_token.
@@ -8,12 +8,13 @@ import { redirect } from 'react-router-dom';
  */
 export function makeProtectedLoader(fetcher) {
   return async ({ request }) => {
-    const token = localStorage.getItem('spotify_access_token');
+    const token = localStorage.getItem("spotify_access_token");
     const url = new URL(request.url);
     const next = encodeURIComponent(url.pathname + url.search);
     if (!token) return redirect(`/login?next=${next}`);
     const result = await fetcher(token);
-    if (result && result.error) return redirect(`/login?next=${next}`);
+    // If fetcher returns an object containing an error key, redirect to login preserving intent
+    if (result?.error) return redirect(`/login?next=${next}`);
     return result;
   };
 }

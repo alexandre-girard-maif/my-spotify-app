@@ -2,7 +2,6 @@
 import React from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import { version } from '../package.json';
-// import './App.css';
 import MainNav from './components/MainNav';
 
 export default function Layout() {
