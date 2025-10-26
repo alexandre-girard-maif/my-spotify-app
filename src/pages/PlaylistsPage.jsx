@@ -1,39 +1,29 @@
 import React, { useEffect, useState } from 'react';
+import { useLoaderData } from 'react-router-dom';
 
 export default function Playlists() {
-  const [playlists, setPlaylists] = useState([]);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const { playlists } = useLoaderData();
 
-  useEffect(() => {
-    const token = localStorage.getItem('spotify_access_token');
-    if (!token) {
-      setError('No access token found.');
-      setLoading(false);
-      return;
-    }
-    fetch('https://api.spotify.com/v1/me/playlists?limit=10', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.error) {
-          setError(data.error.message);
-        } else {
-          setPlaylists(data.items || []);
-        }
-        setLoading(false);
-      })
-      .catch(() => {
-        setError('Failed to fetch playlists.');
-        setLoading(false);
-      });
-  }, []);
+  // set document title
+    React.useEffect(() => {
+      document.title = `Playlists | Spotify App`;
+    }, []);
+    
+  // const [playlists, setPlaylists] = useState([]);
+  // const [error, setError] = useState(null);
+  // const [loading, setLoading] = useState(true);
 
-  if (loading) return <div className="tracks-loading">Loading playlists...</div>;
-  if (error) return <div className="tracks-error">Error: {error}</div>;
+  // useEffect(() => {
+  //   const token = localStorage.getItem('spotify_access_token');
+  //   fetchPlaylists(token, 10).then(({ playlists, error }) => {
+  //     if (error) setError(error);
+  //     else setPlaylists(playlists);
+  //     setLoading(false);
+  //   });
+  // }, []);
+
+  // if (loading) return <div className="tracks-loading">Loading playlists...</div>;
+  // if (error) return <div className="tracks-error">Error: {error}</div>;
 
   return (
     <div className="tracks-container">

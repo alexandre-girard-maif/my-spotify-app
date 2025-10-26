@@ -22,3 +22,28 @@ export async function fetchAccountProfile(token) {
     return { error: 'Failed to fetch account info.', profile: null };
   }
 }
+
+/**
+ * Fetch the user's playlists from Spotify.
+ * @param {string} token - The Spotify access token.
+ * @param {number} [limit=10] - The number of playlists to fetch.
+ * @returns {Promise<{ playlists: object[], error: string|null }>} - The playlists or an error message.
+ */
+export async function fetchPlaylists(token, limit = 10) {
+  if (!token) {
+    return { error: 'No access token found.', playlists: [] };
+  }
+  try {
+    const res = await fetch(`https://api.spotify.com/v1/me/playlists?limit=${limit}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await res.json();
+    if (data.error) {
+      return { error: data.error.message, playlists: [] };
+    }
+    console.log('Fetched playlists:', data);
+    return { playlists: data.items || [], error: null };
+  } catch {
+    return { error: 'Failed to fetch playlists.', playlists: [] };
+  }
+}
