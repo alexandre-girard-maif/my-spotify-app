@@ -4,12 +4,13 @@ import Account from './pages/AccountPage.jsx';
 import { fetchAccountProfile, fetchPlaylists, fetchTopArtists, fetchTopTracks } from './api/spotify.js';
 import { makeProtectedLoader } from './loaders/protectedLoader.js';
 import WelcomePage from './pages/WelcomePage.jsx';
-import Login from './pages/Login.jsx';
+import Login from './pages/LoginPage.jsx';
 import TopTracks from './pages/TopTracksPage.jsx';
 import TopArtists from './pages/TopArtistsPage.jsx';
 import Playlists from './pages/PlaylistsPage.jsx';
 import Callback from './pages/Callback.jsx';
 import Layout from './Layout.jsx';
+import LoginPage from './pages/LoginPage.jsx';
 
 /**
  * Application routes configuration.
@@ -20,7 +21,7 @@ const routes = [
     element: <Layout />,
     children: [
       { index: true, element: <WelcomePage /> },
-      { path: 'login', element: <Login /> },
+      { path: 'login', element: <LoginPage /> },
       { path: 'callback', element: <Callback /> },
       {
         path: 'account',

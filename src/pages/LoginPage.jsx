@@ -2,13 +2,12 @@
 import { generateRandomString, generateCodeChallenge } from '../api/pkce.js';
 import './Login.css';
 
-
 const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
 let redirectUri = `${window.location.origin}/callback`;
 
 const scope = 'user-read-private user-read-email user-top-read playlist-read-private';
 
-export default function Login() {
+export default function LoginPage() {
   const missingEnv = !clientId || !redirectUri;
   // Capture intended post-auth path from query (?next=/desired/path)
   const params = new URLSearchParams(window.location.search);
