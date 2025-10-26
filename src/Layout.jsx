@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import { version } from '../package.json';
 // import './App.css';
 import MainNav from './components/MainNav';
@@ -9,7 +9,7 @@ export default function Layout() {
   return (
     <div className="layout-root">
       <header className="layout-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <h1 style={{ marginRight: 32 }}>My Spotify App</h1>
+          <Link to="/" style={{ marginRight: 32, fontSize: '1.4rem', fontWeight: 700, lineHeight: 1, textDecoration: 'none', color: 'inherit' }} aria-label="Go to home">My Spotify App</Link>
         <MainNav />
       </header>
       <main className="layout-main">

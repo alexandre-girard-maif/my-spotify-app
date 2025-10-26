@@ -17,6 +17,8 @@ describe('Layout Component', () => {
         expect(headerElement).toBeInTheDocument();
         const titleElement = screen.getByText('My Spotify App');
         expect(titleElement).toBeInTheDocument();
+        // Check if the title is wrapped in a link to home
+        expect(titleElement.closest('a')).toHaveAttribute('href', '/');
 
         // Navigation
         const topTracksLink = screen.getByText('Top Tracks');
