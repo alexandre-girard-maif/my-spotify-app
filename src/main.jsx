@@ -6,6 +6,9 @@ import { createBrowserRouter } from 'react-router-dom';
 import { RouterProvider } from 'react-router';
 import './App.css'
 import './AppHero.css';
+import './MainNav.css';
+import './theme.css';
+
 
 const router = createBrowserRouter(routes);
 
