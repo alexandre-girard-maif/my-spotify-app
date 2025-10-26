@@ -1,6 +1,5 @@
 
 import { createPkcePair } from '../api/pkce.js';
-import '../styles/Login.css';
 import '../styles/theme.css';
 
 const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
@@ -34,7 +33,6 @@ export default function LoginPage() {
   return (
     <div className="login-bg">
       <div className="login-card">
-        <img src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_CMYK_Green.png" alt="Spotify Logo" className="login-logo" />
         <h2 className="login-title">Welcome to My Spotify App</h2>
         <p className="login-desc">
           Log in with your Spotify account to explore your music stats, playlists, and more!
