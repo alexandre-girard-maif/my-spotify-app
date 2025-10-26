@@ -5,11 +5,11 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 
 import Account from './pages/AccountPage.jsx';
-import { fetchAccountProfile, fetchPlaylists } from './api/spotify.js';
+import { fetchAccountProfile, fetchPlaylists, fetchTopTracks } from './api/spotify.js';
 import App from './App.jsx';
 import Login from './pages/Login.jsx';
 
-import TopTracks from './pages/TopTracks.jsx';
+import TopTracks from './pages/TopTracksPage.jsx';
 import TopArtists from './pages/TopArtists.jsx';
 import Playlists from './pages/PlaylistsPage.jsx';
 import Callback from './pages/Callback.jsx';
@@ -33,7 +33,15 @@ const router = createBrowserRouter([
         },
         hydrateFallbackElement: <div>Loading account info from Spotify...</div>,
       },
-      { path: 'top-tracks', element: <TopTracks /> },
+      { 
+        path: 'top-tracks', 
+        element: <TopTracks />,
+        loader: async () => {
+          const token = localStorage.getItem('spotify_access_token');
+          return await fetchTopTracks(token, 10, 'short_term');
+        },
+        hydrateFallbackElement: <div>Loading top tracks from Spotify...</div>,
+       },
       { path: 'top-artists', element: <TopArtists /> },
       { 
         path: 'playlists', 

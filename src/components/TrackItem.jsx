@@ -7,7 +7,7 @@ import React from 'react';
  */
 export default function TrackItem({ track }) {
   return (
-    <li className="track-item">
+    <li className="track-item" data-testid={`track-item-${track.id}`}>
       <img
         src={track.album.images[2]?.url || track.album.images[0]?.url}
         alt="cover"

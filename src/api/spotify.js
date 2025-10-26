@@ -47,3 +47,28 @@ export async function fetchPlaylists(token, limit = 10) {
     return { error: 'Failed to fetch playlists.', playlists: [] };
   }
 }
+
+/**
+ * Fetch the user's top tracks from Spotify.
+ * @param {string} token - The Spotify access token.
+ * @param {number} [limit=10] - The number of tracks to fetch.
+ * @param {string} [timeRange='short_term'] - The time range for top tracks.
+ * @returns {Promise<{ tracks: object[], error: string|null }>} - The tracks or an error message.
+ */
+export async function fetchTopTracks(token, limit = 10, timeRange = 'short_term') {
+  if (!token) {
+    return { error: 'No access token found.', tracks: [] };
+  }
+  try {
+    const res = await fetch(`https://api.spotify.com/v1/me/top/tracks?limit=${limit}&time_range=${timeRange}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await res.json();
+    if (data.error) {
+      return { error: data.error.message, tracks: [] };
+    }
+    return { tracks: data.items || [], error: null };
+  } catch {
+    return { error: 'Failed to fetch top tracks.', tracks: [] };
+  }
+}
