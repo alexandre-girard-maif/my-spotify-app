@@ -1,3 +1,8 @@
+/**
+ * Spotify API interaction functions.
+ */
+
+/** Base URL for Spotify API */
 export const SPOTIFY_API_BASE = 'https://api.spotify.com/v1';
 
 /**
@@ -23,7 +28,6 @@ export async function fetchUserTopArtists(token, limit = 10, timeRange = 'short_
     return { error: 'Failed to fetch top artists.', artists: [] };
   }
 }
-// src/api/spotify.js
 
 /**
  * Fetch the Spotify account profile for the given access token.
