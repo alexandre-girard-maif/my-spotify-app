@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useSpotifyProfile } from '../hooks/useSpotifyProfile.js';
+import './MainNav.css';
 
 // Generic nav item wrapper to reduce duplication and centralize active class logic
 function NavItem({ to, children }) {
@@ -49,8 +50,8 @@ export default function MainNav() {
   const avatarUrl = profile?.images?.[0]?.url;
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', width: '100%' }}>
-      <nav className="layout-nav" style={{ flex: 1 }}>
+    <div className="main-nav-wrapper">
+      <nav className="layout-nav main-nav-flex">
         <TopTracksLink />
         <TopArtistsLink />
         <PlaylistsLink />
@@ -59,41 +60,16 @@ export default function MainNav() {
       <NavLink
         to="/account"
         aria-label={profile?.display_name ? `Account (${profile.display_name})` : 'Account'}
-        style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: 42,
-          height: 42,
-          borderRadius: '50%',
-          background: 'var(--bg-overlay, #222)',
-          border: '1px solid var(--border-subtle, #333)',
-          overflow: 'hidden',
-          textDecoration: 'none',
-          color: 'var(--text-primary, #fff)',
-          position: 'relative',
-          boxShadow: '0 2px 6px rgba(0,0,0,0.4)',
-          transition: 'background .18s, transform .18s, box-shadow .18s'
-        }}
-        className={({ isActive }) => isActive ? 'account-avatar active' : 'account-avatar'}
+        className={({ isActive }) => isActive ? 'nav-avatar active' : 'nav-avatar'}
       >
         {loading && !avatarUrl && (
-          <div
-            style={{
-              width: '100%',
-              height: '100%',
-              background: 'linear-gradient(90deg,#222 0%,#333 50%,#222 100%)',
-              backgroundSize: '200% 100%',
-              animation: 'avatar-shimmer 1.1s ease-in-out infinite'
-            }}
-            aria-hidden="true"
-          />
+          <div className="nav-avatar-shimmer" aria-hidden="true" />
         )}
         {!loading && avatarUrl && (
           <img
             src={avatarUrl}
             alt={profile?.display_name || 'Profile avatar'}
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            className="nav-avatar-img"
           />
         )}
         {!loading && !avatarUrl && <UserIcon size={26} />}
