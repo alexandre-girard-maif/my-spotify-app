@@ -2,8 +2,8 @@ import React from 'react';
 
 /**
  * Displays a single track item with its details.
- * @param {*} param0 
- * @returns 
+ * @param {*} track  
+ * @returns JSX.Element
  */
 export default function TrackItem({ track }) {
   return (

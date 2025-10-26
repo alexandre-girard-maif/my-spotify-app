@@ -41,12 +41,11 @@ describe('PlaylistsPage', () => {
         const countHeading = await screen.findByRole('heading', { level: 2, name: `${playlistsData.length} Playlists` })
         expect(countHeading).toBeInTheDocument()
 
-        // Verify playlists are rendered
-        const playlist1 = await screen.findByText('My Playlist 1')
-        expect(playlist1).toBeInTheDocument()
-
-        const playlist2 = await screen.findByText('My Playlist 2')
-        expect(playlist2).toBeInTheDocument()
+        // Verify all playlist items are rendered
+        for (const playlist of playlistsData) {
+            const playlistItem = await screen.findByTestId(`playlist-item-${playlist.id}`);
+            expect(playlistItem).toBeInTheDocument()
+        }
 
         // uncomment below to debug screen
         // screen.debug();

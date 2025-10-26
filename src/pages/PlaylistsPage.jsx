@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLoaderData } from 'react-router-dom';
+import PlayListItem from '../components/PlayListItem.jsx';
 
 export default function Playlists() {
   const { playlists } = useLoaderData();
@@ -31,27 +32,7 @@ export default function Playlists() {
       <h2>{playlists.length} Playlists</h2>
       <ol className="tracks-list">
         {playlists.map((playlist) => (
-          <li key={playlist.id} className="track-item">
-            <img
-              src={playlist.images[0]?.url}
-              alt="cover"
-              className="track-cover"
-              style={{ width: 56, height: 56, borderRadius: 8, objectFit: 'cover' }}
-            />
-            <div>
-              <div className="track-title">{playlist.name}</div>
-              <div className="track-artists">{playlist.owner.display_name}</div>
-              <div className="track-album">{playlist.tracks.total} tracks</div>
-            </div>
-            <a
-              href={playlist.external_urls.spotify}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="track-link"
-            >
-              Open
-            </a>
-          </li>
+          <PlayListItem key={playlist.id} playlist={playlist} />
         ))}
       </ol>
     </div>
