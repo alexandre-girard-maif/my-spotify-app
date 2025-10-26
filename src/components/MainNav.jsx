@@ -23,24 +23,17 @@ const PlaylistsLink = () => <NavItem to="/playlists">Playlists</NavItem>;
 const AccountLink = () => null;
 
 function UserIcon({ size = 26 }) {
+  // Replace with a real icon library if available (e.g., Font Awesome, Material Icons)
   return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      role="img"
+    <span
+      className="user-icon"
+      style={{ fontSize: size, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
       aria-label="User"
+      role="img"
     >
-      <circle cx="12" cy="8" r="4.5" stroke="currentColor" strokeWidth="1.8" />
-      <path
-        d="M4.8 20c0-3.2 2.9-5.8 7.2-5.8 4.3 0 7.2 2.6 7.2 5.8"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-      />
-    </svg>
+      {/* Unicode user icon as fallback */}
+      👤
+    </span>
   );
 }
 
