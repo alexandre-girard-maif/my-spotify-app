@@ -3,7 +3,7 @@ import { generateRandomString, generateCodeChallenge } from '../api/pkce.js';
 import './Login.css';
 
 const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
-let redirectUri = `${window.location.origin}/callback`;
+let redirectUri = `${globalThis.location.origin}/callback`;
 
 const scope = 'user-read-private user-read-email user-top-read playlist-read-private';
 
@@ -28,7 +28,7 @@ export default function LoginPage() {
       code_challenge_method: 'S256',
       code_challenge: codeChallenge,
     });
-    window.location = `https://accounts.spotify.com/authorize?${args.toString()}`;
+  globalThis.location = `https://accounts.spotify.com/authorize?${args.toString()}`;
   };
 
   return (
