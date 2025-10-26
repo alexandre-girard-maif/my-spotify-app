@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { fetchAccountProfile } from '../api/spotify.js';
 
 export default function Account() {
   const [profile, setProfile] = useState(null);
@@ -6,24 +7,10 @@ export default function Account() {
 
   useEffect(() => {
     const token = localStorage.getItem('spotify_access_token');
-    if (!token) {
-      setError('No access token found.');
-      return;
-    }
-    fetch('https://api.spotify.com/v1/me', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.error) {
-          setError(data.error.message);
-        } else {
-          setProfile(data);
-        }
-      })
-      .catch(() => setError('Failed to fetch account info.'));
+    fetchAccountProfile(token).then(({ profile, error }) => {
+      if (error) setError(error);
+      else setProfile(profile);
+    });
   }, []);
 
   if (error) return <div style={{ color: 'red', marginTop: '20vh', textAlign: 'center' }}>Error: {error}</div>;
