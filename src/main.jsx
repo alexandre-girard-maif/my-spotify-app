@@ -6,7 +6,7 @@ import { createBrowserRouter, RouterProvider, redirect } from 'react-router-dom'
 
 import Account from './pages/AccountPage.jsx';
 import { fetchAccountProfile, fetchPlaylists, fetchTopArtists, fetchTopTracks } from './api/spotify.js';
-import App from './App.jsx';
+import WelcomePage from './pages/WelcomePage.jsx';
 import Login from './pages/Login.jsx';
 
 import TopTracks from './pages/TopTracksPage.jsx';
@@ -21,7 +21,7 @@ const router = createBrowserRouter([
     path: '/',
     element: <Layout />,
     children: [
-      { index: true, element: <App /> },
+      { index: true, element: <WelcomePage /> },
       { path: 'login', element: <Login /> },
       { path: 'callback', element: <Callback /> },
       {
