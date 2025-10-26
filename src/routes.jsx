@@ -1,6 +1,6 @@
 // redirect no longer needed directly; helper handles it
 import Account from './pages/AccountPage.jsx';
-import { fetchAccountProfile, fetchPlaylists, fetchTopArtists, fetchTopTracks } from './api/spotify.js';
+import { fetchAccountProfile, fetchUserPlaylists, fetchUserTopArtists, fetchUserTopTracks } from './api/spotify.js';
 import { makeProtectedLoader } from './loaders/protectedLoader.js';
 import WelcomePage from './pages/WelcomePage.jsx';
 import TopTracks from './pages/TopTracksPage.jsx';
@@ -32,19 +32,19 @@ const routes = [
       {
         path: 'top-tracks',
         element: <TopTracks />,
-        loader: makeProtectedLoader(token => fetchTopTracks(token, 10, 'short_term')),
+        loader: makeProtectedLoader(token => fetchUserTopTracks(token, 10, 'short_term')),
         hydrateFallbackElement: <div>Loading top tracks from Spotify...</div>,
       },
       {
         path: 'top-artists',
         element: <TopArtists />,
-        loader: makeProtectedLoader(token => fetchTopArtists(token, 10, 'short_term')),
+        loader: makeProtectedLoader(token => fetchUserTopArtists(token, 10, 'short_term')),
         hydrateFallbackElement: <div>Loading top artists from Spotify...</div>,
       },
       {
         path: 'playlists',
         element: <Playlists />,
-        loader: makeProtectedLoader(token => fetchPlaylists(token, 10)),
+        loader: makeProtectedLoader(token => fetchUserPlaylists(token, 10)),
         hydrateFallbackElement: <div>Loading playlists from Spotify...</div>,
       },
     ],

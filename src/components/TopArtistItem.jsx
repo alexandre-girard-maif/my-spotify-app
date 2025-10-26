@@ -8,8 +8,6 @@ import React from 'react';
  * @returns {JSX.Element} The rendered component
  */
 export default function TopArtistItem({ artist, index }) {
-  console.log('Rendering TopArtistItem for artist:', artist.images);
-
   return (
     <li className="track-item" data-testid={`top-artist-item-${artist.id}`}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>

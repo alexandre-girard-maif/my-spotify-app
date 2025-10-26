@@ -5,7 +5,7 @@
  * @param {string} [timeRange='short_term'] - The time range for top artists.
  * @returns {Promise<{ artists: object[], error: string|null }>} - The artists or an error message.
  */
-export async function fetchTopArtists(token, limit = 10, timeRange = 'short_term') {
+export async function fetchUserTopArtists(token, limit = 10, timeRange = 'short_term') {
   if (!token) {
     return { error: 'No access token found.', artists: [] };
   }

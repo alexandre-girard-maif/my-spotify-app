@@ -1,7 +1,7 @@
 // src/api/spotify.test.js
 import { afterEach, describe, expect, jest, test } from "@jest/globals";
 
-import { fetchAccountProfile, fetchUserPlaylists, fetchUserTopTracks } from "./spotify";
+import { fetchAccountProfile, fetchUserPlaylists, fetchUserTopArtists, fetchUserTopTracks } from "./spotify";
 
 describe("spotify API", () => {
   const originalFetch = globalThis.fetch;
@@ -169,6 +169,60 @@ describe("spotify API", () => {
         expect(result).toEqual({
             error: "Failed to fetch top tracks.",
             tracks: [],
+        });
+    });
+  });
+
+  describe("fetchUserTopArtists", () => {
+    test("returns error if no token is provided", async () => {
+        const result = await fetchUserTopArtists("");
+        expect(result).toEqual({
+            error: "No access token found.",
+            artists: [],
+        });
+    });
+
+    test("returns artists on successful fetch", async () => {
+        const mockArtists = { items: [{ id: "artist1" }, { id: "artist2" }] };
+        globalThis.fetch = jest.fn().mockResolvedValue({
+            json: jest.fn().mockResolvedValue(mockArtists),
+        });
+
+        const result = await fetchUserTopArtists("valid_token", 2, "short_term");
+        expect(globalThis.fetch).toHaveBeenCalledWith(
+            "https://api.spotify.com/v1/me/top/artists?limit=2&time_range=short_term",
+            {
+                headers: { Authorization: "Bearer valid_token" },
+            }
+        );
+        expect(result).toEqual({
+            artists: mockArtists.items,
+            error: null,
+        });
+    });
+
+    test("returns error if Spotify API returns error in response", async () => {
+        const mockError = { error: { message: "Invalid token" } };
+        globalThis.fetch = jest.fn().mockResolvedValue({
+            json: jest.fn().mockResolvedValue(mockError),
+        });
+
+        const result = await fetchUserTopArtists("invalid_token", 2, "short_term");
+        expect(result).toEqual({
+            error: "Invalid token",
+            artists: [],
+        });
+    });
+
+    test("returns error if fetch throws", async () => {
+        globalThis.fetch = jest
+            .fn()
+            .mockRejectedValue(new Error("Network error"));
+
+        const result = await fetchUserTopArtists("any_token", 2, "short_term");
+        expect(result).toEqual({
+            error: "Failed to fetch top artists.",
+            artists: [],
         });
     });
   });
