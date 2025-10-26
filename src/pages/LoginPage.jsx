@@ -1,5 +1,5 @@
 
-import { generateRandomString, generateCodeChallenge } from '../api/pkce.js';
+import { createPkcePair } from '../api/pkce.js';
 import './Login.css';
 
 const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
@@ -15,8 +15,7 @@ export default function LoginPage() {
   const safeNext = nextParam?.startsWith('/') ? nextParam : '/';
   const handleLogin = async () => {
     if (missingEnv) return;
-    const codeVerifier = generateRandomString(128);
-    const codeChallenge = await generateCodeChallenge(codeVerifier);
+    const { codeVerifier, codeChallenge } = await createPkcePair(128);
     localStorage.setItem('spotify_code_verifier', codeVerifier);
     // Store desired redirect target for after callback
     localStorage.setItem('post_auth_redirect', safeNext);
@@ -28,7 +27,7 @@ export default function LoginPage() {
       code_challenge_method: 'S256',
       code_challenge: codeChallenge,
     });
-  globalThis.location = `https://accounts.spotify.com/authorize?${args.toString()}`;
+    globalThis.location = `https://accounts.spotify.com/authorize?${args.toString()}`;
   };
 
   return (
