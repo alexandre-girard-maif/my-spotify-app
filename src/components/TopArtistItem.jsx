@@ -8,27 +8,29 @@ import React from 'react';
  * @returns {JSX.Element} The rendered component
  */
 export default function TopArtistItem({ artist, index }) {
+  console.log('Rendering TopArtistItem for artist:', artist.images);
+
   return (
     <li className="track-item" data-testid={`top-artist-item-${artist.id}`}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-        {artist.images && artist.images[1] && (
+        {artist.images?.[1] && (
           <img
             src={artist.images[1].url}
             alt={artist.name}
-            style={{ width: 56, height: 56, borderRadius: '50%', objectFit: 'cover' }}
+            style={{ width: 56, height: 56, borderRadius: '50%' }}
           />
         )}
         <div>
-          <div style={{ fontWeight: 'bold', fontSize: '1.1em' }}>
+          <div style={{ fontWeight: 'bold' }}>
             {index + 1}. {artist.name}
           </div>
-          <div style={{ color: '#666', fontSize: '0.95em' }}>
+          <div style={{ color: '#666' }}>
             Genres: {artist.genres.join(', ')}
           </div>
-          <div style={{ color: '#888', fontSize: '0.9em' }}>
+          <div style={{ color: '#888' }}>
             Popularity: {artist.popularity}
           </div>
-          <div style={{ color: '#888', fontSize: '0.9em' }}>
+          <div style={{ color: '#888' }}>
             Followers: {artist.followers.total.toLocaleString()}
           </div>
         </div>
