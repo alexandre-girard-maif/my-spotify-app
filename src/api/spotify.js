@@ -1,3 +1,5 @@
+export const SPOTIFY_API_BASE = 'https://api.spotify.com/v1';
+
 /**
  * Fetch the user's top artists from Spotify.
  * @param {string} token - The Spotify access token.
@@ -10,7 +12,7 @@ export async function fetchUserTopArtists(token, limit = 10, timeRange = 'short_
     return { error: 'No access token found.', artists: [] };
   }
   try {
-    const res = await fetch(`https://api.spotify.com/v1/me/top/artists?limit=${limit}&time_range=${timeRange}`,
+    const res = await fetch(`${SPOTIFY_API_BASE}/me/top/artists?limit=${limit}&time_range=${timeRange}`,
       { headers: { Authorization: `Bearer ${token}` } });
     const data = await res.json();
     if (data.error) {
@@ -33,7 +35,7 @@ export async function fetchAccountProfile(token) {
     return { error: 'No access token found.', profile: null };
   }
   try {
-    const res = await fetch('https://api.spotify.com/v1/me', {
+    const res = await fetch(`${SPOTIFY_API_BASE}/me`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await res.json();
@@ -57,7 +59,7 @@ export async function fetchUserPlaylists(token, limit = 10) {
     return { error: 'No access token found.', playlists: [] };
   }
   try {
-    const res = await fetch(`https://api.spotify.com/v1/me/playlists?limit=${limit}`, {
+    const res = await fetch(`${SPOTIFY_API_BASE}/me/playlists?limit=${limit}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await res.json();
@@ -82,7 +84,7 @@ export async function fetchUserTopTracks(token, limit = 10, timeRange = 'short_t
     return { error: 'No access token found.', tracks: [] };
   }
   try {
-    const res = await fetch(`https://api.spotify.com/v1/me/top/tracks?limit=${limit}&time_range=${timeRange}`, {
+    const res = await fetch(`${SPOTIFY_API_BASE}/me/top/tracks?limit=${limit}&time_range=${timeRange}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await res.json();

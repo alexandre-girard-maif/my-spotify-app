@@ -1,7 +1,7 @@
 // src/api/spotify.test.js
 import { afterEach, describe, expect, jest, test } from "@jest/globals";
 
-import { fetchAccountProfile, fetchUserPlaylists, fetchUserTopArtists, fetchUserTopTracks } from "./spotify";
+import { fetchAccountProfile, fetchUserPlaylists, fetchUserTopArtists, fetchUserTopTracks, SPOTIFY_API_BASE } from "./spotify";
 
 describe("spotify API", () => {
   const originalFetch = globalThis.fetch;
@@ -28,7 +28,7 @@ describe("spotify API", () => {
 
       const result = await fetchAccountProfile("valid_token");
       expect(globalThis.fetch).toHaveBeenCalledWith(
-        "https://api.spotify.com/v1/me",
+        `${SPOTIFY_API_BASE}/me`,
         {
           headers: { Authorization: "Bearer valid_token" },
         }
@@ -82,7 +82,7 @@ describe("spotify API", () => {
 
         const result = await fetchUserPlaylists("valid_token", 2);
         expect(globalThis.fetch).toHaveBeenCalledWith(
-            "https://api.spotify.com/v1/me/playlists?limit=2",
+            `${SPOTIFY_API_BASE}/me/playlists?limit=2`,
             {
                 headers: { Authorization: "Bearer valid_token" },
             }
@@ -136,7 +136,7 @@ describe("spotify API", () => {
 
         const result = await fetchUserTopTracks("valid_token", 2, "short_term");
         expect(globalThis.fetch).toHaveBeenCalledWith(
-            "https://api.spotify.com/v1/me/top/tracks?limit=2&time_range=short_term",
+            `${SPOTIFY_API_BASE}/me/top/tracks?limit=2&time_range=short_term`,
             {
                 headers: { Authorization: "Bearer valid_token" },
             }
@@ -190,7 +190,7 @@ describe("spotify API", () => {
 
         const result = await fetchUserTopArtists("valid_token", 2, "short_term");
         expect(globalThis.fetch).toHaveBeenCalledWith(
-            "https://api.spotify.com/v1/me/top/artists?limit=2&time_range=short_term",
+            `${SPOTIFY_API_BASE}/me/top/artists?limit=2&time_range=short_term`,
             {
                 headers: { Authorization: "Bearer valid_token" },
             }
