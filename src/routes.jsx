@@ -24,11 +24,13 @@ const routes = [
       {
         path: 'account',
         element: <Account />,
-        loader: async () => {
+        loader: async ({ request }) => {
           const token = localStorage.getItem('spotify_access_token');
-          if (!token) return redirect('/login');
+          const url = new URL(request.url);
+          const next = encodeURIComponent(url.pathname + url.search);
+          if (!token) return redirect(`/login?next=${next}`);
           const result = await fetchAccountProfile(token);
-          if (result.error) return redirect('/login');
+          if (result.error) return redirect(`/login?next=${next}`);
           return result;
         },
         hydrateFallbackElement: <div>Loading account info from Spotify...</div>,
@@ -36,11 +38,13 @@ const routes = [
       {
         path: 'top-tracks',
         element: <TopTracks />,
-        loader: async () => {
+        loader: async ({ request }) => {
           const token = localStorage.getItem('spotify_access_token');
-          if (!token) return redirect('/login');
+          const url = new URL(request.url);
+          const next = encodeURIComponent(url.pathname + url.search);
+          if (!token) return redirect(`/login?next=${next}`);
           const result = await fetchTopTracks(token, 10, 'short_term');
-          if (result.error) return redirect('/login');
+          if (result.error) return redirect(`/login?next=${next}`);
           return result;
         },
         hydrateFallbackElement: <div>Loading top tracks from Spotify...</div>,
@@ -48,11 +52,13 @@ const routes = [
       {
         path: 'top-artists',
         element: <TopArtists />,
-        loader: async () => {
+        loader: async ({ request }) => {
           const token = localStorage.getItem('spotify_access_token');
-          if (!token) return redirect('/login');
+          const url = new URL(request.url);
+          const next = encodeURIComponent(url.pathname + url.search);
+          if (!token) return redirect(`/login?next=${next}`);
           const result = await fetchTopArtists(token, 10, 'short_term');
-          if (result.error) return redirect('/login');
+          if (result.error) return redirect(`/login?next=${next}`);
           return result;
         },
         hydrateFallbackElement: <div>Loading top artists from Spotify...</div>,
@@ -60,11 +66,13 @@ const routes = [
       {
         path: 'playlists',
         element: <Playlists />,
-        loader: async () => {
+        loader: async ({ request }) => {
           const token = localStorage.getItem('spotify_access_token');
-          if (!token) return redirect('/login');
+          const url = new URL(request.url);
+          const next = encodeURIComponent(url.pathname + url.search);
+          if (!token) return redirect(`/login?next=${next}`);
           const result = await fetchPlaylists(token, 10);
-          if (result.error) return redirect('/login');
+          if (result.error) return redirect(`/login?next=${next}`);
           return result;
         },
         hydrateFallbackElement: <div>Loading playlists from Spotify...</div>,

@@ -10,11 +10,17 @@ const scope = 'user-read-private user-read-email user-top-read playlist-read-pri
 
 export default function Login() {
   const missingEnv = !clientId || !redirectUri;
+  // Capture intended post-auth path from query (?next=/desired/path)
+  const params = new URLSearchParams(window.location.search);
+  const nextParam = params.get('next');
+  const safeNext = nextParam && nextParam.startsWith('/') ? nextParam : '/';
   const handleLogin = async () => {
     if (missingEnv) return;
     const codeVerifier = generateRandomString(128);
     const codeChallenge = await generateCodeChallenge(codeVerifier);
     localStorage.setItem('spotify_code_verifier', codeVerifier);
+    // Store desired redirect target for after callback
+    localStorage.setItem('post_auth_redirect', safeNext);
     const args = new URLSearchParams({
       response_type: 'code',
       client_id: clientId,
