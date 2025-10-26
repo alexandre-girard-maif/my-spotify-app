@@ -1,5 +1,10 @@
 import React from 'react';
 
+/**
+ * Displays a single track item with its details.
+ * @param {*} param0 
+ * @returns 
+ */
 export default function TrackItem({ track }) {
   return (
     <li className="track-item">

@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState, useRef } from 'react';
-import TrackItem from '../TrackItem.jsx';
+import TrackItem from '../components/TrackItem.jsx';
 import * as d3 from 'd3';
 
 export default function TopTracks() {
