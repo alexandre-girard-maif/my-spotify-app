@@ -1,3 +1,26 @@
+/**
+ * Fetch the user's top artists from Spotify.
+ * @param {string} token - The Spotify access token.
+ * @param {number} [limit=10] - The number of artists to fetch.
+ * @param {string} [timeRange='short_term'] - The time range for top artists.
+ * @returns {Promise<{ artists: object[], error: string|null }>} - The artists or an error message.
+ */
+export async function fetchTopArtists(token, limit = 10, timeRange = 'short_term') {
+  if (!token) {
+    return { error: 'No access token found.', artists: [] };
+  }
+  try {
+    const res = await fetch(`https://api.spotify.com/v1/me/top/artists?limit=${limit}&time_range=${timeRange}`,
+      { headers: { Authorization: `Bearer ${token}` } });
+    const data = await res.json();
+    if (data.error) {
+      return { error: data.error.message, artists: [] };
+    }
+    return { artists: data.items || [], error: null };
+  } catch {
+    return { error: 'Failed to fetch top artists.', artists: [] };
+  }
+}
 // src/api/spotify.js
 
 /**
