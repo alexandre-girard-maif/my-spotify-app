@@ -1,8 +1,12 @@
-import './AppHero.css';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
+export default function WelcomePage() {
+  // set document title
+  React.useEffect(() => {
+    document.title = `Welcome | Spotify App`;
+  }, []);
 
-function App() {
   return (
     <div className="app-hero-bg">
       <div className="app-hero-card">
@@ -25,5 +29,3 @@ function App() {
     </div>
   );
 }
-
-export default App

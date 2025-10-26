@@ -5,6 +5,7 @@ import routes from './routes.jsx';
 import { createBrowserRouter } from 'react-router-dom';
 import { RouterProvider } from 'react-router';
 import './App.css'
+import './AppHero.css';
 
 const router = createBrowserRouter(routes);
 
