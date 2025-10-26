@@ -1,47 +1,38 @@
-// pkce.js - PKCE utility functions for Spotify authentication
+// pkce.js - Simplified PKCE helpers for Spotify authentication
+// Provides a single high-level async helper to create a verifier/challenge pair
+// and a small utility to derive a challenge for an existing verifier (if needed).
 
-/**
- * Generate a random string of the specified length.
- * @param {*} length 
- * @returns 
- */
-export function generateRandomString(length) {
-  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~';
-  let text = '';
+// Character set per RFC 7636 recommendations (allowing -._~ for URL safety)
+const POSSIBLE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~';
+
+function generateRandomVerifier(length = 128) {
+  let out = '';
   for (let i = 0; i < length; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
+    out += POSSIBLE.charAt(Math.floor(Math.random() * POSSIBLE.length));
   }
-  return text;
+  return out;
 }
 
-/**
- * Generate a SHA-256 hash of the input string.
- * @param {*} plain 
- * @returns 
- */
-export async function sha256(plain) {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(plain);
-  const hash = await window.crypto.subtle.digest('SHA-256', data);
-  return new Uint8Array(hash);
-}
-
-/**
- * Base64 URL encode the input ArrayBuffer.
- * @param {*} arrayBuffer 
- * @returns 
- */
-export function base64UrlEncode(arrayBuffer) {
-  let str = String.fromCharCode.apply(null, Array.from(arrayBuffer));
+function base64UrlEncode(bytes) {
+  let str = String.fromCharCode.apply(null, Array.from(bytes));
   return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
 
-/**
- * Generate a code challenge from the code verifier.
- * @param {*} codeVerifier 
- * @returns 
- */
+async function sha256(input) {
+  const data = new TextEncoder().encode(input);
+  const hash = await globalThis.crypto.subtle.digest('SHA-256', data);
+  return new Uint8Array(hash);
+}
+
 export async function generateCodeChallenge(codeVerifier) {
   const hashed = await sha256(codeVerifier);
   return base64UrlEncode(hashed);
 }
+
+// High-level helper: returns { codeVerifier, codeChallenge }
+export async function createPkcePair(length = 128) {
+  const codeVerifier = generateRandomVerifier(length);
+  const codeChallenge = await generateCodeChallenge(codeVerifier);
+  return { codeVerifier, codeChallenge };
+}
+
