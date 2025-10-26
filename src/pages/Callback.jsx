@@ -3,8 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const clientId = '26f6c42b39424f27b64b208d55506267';
-const redirectUri = 'http://127.0.0.1:5173/callback';
+const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
+let redirectUri = `${window.location.origin}/callback`;
 
 export default function Callback() {
   const [error, setError] = useState(null);
