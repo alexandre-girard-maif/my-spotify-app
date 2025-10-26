@@ -1,5 +1,6 @@
 
 import { generateRandomString, generateCodeChallenge } from '../api/pkce.js';
+import './Login.css';
 
 
 const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
@@ -23,11 +24,17 @@ export default function Login() {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20vh' }}>
-      <h1>Login to Spotify</h1>
-      <button onClick={handleLogin} style={{ padding: '1em 2em', fontSize: '1.2em', borderRadius: '5px', background: '#1DB954', color: '#fff', border: 'none', cursor: 'pointer' }}>
-        Login with Spotify
-      </button>
+    <div className="login-bg">
+      <div className="login-card">
+        <img src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_CMYK_Green.png" alt="Spotify Logo" className="login-logo" />
+        <h2 className="login-title">Welcome to My Spotify App</h2>
+        <p className="login-desc">
+          Log in with your Spotify account to explore your music stats, playlists, and more!
+        </p>
+        <button className="login-btn" onClick={handleLogin}>
+          Login with Spotify
+        </button>
+      </div>
     </div>
   );
 }

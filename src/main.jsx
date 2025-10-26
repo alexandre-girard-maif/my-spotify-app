@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, redirect } from 'react-router-dom';
 
 
 import Account from './pages/AccountPage.jsx';
@@ -29,7 +29,10 @@ const router = createBrowserRouter([
         element: <Account />,
         loader: async () => {
           const token = localStorage.getItem('spotify_access_token');
-          return await fetchAccountProfile(token);
+          if (!token) return redirect('/login');
+          const result = await fetchAccountProfile(token);
+          if (result.error) return redirect('/login');
+          return result;
         },
         hydrateFallbackElement: <div>Loading account info from Spotify...</div>,
       },
@@ -38,7 +41,10 @@ const router = createBrowserRouter([
         element: <TopTracks />,
         loader: async () => {
           const token = localStorage.getItem('spotify_access_token');
-          return await fetchTopTracks(token, 10, 'short_term');
+          if (!token) return redirect('/login');
+          const result = await fetchTopTracks(token, 10, 'short_term');
+          if (result.error) return redirect('/login');
+          return result;
         },
         hydrateFallbackElement: <div>Loading top tracks from Spotify...</div>,
        },
@@ -47,7 +53,10 @@ const router = createBrowserRouter([
         element: <TopArtists /> ,
         loader: async () => {
           const token = localStorage.getItem('spotify_access_token');
-          return await fetchTopArtists(token, 10, 'short_term');
+          if (!token) return redirect('/login');
+          const result = await fetchTopArtists(token, 10, 'short_term');
+          if (result.error) return redirect('/login');
+          return result;
         },
         hydrateFallbackElement: <div>Loading top artists from Spotify...</div>,
       },
@@ -56,7 +65,10 @@ const router = createBrowserRouter([
         element: <Playlists />, 
         loader: async () => {
           const token = localStorage.getItem('spotify_access_token');
-          return await fetchPlaylists(token, 10);
+          if (!token) return redirect('/login');
+          const result = await fetchPlaylists(token, 10);
+          if (result.error) return redirect('/login');
+          return result;
         },
         hydrateFallbackElement: <div>Loading playlists from Spotify...</div>,
       },
