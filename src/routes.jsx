@@ -4,7 +4,7 @@ import { fetchAccountProfile, fetchUserPlaylists, fetchUserTopArtists, fetchUser
 import { makeProtectedLoader } from './loaders/protectedLoader.js';
 import WelcomePage from './pages/WelcomePage.jsx';
 import TopTracks from './pages/TopTracksPage.jsx';
-import TopArtists from './TopArtistsPage.jsx';
+import TopArtists from './pages/TopArtistsPage.jsx';
 import Playlists from './pages/PlaylistsPage.jsx';
 import Callback from './pages/Callback.jsx';
 import Layout from './Layout.jsx';

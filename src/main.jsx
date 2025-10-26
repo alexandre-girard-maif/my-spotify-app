@@ -4,10 +4,10 @@ import { createRoot } from 'react-dom/client';
 import routes from './routes.jsx';
 import { createBrowserRouter } from 'react-router-dom';
 import { RouterProvider } from 'react-router';
-import './App.css'
-import './AppHero.css';
-import './MainNav.css';
-import './theme.css';
+import './styles/App.css';
+import './styles/AppHero.css';
+import './styles/MainNav.css';
+import './styles/theme.css';
 
 
 const router = createBrowserRouter(routes);

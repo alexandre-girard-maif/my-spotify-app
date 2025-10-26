@@ -1,6 +1,6 @@
 
 import { createPkcePair } from '../api/pkce.js';
-import './Login.css';
+import '../styles/Login.css';
 
 const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
 let redirectUri = `${globalThis.location.origin}/callback`;

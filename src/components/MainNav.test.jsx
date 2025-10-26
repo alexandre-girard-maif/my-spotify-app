@@ -34,8 +34,6 @@ describe('MainNav', () => {
     expect(screen.getByText('Top Artists')).not.toHaveClass('active');
   });
 
-  
-
   test('all links have nav-link class', () => {
     renderWithRouter();
     expect(screen.getByText('Top Tracks')).toHaveClass('nav-link');
