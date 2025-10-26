@@ -1,5 +1,5 @@
 
-import { generateRandomString, generateCodeChallenge } from './api/pkce.js';
+import { generateRandomString, generateCodeChallenge } from '../api/pkce.js';
 
 
 const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;

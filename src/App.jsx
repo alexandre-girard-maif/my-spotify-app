@@ -1,12 +1,12 @@
 import './App.css'
-import TopTracks from './TopTracks'
+import TopTracks from './pages/TopTracks'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Layout from './Layout'
-import Login from './Login'
-import Callback from './Callback'
-import Account from './Account'
-import TopArtists from './TopArtists'
-import Playlists from './Playlists'
+import Login from './pages/Login'
+import Callback from './pages/Callback'
+import Account from './pages/Account'
+import TopArtists from './pages/TopArtists'
+import Playlists from './pages/Playlists'
 
 function App() {
   return (
