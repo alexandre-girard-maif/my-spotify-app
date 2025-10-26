@@ -36,23 +36,3 @@
   font-size: 1.08em;
 }
 
-.login-btn {
-  padding: 0.9em 2.2em;
-  font-size: 1.15em;
-  border-radius: 30px;
-  background: linear-gradient(90deg, #1DB954 60%, #1ed760 100%);
-  color: #fff;
-  border: none;
-  font-weight: 600;
-  letter-spacing: 1px;
-  box-shadow: 0 2px 8px rgba(30,185,84,0.18);
-  cursor: pointer;
-  transition: background 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.login-btn:hover {
-  background: #1ed760;
-}

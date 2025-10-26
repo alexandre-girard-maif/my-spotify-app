@@ -1,3 +1,38 @@
+/* Reusable button styles */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 0.9em 2.2em;
+  font-size: 1.15em;
+  cursor: pointer;
+  transition: background 0.2s, opacity 0.2s;
+  gap: 10px;
+}
+.btn--spotify {
+  background: linear-gradient(90deg, var(--spotify-green) 60%, var(--spotify-green-hover) 100%);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(30,185,84,0.18);
+}
+.btn--spotify:hover:not(:disabled) {
+  background: var(--spotify-green-hover);
+}
+.btn--disabled,
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Error message style for login */
+.login-error {
+  color: #b91c1c;
+  margin-top: 18px;
+  font-weight: 500;
+  font-size: 1em;
+}
 /* Global theme & reusable component styles */
 
 /* Color tokens (extend or override as needed) */

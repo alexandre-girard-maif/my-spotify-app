@@ -111,11 +111,21 @@
   bottom: 0;
   z-index: 99;
 }
+
+
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  width: 100%;
+  min-height: 100vh;
+  padding: 0;
   text-align: center;
+}
+
+@media (min-width: 1024px) {
+  #root {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
 .logo {
