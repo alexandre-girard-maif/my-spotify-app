@@ -10,9 +10,9 @@ const scope = 'user-read-private user-read-email user-top-read playlist-read-pri
 export default function LoginPage() {
   const missingEnv = !clientId || !redirectUri;
   // Capture intended post-auth path from query (?next=/desired/path)
-  const params = new URLSearchParams(window.location.search);
+  const params = new URLSearchParams(globalThis.location.search);
   const nextParam = params.get('next');
-  const safeNext = nextParam && nextParam.startsWith('/') ? nextParam : '/';
+  const safeNext = nextParam?.startsWith('/') ? nextParam : '/';
   const handleLogin = async () => {
     if (missingEnv) return;
     const codeVerifier = generateRandomString(128);

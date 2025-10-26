@@ -45,8 +45,7 @@ export default function Callback() {
         if (data.access_token) {
           localStorage.setItem('spotify_access_token', data.access_token);
           const storedNext = localStorage.getItem('post_auth_redirect');
-          const target = storedNext && storedNext.startsWith('/') ? storedNext : '/';
-          localStorage.removeItem('post_auth_redirect');
+          const target = storedNext?.startsWith('/') ? storedNext : '/';  localStorage.removeItem('post_auth_redirect');
           globalThis.location.replace(globalThis.location.origin + target);
         } else {
           setError(data.error_description || 'Failed to get access token.');
