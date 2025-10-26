@@ -1,60 +1,175 @@
 // src/api/spotify.test.js
-import { afterEach, describe, expect, jest, test } from '@jest/globals'
+import { afterEach, describe, expect, jest, test } from "@jest/globals";
 
-import { fetchAccountProfile } from './spotify';
+import { fetchAccountProfile, fetchUserPlaylists, fetchUserTopTracks } from "./spotify";
 
-describe('fetchAccountProfile', () => {
-  const originalFetch = global.fetch;
+describe("spotify API", () => {
+  const originalFetch = globalThis.fetch;
 
   afterEach(() => {
-    global.fetch = originalFetch;
+    globalThis.fetch = originalFetch;
     jest.clearAllMocks();
   });
 
-  test('returns error if no token is provided', async () => {
-    const result = await fetchAccountProfile('');
-    expect(result).toEqual({
-      error: 'No access token found.',
-      profile: null,
+  describe("fetchAccountProfile", () => {
+    test("returns error if no token is provided", async () => {
+      const result = await fetchAccountProfile("");
+      expect(result).toEqual({
+        error: "No access token found.",
+        profile: null,
+      });
+    });
+
+    test("returns profile on successful fetch", async () => {
+      const mockProfile = { id: "user123", display_name: "Test User" };
+      globalThis.fetch = jest.fn().mockResolvedValue({
+        json: jest.fn().mockResolvedValue(mockProfile),
+      });
+
+      const result = await fetchAccountProfile("valid_token");
+      expect(globalThis.fetch).toHaveBeenCalledWith(
+        "https://api.spotify.com/v1/me",
+        {
+          headers: { Authorization: "Bearer valid_token" },
+        }
+      );
+      expect(result).toEqual({
+        profile: mockProfile,
+        error: null,
+      });
+    });
+
+    test("returns error if Spotify API returns error in response", async () => {
+      const mockError = { error: { message: "Invalid token" } };
+      globalThis.fetch = jest.fn().mockResolvedValue({
+        json: jest.fn().mockResolvedValue(mockError),
+      });
+
+      const result = await fetchAccountProfile("invalid_token");
+      expect(result).toEqual({
+        error: "Invalid token",
+        profile: null,
+      });
+    });
+
+    test("returns error if fetch throws", async () => {
+      globalThis.fetch = jest
+        .fn()
+        .mockRejectedValue(new Error("Network error"));
+
+      const result = await fetchAccountProfile("any_token");
+      expect(result).toEqual({
+        error: "Failed to fetch account info.",
+        profile: null,
+      });
     });
   });
 
-  test('returns profile on successful fetch', async () => {
-    const mockProfile = { id: 'user123', display_name: 'Test User' };
-    global.fetch = jest.fn().mockResolvedValue({
-      json: jest.fn().mockResolvedValue(mockProfile),
+  describe("fetchUserPlaylists", () => {
+    test("returns error if no token is provided", async () => {
+        const result = await fetchUserPlaylists("");
+        expect(result).toEqual({
+            error: "No access token found.",
+            playlists: [],
+        });
     });
 
-    const result = await fetchAccountProfile('valid_token');
-    expect(global.fetch).toHaveBeenCalledWith('https://api.spotify.com/v1/me', {
-      headers: { Authorization: 'Bearer valid_token' },
+    test("returns playlists on successful fetch", async () => {
+        const mockPlaylists = { items: [{ id: "playlist1" }, { id: "playlist2" }] };
+        globalThis.fetch = jest.fn().mockResolvedValue({
+            json: jest.fn().mockResolvedValue(mockPlaylists),
+        });
+
+        const result = await fetchUserPlaylists("valid_token", 2);
+        expect(globalThis.fetch).toHaveBeenCalledWith(
+            "https://api.spotify.com/v1/me/playlists?limit=2",
+            {
+                headers: { Authorization: "Bearer valid_token" },
+            }
+        );
+        expect(result).toEqual({
+            playlists: mockPlaylists.items,
+            error: null,
+        });
     });
-    expect(result).toEqual({
-      profile: mockProfile,
-      error: null,
+
+    test("returns error if Spotify API returns error in response", async () => {
+        const mockError = { error: { message: "Invalid token" } };
+        globalThis.fetch = jest.fn().mockResolvedValue({
+            json: jest.fn().mockResolvedValue(mockError),
+        });
+
+        const result = await fetchUserPlaylists("invalid_token", 2);
+        expect(result).toEqual({
+            error: "Invalid token",
+            playlists: [],
+        });
+    });
+
+    test("returns error if fetch throws", async () => {
+        globalThis.fetch = jest
+            .fn()
+            .mockRejectedValue(new Error("Network error"));
+
+        const result = await fetchUserPlaylists("any_token", 2);
+        expect(result).toEqual({
+            error: "Failed to fetch playlists.",
+            playlists: [],
+        });
     });
   });
 
-  test('returns error if Spotify API returns error in response', async () => {
-    const mockError = { error: { message: 'Invalid token' } };
-    global.fetch = jest.fn().mockResolvedValue({
-      json: jest.fn().mockResolvedValue(mockError),
+  describe("fetchUserTopTracks", () => {
+    test("returns error if no token is provided", async () => {
+        const result = await fetchUserTopTracks("");
+        expect(result).toEqual({
+            error: "No access token found.",
+            tracks: [],
+        });
     });
 
-    const result = await fetchAccountProfile('invalid_token');
-    expect(result).toEqual({
-      error: 'Invalid token',
-      profile: null,
+    test("returns tracks on successful fetch", async () => {
+        const mockTracks = { items: [{ id: "track1" }, { id: "track2" }] };
+        globalThis.fetch = jest.fn().mockResolvedValue({
+            json: jest.fn().mockResolvedValue(mockTracks),
+        });
+
+        const result = await fetchUserTopTracks("valid_token", 2, "short_term");
+        expect(globalThis.fetch).toHaveBeenCalledWith(
+            "https://api.spotify.com/v1/me/top/tracks?limit=2&time_range=short_term",
+            {
+                headers: { Authorization: "Bearer valid_token" },
+            }
+        );
+        expect(result).toEqual({
+            tracks: mockTracks.items,
+            error: null,
+        });
     });
-  });
 
-  test('returns error if fetch throws', async () => {
-    global.fetch = jest.fn().mockRejectedValue(new Error('Network error'));
+    test("returns error if Spotify API returns error in response", async () => {
+        const mockError = { error: { message: "Invalid token" } };
+        globalThis.fetch = jest.fn().mockResolvedValue({
+            json: jest.fn().mockResolvedValue(mockError),
+        });
 
-    const result = await fetchAccountProfile('any_token');
-    expect(result).toEqual({
-      error: 'Failed to fetch account info.',
-      profile: null,
+        const result = await fetchUserTopTracks("invalid_token", 2, "short_term");
+        expect(result).toEqual({
+            error: "Invalid token",
+            tracks: [],
+        });
+    });
+
+    test("returns error if fetch throws", async () => {
+        globalThis.fetch = jest
+            .fn()
+            .mockRejectedValue(new Error("Network error"));
+
+        const result = await fetchUserTopTracks("any_token", 2, "short_term");
+        expect(result).toEqual({
+            error: "Failed to fetch top tracks.",
+            tracks: [],
+        });
     });
   });
 });

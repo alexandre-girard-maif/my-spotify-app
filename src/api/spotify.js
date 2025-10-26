@@ -52,7 +52,7 @@ export async function fetchAccountProfile(token) {
  * @param {number} [limit=10] - The number of playlists to fetch.
  * @returns {Promise<{ playlists: object[], error: string|null }>} - The playlists or an error message.
  */
-export async function fetchPlaylists(token, limit = 10) {
+export async function fetchUserPlaylists(token, limit = 10) {
   if (!token) {
     return { error: 'No access token found.', playlists: [] };
   }
@@ -64,7 +64,6 @@ export async function fetchPlaylists(token, limit = 10) {
     if (data.error) {
       return { error: data.error.message, playlists: [] };
     }
-    console.log('Fetched playlists:', data);
     return { playlists: data.items || [], error: null };
   } catch {
     return { error: 'Failed to fetch playlists.', playlists: [] };
@@ -78,7 +77,7 @@ export async function fetchPlaylists(token, limit = 10) {
  * @param {string} [timeRange='short_term'] - The time range for top tracks.
  * @returns {Promise<{ tracks: object[], error: string|null }>} - The tracks or an error message.
  */
-export async function fetchTopTracks(token, limit = 10, timeRange = 'short_term') {
+export async function fetchUserTopTracks(token, limit = 10, timeRange = 'short_term') {
   if (!token) {
     return { error: 'No access token found.', tracks: [] };
   }
