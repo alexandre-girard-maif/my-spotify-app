@@ -1,10 +1,8 @@
-import React from 'react';
 // redirect no longer needed directly; helper handles it
 import Account from './pages/AccountPage.jsx';
 import { fetchAccountProfile, fetchPlaylists, fetchTopArtists, fetchTopTracks } from './api/spotify.js';
 import { makeProtectedLoader } from './loaders/protectedLoader.js';
 import WelcomePage from './pages/WelcomePage.jsx';
-import Login from './pages/LoginPage.jsx';
 import TopTracks from './pages/TopTracksPage.jsx';
 import TopArtists from './pages/TopArtistsPage.jsx';
 import Playlists from './pages/PlaylistsPage.jsx';
@@ -20,9 +18,11 @@ const routes = [
     path: '/',
     element: <Layout />,
     children: [
+      // normal route definitions
       { index: true, element: <WelcomePage /> },
       { path: 'login', element: <LoginPage /> },
       { path: 'callback', element: <Callback /> },
+      // protected routes with loaders
       {
         path: 'account',
         element: <Account />,
