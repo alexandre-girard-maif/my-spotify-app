@@ -10,8 +10,6 @@ import './styles/theme.css';
 import './styles/index.css';
 import './styles/App.css';
 import './styles/AppHero.css';
-import './styles/MainNav.css';
-
 
 const router = createBrowserRouter(routes);
 
