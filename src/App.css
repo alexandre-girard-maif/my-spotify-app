@@ -154,18 +154,4 @@
   color: #888;
 }
 
-/* Avatar shimmer animation */
-@keyframes avatar-shimmer {
-  0% { background-position: 0% 50%; }
-  100% { background-position: -200% 50%; }
-}
-
-.account-avatar:hover {
-  background: var(--bg-overlay, #2a2a2a);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-}
-.account-avatar.active {
-  outline: 2px solid var(--spotify-green, #1DB954);
-  outline-offset: 2px;
-}
+/* Avatar styles consolidated into theme.css */

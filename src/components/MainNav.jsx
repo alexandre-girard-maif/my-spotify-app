@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useSpotifyProfile } from '../hooks/useSpotifyProfile.js';
 import './MainNav.css';
+import '../theme.css';
 
 // Generic nav item wrapper to reduce duplication and centralize active class logic
 function NavItem({ to, children }) {
@@ -60,16 +61,16 @@ export default function MainNav() {
       <NavLink
         to="/account"
         aria-label={profile?.display_name ? `Account (${profile.display_name})` : 'Account'}
-        className={({ isActive }) => isActive ? 'nav-avatar active' : 'nav-avatar'}
+        className={({ isActive }) => isActive ? 'avatar avatar--active' : 'avatar'}
       >
         {loading && !avatarUrl && (
-          <div className="nav-avatar-shimmer" aria-hidden="true" />
+          <div className="avatar__shimmer" aria-hidden="true" />
         )}
         {!loading && avatarUrl && (
           <img
             src={avatarUrl}
             alt={profile?.display_name || 'Profile avatar'}
-            className="nav-avatar-img"
+            className="avatar__img"
           />
         )}
         {!loading && !avatarUrl && <UserIcon size={26} />}
