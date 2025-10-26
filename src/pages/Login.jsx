@@ -4,7 +4,8 @@ import './Login.css';
 
 
 const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
-const redirectUri = import.meta.env.VITE_SPOTIFY_REDIRECT_URI;
+let redirectUri = `${window.location.origin}/callback`;
+
 const scope = 'user-read-private user-read-email user-top-read playlist-read-private';
 
 export default function Login() {
