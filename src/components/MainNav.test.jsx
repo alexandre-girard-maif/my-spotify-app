@@ -36,6 +36,8 @@ describe('MainNav', () => {
     expect(screen.getByText('Account')).not.toHaveClass('active');
   });
 
+  
+
   test('all links have nav-link class', () => {
     renderWithRouter();
     expect(screen.getByText('Top Tracks')).toHaveClass('nav-link');
