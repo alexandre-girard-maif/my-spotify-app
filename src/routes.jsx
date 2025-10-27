@@ -29,19 +29,6 @@ const routes = [
       {
         path: 'dashboard',
         element: <DashboardPage />,
-        loader: makeProtectedLoader(async (token) => {
-          // Retrieve multiple data points for dashboard
-          // Top 1 track and artist for summary
-          const topTrack = (await fetchUserTopTracks(token, 1, 'short_term')).tracks[0];
-          const topArtist = (await fetchUserTopArtists(token, 1, 'short_term')).artists[0];
-
-          console.log('Dashboard loader fetched topTrack and topArtist');
-          console.log('Top Track:', topTrack);
-          console.log('Top Artist:', topArtist);
-
-          return { topTrack, topArtist };
-        }),
-        hydrateFallbackElement: <div>Loading dashboard...</div>,
       },
       {
         path: 'top-tracks',
