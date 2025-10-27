@@ -1,4 +1,4 @@
-import React, { } from 'react';
+import React from 'react';
 import TopArtistItem from '../components/TopArtistItem';
 import { useLoaderData } from 'react-router-dom';
 
