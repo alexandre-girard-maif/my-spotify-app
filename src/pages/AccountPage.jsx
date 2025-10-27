@@ -13,9 +13,6 @@ export default function AccountPage() {
     document.title = `Account | Spotify App`;
   }, []);
 
-  // if (error) return <div style={{ color: 'red', marginTop: '20vh', textAlign: 'center' }}>Error: {error}</div>;
-  // if (!profile) return <div style={{ marginTop: '20vh', textAlign: 'center' }}>Loading account info...</div>;
-
   return (
     <div style={{ marginTop: '10vh', textAlign: 'center' }}>
       <h1>Spotify Account Info</h1>
