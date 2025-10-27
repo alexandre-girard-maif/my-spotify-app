@@ -12,36 +12,39 @@ const DashboardPage = () => {
 
     // set document title
     React.useEffect(() => {
-      document.title = `Dashboard | Spotify App`;
+        document.title = `Dashboard | Spotify App`;
     }, []);
 
     return (
-      <div className="dashboard-page">
-        <header className="dashboard-header">
-          <h1>Welcome to Your Dashboard</h1>
-          <p>Explore your favorite tracks and artists.</p>
-        </header>
+        <div className="dashboard-page">
+            <header className="dashboard-header">
+                <h1>Welcome to Your Dashboard</h1>
+                <p>Explore your favorite tracks and artists.</p>
+            </header>
 
-        <section className="dashboard-content">
-          <div className="card preferred-artist-card">
-            <h2>Preferred Artist</h2>
-            <SimpleCard 
-              imageUrl={topArtist.images[0].url} 
-              title={topArtist.name} 
-                subtitle={topArtist.genres.join(', ')}
-            />
-          </div>
+            <section className="dashboard-content">
+                <div className="card preferred-artist-card">
+                    <h2>Preferred Artist</h2>
+                    <SimpleCard
+                        imageUrl={topArtist.images[0].url}
+                        title={topArtist.name}
+                        subtitle={topArtist.genres.join(', ')}
+                        link={topArtist.external_urls.spotify}
 
-          <div className="card preferred-track-card">
-            <h2>Preferred Track</h2>
-            <SimpleCard 
-              imageUrl={topTrack.album.images[1].url} 
-              title={topTrack.name} 
-              subtitle={topTrack.artists.map(artist => artist.name).join(', ')}
-            />
-          </div>
-        </section>
-      </div>
+                    />
+                </div>
+
+                <div className="card preferred-track-card">
+                    <h2>Preferred Track</h2>
+                    <SimpleCard
+                        imageUrl={topTrack.album.images[1].url}
+                        title={topTrack.name}
+                        subtitle={topTrack.artists.map(artist => artist.name).join(', ')}
+                        link={topTrack.external_urls.spotify}
+                    />
+                </div>
+            </section>
+        </div>
     );
 };
 

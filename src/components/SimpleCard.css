@@ -30,3 +30,20 @@
   color: #666;
   text-align: center;
 }
+
+.simple-card__button {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: #1db954;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.simple-card__button:hover {
+  background-color: #17a74a;
+}
