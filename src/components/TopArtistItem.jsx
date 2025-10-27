@@ -33,6 +33,14 @@ export default function TopArtistItem({ artist, index }) {
           Followers: {artist.followers.total.toLocaleString()}
         </div>
       </div>
+      <a
+        href={artist.external_urls.spotify}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="artist-link"
+      >
+        View Artist
+      </a>
     </li>
   );
 }
