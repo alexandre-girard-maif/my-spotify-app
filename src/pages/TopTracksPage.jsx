@@ -4,6 +4,10 @@ import TrackItem from '../components/TrackItem.jsx';
 // import * as d3 from 'd3';
 import { useLoaderData } from 'react-router-dom';
 
+/**
+ * TopTracks Page 
+ * @returns {JSX.Element}
+ */
 export default function TopTracks() {
   // const [tracks, setTracks] = useState([]);
   // const [error, setError] = useState(null);
