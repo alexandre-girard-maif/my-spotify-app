@@ -9,30 +9,38 @@ import React from 'react';
  */
 export default function TopArtistItem({ artist, index }) {
   return (
-    <li className="track-item" data-testid={`top-artist-item-${artist.id}`}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-        {artist.images?.[1] && (
-          <img
-            src={artist.images[1].url}
-            alt={artist.name}
-            style={{ width: 56, height: 56, borderRadius: '50%' }}
-          />
-        )}
-        <div>
-          <div style={{ fontWeight: 'bold' }}>
+    <li className="artist-item" data-testid={`top-artist-item-${artist.id}`}>
+      {artist.images?.[1] && (
+        <img
+          src={artist.images[1].url}
+          alt={artist.name}
+          className="artist-cover"
+        />
+      )}
+      <div className="artist-details">
+        <div className="artist-details-header">
+          <div className="artist-title">
             {index + 1}. {artist.name}
           </div>
-          <div style={{ color: '#666' }}>
+          <div className="artist-genres">
             Genres: {artist.genres.join(', ')}
           </div>
-          <div style={{ color: '#888' }}>
-            Popularity: {artist.popularity}
-          </div>
-          <div style={{ color: '#888' }}>
-            Followers: {artist.followers.total.toLocaleString()}
-          </div>
+        </div>
+        <div className="artist-popularity">
+          Popularity: {artist.popularity}
+        </div>
+        <div className="artist-followers">
+          Followers: {artist.followers.total.toLocaleString()}
         </div>
       </div>
+      <a
+        href={artist.external_urls.spotify}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="artist-link"
+      >
+        View Artist
+      </a>
     </li>
   );
 }

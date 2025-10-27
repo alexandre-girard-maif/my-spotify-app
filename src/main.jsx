@@ -4,8 +4,12 @@ import { createRoot } from 'react-dom/client';
 import routes from './routes.jsx';
 import { createBrowserRouter } from 'react-router-dom';
 import { RouterProvider } from 'react-router';
-import './App.css'
-import './AppHero.css';
+
+// Global styles: order matters (theme first, then base, then components)
+import './styles/theme.css';
+import './styles/index.css';
+import './styles/App.css';
+import './styles/AppHero.css';
 
 const router = createBrowserRouter(routes);
 

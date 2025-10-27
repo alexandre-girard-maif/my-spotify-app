@@ -1,6 +1,6 @@
 
 import { createPkcePair } from '../api/pkce.js';
-import './Login.css';
+import '../styles/theme.css';
 
 const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
 let redirectUri = `${globalThis.location.origin}/callback`;
@@ -33,21 +33,19 @@ export default function LoginPage() {
   return (
     <div className="login-bg">
       <div className="login-card">
-        <img src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_CMYK_Green.png" alt="Spotify Logo" className="login-logo" />
         <h2 className="login-title">Welcome to My Spotify App</h2>
         <p className="login-desc">
           Log in with your Spotify account to explore your music stats, playlists, and more!
         </p>
         <button
-          className="login-btn"
+          className={`login-btn btn btn--spotify${missingEnv ? ' btn--disabled' : ''}`}
           onClick={handleLogin}
           disabled={missingEnv}
-          style={missingEnv ? { opacity: 0.5, cursor: 'not-allowed' } : {}}
         >
           Login with Spotify
         </button>
         {missingEnv && (
-          <div style={{ color: '#b91c1c', marginTop: 18, fontWeight: 500, fontSize: '1em' }}>
+          <div className="login-error">
             Login is disabled: Spotify client ID or redirect URI is not configured.<br />
             Please set <code>VITE_SPOTIFY_CLIENT_ID</code> and <code>VITE_SPOTIFY_REDIRECT_URI</code> in your <code>.env</code> file.
           </div>

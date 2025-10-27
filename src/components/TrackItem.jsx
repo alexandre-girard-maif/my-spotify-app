@@ -13,9 +13,11 @@ export default function TrackItem({ track }) {
         alt="cover"
         className="track-cover"
       />
-      <div>
-        <div className="track-title">{track.name}</div>
-        <div className="track-artists">{track.artists.map(a => a.name).join(', ')}</div>
+      <div className="track-details">
+        <div className="track-details-header">
+          <div className="track-title">{track.name}</div>
+          <div className="track-artists">{track.artists.map(a => a.name).join(', ')}</div>
+        </div>
         <div className="track-album">{track.album.name}</div>
         <div className="track-popularity">Popularity: {track.popularity}</div>
       </div>

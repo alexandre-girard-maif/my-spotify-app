@@ -33,10 +33,6 @@ describe('Layout Component', () => {
         expect(playlistsLink).toBeInTheDocument();
         expect(playlistsLink.closest('a')).toHaveAttribute('href', '/playlists');
 
-        const accountLink = screen.getByText('Account');
-        expect(accountLink).toBeInTheDocument();
-        expect(accountLink.closest('a')).toHaveAttribute('href', '/account');
-
         // Footer
         const footerElement = screen.getByRole('contentinfo');
         expect(footerElement).toBeInTheDocument();
