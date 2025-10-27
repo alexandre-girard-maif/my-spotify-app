@@ -10,27 +10,27 @@ import React from 'react';
 export default function TopArtistItem({ artist, index }) {
   return (
     <li className="track-item" data-testid={`top-artist-item-${artist.id}`}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-        {artist.images?.[1] && (
-          <img
-            src={artist.images[1].url}
-            alt={artist.name}
-            style={{ width: 56, height: 56, borderRadius: '50%' }}
-          />
-        )}
-        <div>
-          <div style={{ fontWeight: 'bold' }}>
+      {artist.images?.[1] && (
+        <img
+          src={artist.images[1].url}
+          alt={artist.name}
+          className="track-cover"
+        />
+      )}
+      <div className="track-details">
+        <div className="track-details-header">
+          <div className="track-title">
             {index + 1}. {artist.name}
           </div>
-          <div style={{ color: '#666' }}>
+          <div className="track-artists">
             Genres: {artist.genres.join(', ')}
           </div>
-          <div style={{ color: '#888' }}>
-            Popularity: {artist.popularity}
-          </div>
-          <div style={{ color: '#888' }}>
-            Followers: {artist.followers.total.toLocaleString()}
-          </div>
+        </div>
+        <div className="track-album">
+          Popularity: {artist.popularity}
+        </div>
+        <div className="track-popularity">
+          Followers: {artist.followers.total.toLocaleString()}
         </div>
       </div>
     </li>
