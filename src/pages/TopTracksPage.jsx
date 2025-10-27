@@ -18,7 +18,7 @@ export default function TopTracks() {
 
   return (
     <div className="tracks-container">
-      <h1 className="tracks-title">Your Top 10 Tracks</h1>
+      <h1 className="tracks-title">Your Top {tracks.length} Tracks</h1>
       <ol className="tracks-list">
         {tracks.map((track) => (
           <TrackItem key={track.id} track={track} />

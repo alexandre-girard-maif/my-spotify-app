@@ -32,7 +32,7 @@ describe('TopTracksPage', () => {
         });
 
         // Wait for the heading to appear to ensure routing/render updates are settled
-        const heading = await screen.findByRole('heading', { level: 1, name: 'Your Top 10 Tracks' })
+        const heading = await screen.findByRole('heading', { level: 1, name: `Your Top ${tracksData.length} Tracks` })
         expect(heading).toBeInTheDocument() 
         
         // expect the document title to be set
