@@ -2,7 +2,10 @@ module.exports = {
   testEnvironment: "jest-fixed-jsdom", // Use jsdom environment for testing React components
   // Transform jsx files using babel-jest
   transform: {
+    // Use babel-jest to transpile JavaScript files
     "^.+\\.jsx?$": "babel-jest",
+    // Handle CSS imports in components
+    "^.+\\.css$": "jest-transform-css",
   },
 
   // ignore e2e tests
