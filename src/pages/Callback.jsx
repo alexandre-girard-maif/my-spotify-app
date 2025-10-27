@@ -3,8 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const clientId = '26f6c42b39424f27b64b208d55506267';
-const redirectUri = 'http://127.0.0.1:5173/callback';
+const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
+let redirectUri = `${globalThis.location.origin}/callback`;
 
 export default function Callback() {
   const [error, setError] = useState(null);
@@ -13,7 +13,7 @@ export default function Callback() {
 
   useEffect(() => {
     async function exchangeToken() {
-      const params = new URLSearchParams(window.location.search);
+  const params = new URLSearchParams(globalThis.location.search);
       const code = params.get('code');
       if (!code) {
         setError('No code found in URL.');
@@ -44,7 +44,10 @@ export default function Callback() {
         const data = await response.json();
         if (data.access_token) {
           localStorage.setItem('spotify_access_token', data.access_token);
-          navigate('/account');
+          const storedNext = localStorage.getItem('post_auth_redirect');
+          const target = storedNext?.startsWith('/') ? storedNext : '/';
+          localStorage.removeItem('post_auth_redirect');
+          globalThis.location.replace(globalThis.location.origin + target);
         } else {
           setError(data.error_description || 'Failed to get access token.');
         }

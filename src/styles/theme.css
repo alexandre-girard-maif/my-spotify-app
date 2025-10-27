@@ -1,0 +1,99 @@
+/* Reusable button styles */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 0.9em 2.2em;
+  font-size: 1.15em;
+  cursor: pointer;
+  transition: background 0.2s, opacity 0.2s;
+  gap: 10px;
+}
+.btn--spotify {
+  background: linear-gradient(90deg, var(--spotify-green) 60%, var(--spotify-green-hover) 100%);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(30,185,84,0.18);
+}
+.btn--spotify:hover:not(:disabled) {
+  background: var(--spotify-green-hover);
+}
+.btn--disabled,
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Error message style for login */
+.login-error {
+  color: #b91c1c;
+  margin-top: 18px;
+  font-weight: 500;
+  font-size: 1em;
+}
+/* Global theme & reusable component styles */
+
+/* Color tokens (extend or override as needed) */
+:root {
+  --spotify-green: #1DB954;
+  --spotify-green-hover: #1ed760;
+  --bg-base: #121212;
+  --bg-elevated: #181818;
+  --bg-overlay: #1f1f1f;
+  --bg-overlay-hover: #2a2a2a;
+  --text-primary: #ffffff;
+  --text-secondary: #b3b3b3;
+  --border-subtle: #282828;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-pill: 999px;
+  --shadow-sm: 0 2px 6px rgba(0,0,0,0.5);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.55);
+}
+
+/* Avatar component (shared) */
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--bg-overlay);
+  border: 1px solid var(--border-subtle);
+  overflow: hidden;
+  text-decoration: none;
+  color: var(--text-primary);
+  position: relative;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  transition: background .18s, transform .18s, box-shadow .18s;
+}
+.avatar:hover {
+  background: var(--bg-overlay-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+.avatar.avatar--active {
+  outline: 2px solid var(--spotify-green);
+  outline-offset: 2px;
+}
+.avatar__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.avatar__shimmer {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg,#222 0%,#333 50%,#222 100%);
+  background-size: 200% 100%;
+  animation: avatar-shimmer 1.1s ease-in-out infinite;
+}
+
+@keyframes avatar-shimmer {
+  0% { background-position: 0% 50%; }
+  100% { background-position: -200% 50%; }
+}
