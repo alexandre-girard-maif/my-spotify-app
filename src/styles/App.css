@@ -18,34 +18,59 @@
 .tracks-error {
   color: red;
 }
+
+/* Updated TrackItem styles */
 .track-item {
-  margin: 1.5em 0;
   display: flex;
   align-items: center;
   gap: 16px;
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  background-color: #f9f9f9;
 }
 .track-cover {
-  width: 56px;
-  height: 56px;
-  border-radius: 8px;
+  width: 80px;
+  height: 80px;
+  border-radius: 4px;
   object-fit: cover;
 }
+.track-details {
+  flex: 1;
+}
+.track-details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
 .track-title {
+  font-size: 1.2em;
   font-weight: bold;
-  font-size: 1.1em;
+  color: #000; /* Changed to black for better visibility */
 }
 .track-artists {
-  color: #ffffff; /* Changed to white for better visibility */
+  font-size: 1em;
+  color: #555;
+  margin-left: 16px;
 }
 .track-album {
   font-size: 0.9em;
+  color: #777;
+  margin-bottom: 4px;
+}
+.track-popularity {
+  font-size: 0.9em;
+  color: #999;
 }
 .track-link {
-  margin-left: auto;
+  font-size: 0.9em;
   color: #1DB954;
   text-decoration: none;
   font-weight: bold;
 }
+
 /* Layout styles */
 
 .layout-root {
@@ -135,28 +160,6 @@
   transition: filter 300ms;
 }
 .logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
   padding: 2em;
 }
 
