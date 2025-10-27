@@ -9,27 +9,27 @@ import React from 'react';
  */
 export default function TopArtistItem({ artist, index }) {
   return (
-    <li className="track-item" data-testid={`top-artist-item-${artist.id}`}>
+    <li className="artist-item" data-testid={`top-artist-item-${artist.id}`}>
       {artist.images?.[1] && (
         <img
           src={artist.images[1].url}
           alt={artist.name}
-          className="track-cover"
+          className="artist-cover"
         />
       )}
-      <div className="track-details">
-        <div className="track-details-header">
-          <div className="track-title">
+      <div className="artist-details">
+        <div className="artist-details-header">
+          <div className="artist-title">
             {index + 1}. {artist.name}
           </div>
-          <div className="track-artists">
+          <div className="artist-genres">
             Genres: {artist.genres.join(', ')}
           </div>
         </div>
-        <div className="track-album">
+        <div className="artist-popularity">
           Popularity: {artist.popularity}
         </div>
-        <div className="track-popularity">
+        <div className="artist-followers">
           Followers: {artist.followers.total.toLocaleString()}
         </div>
       </div>
