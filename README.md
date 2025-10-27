@@ -25,3 +25,4 @@ A React application that integrates with the Spotify API to provide users with i
     ``` 
 5. Open your browser and navigate to `http://127.0.0.1:5173`
 
+
