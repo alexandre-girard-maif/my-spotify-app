@@ -1,7 +1,6 @@
 
-import React, {  } from 'react';
+import React from 'react';
 import TrackItem from '../components/TrackItem.jsx';
-// import * as d3 from 'd3';
 import { useLoaderData } from 'react-router-dom';
 
 /**
