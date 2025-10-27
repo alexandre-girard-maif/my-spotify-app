@@ -17,6 +17,7 @@ function NavItem({ to, children }) {
 }
 
 // Links for main navigation items
+const DashboardLink = () => <NavItem to="/dashboard">Dashboard</NavItem>;
 const TopTracksLink = () => <NavItem to="/top-tracks">Top Tracks</NavItem>;
 const TopArtistsLink = () => <NavItem to="/top-artists">Top Artists</NavItem>;
 const PlaylistsLink = () => <NavItem to="/playlists">Playlists</NavItem>;
@@ -32,6 +33,7 @@ export default function MainNav() {
   return (
     <div className="main-nav-wrapper">
       <nav className="layout-nav main-nav-flex">
+        <DashboardLink />
         <TopTracksLink />
         <TopArtistsLink />
         <PlaylistsLink />

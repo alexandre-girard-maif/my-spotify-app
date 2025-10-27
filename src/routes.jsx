@@ -9,6 +9,7 @@ import Playlists from './pages/PlaylistsPage.jsx';
 import Callback from './pages/Callback.jsx';
 import Layout from './Layout.jsx';
 import LoginPage from './pages/LoginPage.jsx';
+import DashboardPage from './pages/DashboardPage.jsx';
 
 /**
  * Application routes configuration.
@@ -28,6 +29,11 @@ const routes = [
         element: <Account />,
         loader: makeProtectedLoader(token => fetchAccountProfile(token)),
         hydrateFallbackElement: <div>Loading account info from Spotify...</div>,
+      },
+      {
+        path: 'dashboard',
+        element: <DashboardPage />,
+        hydrateFallbackElement: <div>Loading dashboard...</div>,
       },
       {
         path: 'top-tracks',
