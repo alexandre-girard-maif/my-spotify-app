@@ -61,7 +61,7 @@ function base64UrlEncode(bytes) {
   return btoa(str)
     .replaceAll('+', '-') // replace for URL safety
     .replaceAll('/', '_') // replace for URL safety
-    .replace(/=+$/, ''); // use regex to remove padding
+    .split('=')[0]; // safely remove padding without regex
 }
 
 /**
