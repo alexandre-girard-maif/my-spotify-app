@@ -58,7 +58,10 @@ function generateRandomVerifier(length = 128) {
  */
 function base64UrlEncode(bytes) {
   let str = String.fromCharCode.apply(null, Array.from(bytes));
-  return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  return btoa(str)
+    .replaceAll('+', '-') // replace for URL safety
+    .replaceAll('/', '_') // replace for URL safety
+    .replace(/=+$/, ''); // use regex to remove padding
 }
 
 /**
