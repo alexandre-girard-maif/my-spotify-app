@@ -35,7 +35,7 @@
   font-size: 1.1em;
 }
 .track-artists {
-  color: #666;
+  color: #ffffff; /* Changed to white for better visibility */
 }
 .track-album {
   font-size: 0.9em;
