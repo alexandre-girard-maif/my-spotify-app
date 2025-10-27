@@ -23,7 +23,7 @@ export async function fetchUserTopArtists(token, limit = 10, timeRange = 'short_
     if (data.error) {
       return { error: data.error.message, artists: [] };
     }
-    return { artists: data.items || [], error: null };
+    return { artists: data.items, error: null };
   } catch {
     return { error: 'Failed to fetch top artists.', artists: [] };
   }
@@ -70,7 +70,7 @@ export async function fetchUserPlaylists(token, limit = 10) {
     if (data.error) {
       return { error: data.error.message, playlists: [] };
     }
-    return { playlists: data.items || [], error: null };
+    return { playlists: data.items, error: null };
   } catch {
     return { error: 'Failed to fetch playlists.', playlists: [] };
   }
@@ -95,7 +95,7 @@ export async function fetchUserTopTracks(token, limit = 10, timeRange = 'short_t
     if (data.error) {
       return { error: data.error.message, tracks: [] };
     }
-    return { tracks: data.items || [], error: null };
+    return { tracks: data.items, error: null };
   } catch {
     return { error: 'Failed to fetch top tracks.', tracks: [] };
   }
