@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import PlayListItem from '../components/PlayListItem.jsx';
 import { fetchUserPlaylists } from '../api/spotify.js';
 import './PlaylistsPage.css';
@@ -18,12 +19,13 @@ export default function Playlists() {
     document.title = `Playlists | Spotify App`;
   }, []);
 
+  const navigate = useNavigate();
+
   React.useEffect(() => {
     let cancelled = false;
     const token = localStorage.getItem('spotify_access_token');
     if (!token) {
-      setError('Missing access token');
-      setLoading(false);
+      navigate('/login', { replace: true });
       return;
     }
     setLoading(true);
@@ -37,7 +39,7 @@ export default function Playlists() {
       .catch(err => { if (!cancelled) setError(err.message || 'Failed to load playlists'); })
       .finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
-  }, []);
+  }, [navigate]);
 
   return (
     <div className="playlists-container page-container">
