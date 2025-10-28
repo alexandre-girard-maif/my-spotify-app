@@ -1,6 +1,6 @@
 import React from 'react';
 import TopArtistItem from '../components/TopArtistItem';
-import { useLoaderData } from 'react-router-dom';
+import { fetchUserTopArtists } from '../api/spotify.js';
 import './TopArtistsPage.css';
 import './PageLayout.css';
 
@@ -9,22 +9,49 @@ import './PageLayout.css';
  * @returns {JSX.Element}
  */
 export default function TopArtists() {
-  // Get artists from loader data
-  const { artists } = useLoaderData();
+  const [artists, setArtists] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState(null);
+  const limit = 10;
+  const timeRange = 'short_term';
 
-  // set document title
   React.useEffect(() => {
     document.title = `Top Artists | Spotify App`;
+  }, []);
+
+  React.useEffect(() => {
+    let cancelled = false;
+    const token = localStorage.getItem('spotify_access_token');
+    if (!token) {
+      setError('Missing access token');
+      setLoading(false);
+      return;
+    }
+    setLoading(true);
+    setError(null);
+    fetchUserTopArtists(token, limit, timeRange)
+      .then(res => {
+        if (cancelled) return;
+        if (res.error) setError(res.error);
+        setArtists(res.artists || []);
+      })
+      .catch(err => { if (!cancelled) setError(err.message || 'Failed to load artists'); })
+      .finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
   }, []);
 
   return (
     <div className="artists-container page-container">
       <h1 className="artists-title page-title">Your Top {artists.length} Artists of the Month</h1>
-      <ol className="artists-list">
-        {artists.map((artist, i) => (
-          <TopArtistItem key={artist.id} artist={artist} index={i} />
-        ))}
-      </ol>
+      {loading && <div className="artists-loading" role="status">Loading top artists…</div>}
+      {error && !loading && <div className="artists-error" role="alert">{error}</div>}
+      {!loading && !error && (
+        <ol className="artists-list">
+          {artists.map((artist, i) => (
+            <TopArtistItem key={artist.id} artist={artist} index={i} />
+          ))}
+        </ol>
+      )}
     </div>
   );
 }
