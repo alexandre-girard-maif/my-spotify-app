@@ -16,10 +16,12 @@ export default function TopTracks() {
   const limit = 10;
   const timeRange = 'short_term';
 
+  // set document title
   React.useEffect(() => {
     document.title = `Top Tracks | Spotify App`;
   }, []);
 
+  // Fetch top tracks
   React.useEffect(() => {
     let cancelled = false;
     const token = localStorage.getItem('spotify_access_token');
@@ -30,6 +32,8 @@ export default function TopTracks() {
     }
     setLoading(true);
     setError(null);
+
+    // Fetch user top tracks and update state to display them
     fetchUserTopTracks(token, limit, timeRange)
       .then(res => {
         if (cancelled) return;
