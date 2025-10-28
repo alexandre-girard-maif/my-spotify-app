@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Skeleton, SkeletonTextLines } from '../components/Skeleton.jsx';
 import { useRequireToken } from '../hooks/useRequireToken.js';
 import './TopTracksPage.css';
 import './PageLayout.css';
@@ -41,7 +42,13 @@ export default function TopTracks() {
   }, [token, checking]);
 
   if (checking) {
-    return <div className="tracks-container page-container" />; // blank shell during auth check
+    return (
+      <div className="tracks-container page-container" data-testid="tracks-skeleton">
+        <Skeleton width="70%" height="32px" />
+        <SkeletonTextLines lines={2} />
+        <Skeleton count={5} height="56px" />
+      </div>
+    );
   }
 
   return (

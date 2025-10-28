@@ -1,4 +1,5 @@
 import React from 'react';
+import { Skeleton, SkeletonTextLines } from '../components/Skeleton.jsx';
 import { useRequireToken } from '../hooks/useRequireToken.js';
 import TopArtistItem from '../components/TopArtistItem';
 import { fetchUserTopArtists } from '../api/spotify.js';
@@ -39,7 +40,13 @@ export default function TopArtists() {
   }, [token, checking]);
 
   if (checking) {
-    return <div className="artists-container page-container" />;
+    return (
+      <div className="artists-container page-container" data-testid="artists-skeleton">
+        <Skeleton width="70%" height="32px" />
+        <SkeletonTextLines lines={2} />
+        <Skeleton count={6} height="56px" />
+      </div>
+    );
   }
 
   return (
