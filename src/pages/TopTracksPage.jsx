@@ -1,5 +1,6 @@
 
 import React from 'react';
+import './TopTracksPage.css';
 import TrackItem from '../components/TrackItem.jsx';
 import { useLoaderData } from 'react-router-dom';
 
