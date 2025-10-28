@@ -1,0 +1,20 @@
+.artists-container {
+  margin: 5vh auto;
+  max-width: 800px;
+}
+
+.artists-title {
+  text-align: center;
+}
+
+.artists-list {
+  padding: 0;
+  list-style: decimal inside;
+}
+
+.artists-loading, .artists-error {
+  margin-top: 20vh;
+  text-align: center;
+}
+
+.artists-error { color: red; }
