@@ -32,7 +32,7 @@ describe('TopArtistsPage', () => {
         });
 
         // Wait for the heading to appear to ensure routing/render updates are settled
-        const heading = await screen.findByRole('heading', { level: 1, name: `Your Top ${artistsData.length} Artists` })
+        const heading = await screen.findByRole('heading', { level: 1, name: `Your Top ${artistsData.length} Artists of the Month` })
         expect(heading).toBeInTheDocument();
 
         // expect the document title to be set
