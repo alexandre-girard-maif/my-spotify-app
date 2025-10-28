@@ -63,4 +63,29 @@ describe('AccountPage', () => {
             expect(spotifyApi.fetchAccountProfile).toHaveBeenCalledWith(expect.any(String));
         });
     });
+
+    test('shows error when access token missing', async () => {
+        jest.restoreAllMocks();
+        jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(null);
+        const apiSpy = jest.spyOn(spotifyApi, 'fetchAccountProfile').mockResolvedValue({ profile: null, error: null });
+
+        render(<AccountPage />);
+
+        await waitFor(() => {
+            expect(screen.queryByRole('status')).not.toBeInTheDocument();
+        });
+        expect(screen.getByRole('alert')).toHaveTextContent(/missing access token/i);
+        expect(apiSpy).not.toHaveBeenCalled();
+    });
+
+    test('shows error when API call fails', async () => {
+        jest.restoreAllMocks();
+        jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key) => key === 'spotify_access_token' ? 'test-token' : null);
+        jest.spyOn(spotifyApi, 'fetchAccountProfile').mockRejectedValue(new Error('Network down'));
+
+        render(<AccountPage />);
+        expect(screen.getByRole('status')).toHaveTextContent(/loading account info/i);
+        const alert = await screen.findByRole('alert');
+        expect(alert).toHaveTextContent(/network down/i);
+    });
 });

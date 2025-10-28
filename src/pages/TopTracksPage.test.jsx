@@ -51,4 +51,37 @@ describe('TopTracksPage', () => {
             expect(spotifyApi.fetchUserTopTracks).toHaveBeenCalledWith(expect.any(String), 10, 'short_term');
         });
     });
+
+    test('shows error when access token missing', async () => {
+        jest.restoreAllMocks();
+        // No token in localStorage
+        jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(null);
+        // Ensure API not called
+        const apiSpy = jest.spyOn(spotifyApi, 'fetchUserTopTracks').mockResolvedValue({ tracks: [], error: null });
+
+        render(<TopTracksPage />);
+
+        // Loading should disappear quickly and show error
+        await waitFor(() => {
+            expect(screen.queryByRole('status')).not.toBeInTheDocument();
+        });
+        expect(screen.getByRole('alert')).toHaveTextContent(/missing access token/i);
+        expect(apiSpy).not.toHaveBeenCalled();
+    });
+
+    test('shows error when API call fails', async () => {
+        jest.restoreAllMocks();
+        // Token present
+        jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key) => key === 'spotify_access_token' ? 'test-token' : null);
+        // API rejects
+        jest.spyOn(spotifyApi, 'fetchUserTopTracks').mockRejectedValue(new Error('Network down'));
+
+        render(<TopTracksPage />);
+        // Loading visible initially
+        expect(screen.getByRole('status')).toHaveTextContent(/loading top tracks/i);
+
+        // After failure, error displayed
+        const alert = await screen.findByRole('alert');
+        expect(alert).toHaveTextContent(/network down/i);
+    });
 });
