@@ -3,6 +3,7 @@
 import { describe, expect, test } from '@jest/globals';
 import '@testing-library/jest-dom';
 import { render, screen, waitFor } from '@testing-library/react';
+import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import AccountPage from './AccountPage.jsx';
 import * as spotifyApi from '../api/spotify.js';
 import { beforeEach, afterEach, jest } from '@jest/globals';
@@ -32,8 +33,14 @@ describe('AccountPage', () => {
         jest.restoreAllMocks();
     });
 
-    test('fetches and renders account profile, sets title', async () => {
-        render(<AccountPage />);
+        test('fetches and renders account profile, sets title', async () => {
+                render(
+                    <MemoryRouter initialEntries={['/account']}>
+                        <Routes>
+                            <Route path="/account" element={<AccountPage />} />
+                        </Routes>
+                    </MemoryRouter>
+                );
 
         // Loading indicator initially
         expect(screen.getByRole('status')).toHaveTextContent(/loading account info/i);
@@ -64,18 +71,22 @@ describe('AccountPage', () => {
         });
     });
 
-    test('shows error when access token missing', async () => {
+        test('redirects to login when access token missing', async () => {
         jest.restoreAllMocks();
         jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(null);
         const apiSpy = jest.spyOn(spotifyApi, 'fetchAccountProfile').mockResolvedValue({ profile: null, error: null });
-
-        render(<AccountPage />);
-
-        await waitFor(() => {
-            expect(screen.queryByRole('status')).not.toBeInTheDocument();
-        });
-        expect(screen.getByRole('alert')).toHaveTextContent(/missing access token/i);
-        expect(apiSpy).not.toHaveBeenCalled();
+                render(
+                    <MemoryRouter initialEntries={['/account']}>
+                        <Routes>
+                            <Route path="/account" element={<AccountPage />} />
+                            <Route path="/login" element={<div data-testid="login-page">Login Page</div>} />
+                        </Routes>
+                    </MemoryRouter>
+                );
+                await waitFor(() => {
+                    expect(screen.getByTestId('login-page')).toBeInTheDocument();
+                });
+                expect(apiSpy).not.toHaveBeenCalled();
     });
 
     test('shows error when API call fails', async () => {
@@ -83,7 +94,13 @@ describe('AccountPage', () => {
         jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key) => key === 'spotify_access_token' ? 'test-token' : null);
         jest.spyOn(spotifyApi, 'fetchAccountProfile').mockRejectedValue(new Error('Network down'));
 
-        render(<AccountPage />);
+                render(
+                    <MemoryRouter initialEntries={['/account']}>
+                        <Routes>
+                            <Route path="/account" element={<AccountPage />} />
+                        </Routes>
+                    </MemoryRouter>
+                );
         expect(screen.getByRole('status')).toHaveTextContent(/loading account info/i);
         const alert = await screen.findByRole('alert');
         expect(alert).toHaveTextContent(/network down/i);

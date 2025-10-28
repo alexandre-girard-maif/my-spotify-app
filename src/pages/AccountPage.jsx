@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { fetchAccountProfile } from '../api/spotify.js';
 import './AccountPage.css';
 import './PageLayout.css';
@@ -16,12 +17,13 @@ export default function AccountPage() {
     document.title = `Account | Spotify App`;
   }, []);
 
+  const navigate = useNavigate();
+
   React.useEffect(() => {
     let cancelled = false;
     const token = localStorage.getItem('spotify_access_token');
     if (!token) {
-      setError('Missing access token');
-      setLoading(false);
+      navigate('/login', { replace: true });
       return;
     }
     setLoading(true);
@@ -35,7 +37,7 @@ export default function AccountPage() {
       .catch(err => { if (!cancelled) setError(err.message || 'Failed to load profile'); })
       .finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
-  }, []);
+  }, [navigate]);
 
   return (
     <div className="account-page page-container">
