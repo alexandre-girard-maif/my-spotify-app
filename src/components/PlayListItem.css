@@ -1,18 +1,10 @@
-.playlist-item {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 16px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  margin-bottom: 16px;
-  background-color: #f9f9f9;
-}
+/* Layout shared via .list-item utility */
 .playlist-cover {
   width: 80px;
   height: 80px;
-  border-radius: 4px;
+  border-radius: 6px;
   object-fit: cover;
+  flex-shrink: 0;
 }
 .playlist-details { flex: 1; }
 .playlist-details-header {

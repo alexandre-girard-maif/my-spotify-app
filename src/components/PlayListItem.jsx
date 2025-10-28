@@ -1,5 +1,6 @@
 import React from 'react';
 import './PlayListItem.css';
+import './ListItem.css';
 
 /**
  * Playlist item component
@@ -8,7 +9,7 @@ import './PlayListItem.css';
  */
 export default function PlayListItem({ playlist }) {
   return (
-    <li key={playlist.id} data-testid={`playlist-item-${playlist.id}`} className="playlist-item">
+  <li key={playlist.id} data-testid={`playlist-item-${playlist.id}`} className="list-item playlist-item">
       <img
         src={playlist.images[0]?.url}
         alt="cover"
