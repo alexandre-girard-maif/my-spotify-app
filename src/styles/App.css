@@ -30,18 +30,6 @@
   padding-bottom: 0.5em;
 }
 
-.nav-link {
-  color: #fff;
-  margin: 0 1em;
-  text-decoration: none;
-  font-weight: normal;
-  transition: text-decoration 0.2s, font-weight 0.2s;
-}
-
-.nav-link.active {
-  text-decoration: underline;
-  font-weight: bold;
-}
 
 .layout-main {
   flex: 1 1 auto;
@@ -95,19 +83,5 @@
   color: #888;
 }
 
-.main-nav-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding-right: 2rem;
-  padding-left: 2rem;
-  box-sizing: border-box;
-}
-
-.main-nav-flex {
-  display: flex;
-  gap: 1.5rem;
-}
 
 /* Avatar styles consolidated into theme.css */
