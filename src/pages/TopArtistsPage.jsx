@@ -20,10 +20,10 @@ export default function TopArtists() {
     document.title = `Top Artists | Spotify App`;
   }, []);
 
-  const token = useRequireToken();
+  const { token, checking } = useRequireToken();
 
   React.useEffect(() => {
-    if (!token) return; // redirect
+    if (checking || !token) return; // wait for auth check
     let cancelled = false;
     setLoading(true);
     setError(null);
@@ -36,7 +36,11 @@ export default function TopArtists() {
       .catch(err => { if (!cancelled) setError(err.message || 'Failed to load artists'); })
       .finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
-  }, [token]);
+  }, [token, checking]);
+
+  if (checking) {
+    return <div className="artists-container page-container" />;
+  }
 
   return (
     <div className="artists-container page-container">

@@ -19,10 +19,10 @@ export default function Playlists() {
     document.title = `Playlists | Spotify App`;
   }, []);
 
-  const token = useRequireToken();
+  const { token, checking } = useRequireToken();
 
   React.useEffect(() => {
-    if (!token) return; // redirect handled
+    if (checking || !token) return; // wait until check completes
     let cancelled = false;
     setLoading(true);
     setError(null);
@@ -35,7 +35,11 @@ export default function Playlists() {
       .catch(err => { if (!cancelled) setError(err.message || 'Failed to load playlists'); })
       .finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
-  }, [token]);
+  }, [token, checking]);
+
+  if (checking) {
+    return <div className="playlists-container page-container" />;
+  }
 
   return (
     <div className="playlists-container page-container">
