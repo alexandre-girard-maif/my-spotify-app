@@ -1,0 +1,22 @@
+.tracks-container {
+  margin: 5vh auto;
+  max-width: 800px;
+}
+
+.tracks-title {
+  text-align: center;
+}
+
+.tracks-list {
+  padding: 0;
+  list-style: decimal inside;
+}
+
+.tracks-loading, .tracks-error {
+  margin-top: 20vh;
+  text-align: center;
+}
+
+.tracks-error {
+  color: red;
+}
