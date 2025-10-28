@@ -22,10 +22,10 @@ export default function TopTracks() {
     document.title = `Top Tracks | Spotify App`;
   }, []);
 
-  const token = useRequireToken();
+  const { token, checking } = useRequireToken();
 
   React.useEffect(() => {
-    if (!token) return; // redirect in hook
+    if (checking || !token) return; // wait for check or redirect
     let cancelled = false;
     setLoading(true);
     setError(null);
@@ -38,7 +38,11 @@ export default function TopTracks() {
       .catch(err => { if (!cancelled) setError(err.message || 'Failed to load tracks'); })
       .finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
-  }, [token]);
+  }, [token, checking]);
+
+  if (checking) {
+    return <div className="tracks-container page-container" />; // blank shell during auth check
+  }
 
   return (
     <div className="tracks-container page-container">

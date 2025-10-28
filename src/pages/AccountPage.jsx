@@ -17,10 +17,10 @@ export default function AccountPage() {
     document.title = `Account | Spotify App`;
   }, []);
 
-  const token = useRequireToken();
+  const { token, checking } = useRequireToken();
 
   React.useEffect(() => {
-    if (!token) return; // redirect handled by hook
+    if (checking || !token) return; // wait for check or redirect
     let cancelled = false;
     setLoading(true);
     setError(null);
@@ -33,7 +33,11 @@ export default function AccountPage() {
       .catch(err => { if (!cancelled) setError(err.message || 'Failed to load profile'); })
       .finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
-  }, [token]);
+  }, [token, checking]);
+
+  if (checking) {
+    return <div className="account-page page-container" />;
+  }
 
   return (
     <div className="account-page page-container">
