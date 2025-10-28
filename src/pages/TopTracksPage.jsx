@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './TopTracksPage.css';
 import './PageLayout.css';
 import TrackItem from '../components/TrackItem.jsx';
@@ -22,18 +23,18 @@ export default function TopTracks() {
   }, []);
 
   // Fetch top tracks
+  const navigate = useNavigate();
+
   React.useEffect(() => {
     let cancelled = false;
     const token = localStorage.getItem('spotify_access_token');
     if (!token) {
-      setError('Missing access token');
-      setLoading(false);
+      navigate('/login', { replace: true });
       return;
     }
     setLoading(true);
     setError(null);
 
-    // Fetch user top tracks and update state to display them
     fetchUserTopTracks(token, limit, timeRange)
       .then(res => {
         if (cancelled) return;
@@ -43,7 +44,7 @@ export default function TopTracks() {
       .catch(err => { if (!cancelled) setError(err.message || 'Failed to load tracks'); })
       .finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
-  }, []);
+  }, [navigate]);
 
   return (
     <div className="tracks-container page-container">

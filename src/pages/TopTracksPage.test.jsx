@@ -3,6 +3,7 @@
 import { describe, expect, test, beforeEach, afterEach, jest } from '@jest/globals';
 import '@testing-library/jest-dom';
 import { render, screen, waitFor } from '@testing-library/react';
+import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import TopTracksPage from './TopTracksPage.jsx';
 import * as spotifyApi from '../api/spotify.js';
 
@@ -27,8 +28,14 @@ describe('TopTracksPage', () => {
         jest.restoreAllMocks();
     });
 
-    test('fetches and renders top tracks, sets title', async () => {
-        render(<TopTracksPage />);
+        test('fetches and renders top tracks, sets title', async () => {
+                render(
+                    <MemoryRouter initialEntries={['/top-tracks']}>
+                        <Routes>
+                            <Route path="/top-tracks" element={<TopTracksPage />} />
+                        </Routes>
+                    </MemoryRouter>
+                );
 
         // Loading indicator shown initially
         expect(screen.getByRole('status')).toHaveTextContent(/loading top tracks/i);
@@ -52,21 +59,26 @@ describe('TopTracksPage', () => {
         });
     });
 
-    test('shows error when access token missing', async () => {
+        test('redirects to login when access token missing', async () => {
         jest.restoreAllMocks();
         // No token in localStorage
         jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(null);
         // Ensure API not called
         const apiSpy = jest.spyOn(spotifyApi, 'fetchUserTopTracks').mockResolvedValue({ tracks: [], error: null });
+                render(
+                    <MemoryRouter initialEntries={['/top-tracks']}>
+                        <Routes>
+                            <Route path="/top-tracks" element={<TopTracksPage />} />
+                            <Route path="/login" element={<div data-testid="login-page">Login Page</div>} />
+                        </Routes>
+                    </MemoryRouter>
+                );
 
-        render(<TopTracksPage />);
-
-        // Loading should disappear quickly and show error
-        await waitFor(() => {
-            expect(screen.queryByRole('status')).not.toBeInTheDocument();
-        });
-        expect(screen.getByRole('alert')).toHaveTextContent(/missing access token/i);
-        expect(apiSpy).not.toHaveBeenCalled();
+                // Should navigate to login page
+                await waitFor(() => {
+                    expect(screen.getByTestId('login-page')).toBeInTheDocument();
+                });
+                expect(apiSpy).not.toHaveBeenCalled();
     });
 
     test('shows error when API call fails', async () => {
@@ -76,7 +88,13 @@ describe('TopTracksPage', () => {
         // API rejects
         jest.spyOn(spotifyApi, 'fetchUserTopTracks').mockRejectedValue(new Error('Network down'));
 
-        render(<TopTracksPage />);
+                render(
+                    <MemoryRouter initialEntries={['/top-tracks']}>
+                        <Routes>
+                            <Route path="/top-tracks" element={<TopTracksPage />} />
+                        </Routes>
+                    </MemoryRouter>
+                );
         // Loading visible initially
         expect(screen.getByRole('status')).toHaveTextContent(/loading top tracks/i);
 
