@@ -23,6 +23,19 @@ describe('PlaylistsPage', () => {
         jest.spyOn(spotifyApi, 'fetchUserPlaylists').mockResolvedValue({ playlists: playlistsData, error: null });
     });
 
+        test('shows skeleton during initial auth checking before data load', async () => {
+                render(
+                    <MemoryRouter initialEntries={['/playlists']}>
+                        <Routes>
+                            <Route path="/playlists" element={<PlaylistsPage />} />
+                        </Routes>
+                    </MemoryRouter>
+                );
+                expect(screen.getByTestId('playlists-skeleton')).toBeInTheDocument();
+                const heading = await screen.findByRole('heading', { level: 1, name: 'Your Playlists' });
+                expect(heading).toBeInTheDocument();
+        });
+
     afterEach(() => {
         jest.restoreAllMocks();
     });
@@ -36,7 +49,11 @@ describe('PlaylistsPage', () => {
                     </MemoryRouter>
                 );
 
-        // Loading indicator initially
+        // Skeleton first frame
+        expect(screen.getByTestId('playlists-skeleton')).toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.queryByTestId('playlists-skeleton')).not.toBeInTheDocument();
+        });
         expect(screen.getByRole('status')).toHaveTextContent(/loading playlists/i);
 
         const heading = await screen.findByRole('heading', { level: 1, name: 'Your Playlists' });
@@ -87,6 +104,11 @@ describe('PlaylistsPage', () => {
                         </Routes>
                     </MemoryRouter>
                 );
+        // Skeleton first frame
+        expect(screen.getByTestId('playlists-skeleton')).toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.queryByTestId('playlists-skeleton')).not.toBeInTheDocument();
+        });
         expect(screen.getByRole('status')).toHaveTextContent(/loading playlists/i);
         const alert = await screen.findByRole('alert');
         expect(alert).toHaveTextContent(/network down/i);

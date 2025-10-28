@@ -24,6 +24,19 @@ describe('TopTracksPage', () => {
         jest.spyOn(spotifyApi, 'fetchUserTopTracks').mockResolvedValue({ tracks: tracksData, error: null });
     });
 
+        test('shows skeleton during initial auth checking before data load', async () => {
+                render(
+                    <MemoryRouter initialEntries={['/top-tracks']}>
+                        <Routes>
+                            <Route path="/top-tracks" element={<TopTracksPage />} />
+                        </Routes>
+                    </MemoryRouter>
+                );
+                expect(screen.getByTestId('tracks-skeleton')).toBeInTheDocument();
+                const heading = await screen.findByRole('heading', { level: 1, name: `Your Top ${tracksData.length} Tracks of the Month` });
+                expect(heading).toBeInTheDocument();
+        });
+
     afterEach(() => {
         jest.restoreAllMocks();
     });
@@ -37,7 +50,11 @@ describe('TopTracksPage', () => {
                     </MemoryRouter>
                 );
 
-        // Loading indicator shown initially
+        // Skeleton first frame
+        expect(screen.getByTestId('tracks-skeleton')).toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.queryByTestId('tracks-skeleton')).not.toBeInTheDocument();
+        });
         expect(screen.getByRole('status')).toHaveTextContent(/loading top tracks/i);
 
         // Heading updates after data load (length depends on tracksData length)
@@ -95,7 +112,11 @@ describe('TopTracksPage', () => {
                         </Routes>
                     </MemoryRouter>
                 );
-        // Loading visible initially
+        // Skeleton first frame
+        expect(screen.getByTestId('tracks-skeleton')).toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.queryByTestId('tracks-skeleton')).not.toBeInTheDocument();
+        });
         expect(screen.getByRole('status')).toHaveTextContent(/loading top tracks/i);
 
         // After failure, error displayed
