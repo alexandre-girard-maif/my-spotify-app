@@ -1,4 +1,5 @@
 import React from 'react';
+import { Skeleton, SkeletonTextLines } from '../components/Skeleton.jsx';
 import { fetchAccountProfile } from '../api/spotify.js';
 import { useRequireToken } from '../hooks/useRequireToken.js';
 import './AccountPage.css';
@@ -36,7 +37,13 @@ export default function AccountPage() {
   }, [token, checking]);
 
   if (checking) {
-    return <div className="account-page page-container" />;
+    return (
+      <div className="account-page page-container" data-testid="account-skeleton">
+        <Skeleton width="128px" height="128px" />
+        <Skeleton width="60%" height="28px" />
+        <SkeletonTextLines lines={3} />
+      </div>
+    );
   }
 
   return (

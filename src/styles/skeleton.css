@@ -1,0 +1,5 @@
+.skeleton-wrapper { display: flex; flex-direction: column; gap: 8px; }
+.skeleton { position: relative; background: #222; border-radius: 4px; overflow: hidden; }
+.skeleton:before { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,0.2), rgba(255,255,255,0)); animation: shimmer 1.2s infinite; }
+@keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+.skeleton-lines .skeleton { height: 14px; }

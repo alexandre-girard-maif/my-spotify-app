@@ -1,4 +1,5 @@
 import React from 'react';
+import { Skeleton, SkeletonTextLines } from '../components/Skeleton.jsx';
 import { useRequireToken } from '../hooks/useRequireToken.js';
 import PlayListItem from '../components/PlayListItem.jsx';
 import { fetchUserPlaylists } from '../api/spotify.js';
@@ -38,7 +39,14 @@ export default function Playlists() {
   }, [token, checking]);
 
   if (checking) {
-    return <div className="playlists-container page-container" />;
+    return (
+      <div className="playlists-container page-container" data-testid="playlists-skeleton">
+        <Skeleton width="55%" height="32px" />
+        <Skeleton width="40%" height="24px" />
+        <SkeletonTextLines lines={2} />
+        <Skeleton count={4} height="56px" />
+      </div>
+    );
   }
 
   return (
