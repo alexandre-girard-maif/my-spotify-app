@@ -1,7 +1,5 @@
 import React from 'react';
-import { Skeleton, SkeletonTextLines } from '../components/Skeleton.jsx';
 import { fetchAccountProfile } from '../api/spotify.js';
-import { useRequireToken } from '../hooks/useRequireToken.js';
 import './AccountPage.css';
 import './PageLayout.css';
 
@@ -18,11 +16,14 @@ export default function AccountPage() {
     document.title = `Account | Spotify App`;
   }, []);
 
-  const { token, checking } = useRequireToken();
-
   React.useEffect(() => {
-    if (checking || !token) return; // wait for check or redirect
     let cancelled = false;
+    const token = localStorage.getItem('spotify_access_token');
+    if (!token) {
+      setError('Missing access token');
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     setError(null);
     fetchAccountProfile(token)
@@ -34,22 +35,12 @@ export default function AccountPage() {
       .catch(err => { if (!cancelled) setError(err.message || 'Failed to load profile'); })
       .finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
-  }, [token, checking]);
-
-  if (checking) {
-    return (
-      <div className="account-page page-container" data-testid="account-skeleton">
-        <Skeleton width="128px" height="128px" />
-        <Skeleton width="60%" height="28px" />
-        <SkeletonTextLines lines={3} />
-      </div>
-    );
-  }
+  }, []);
 
   return (
     <div className="account-page page-container">
       <h1 className="page-title">Spotify Account Info</h1>
-  {loading && <output className="account-loading">Loading account info…</output>}
+      {loading && <div className="account-loading" role="status">Loading account info…</div>}
       {error && !loading && <div className="account-error" role="alert">{error}</div>}
       {!loading && !error && profile && (
         <>
