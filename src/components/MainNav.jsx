@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useSpotifyProfile } from '../hooks/useSpotifyProfile.js';
 import AccountNav from './AccountNav';
+import './MainNav.css';
 
 // Generic nav item wrapper to reduce duplication and centralize active class logic
 function NavItem({ to, children }) {
