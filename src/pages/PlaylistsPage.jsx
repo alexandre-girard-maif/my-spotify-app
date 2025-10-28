@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLoaderData } from 'react-router-dom';
 import PlayListItem from '../components/PlayListItem.jsx';
+import './PlaylistsPage.css';
 
 /**
  * Playlists Page
@@ -17,10 +18,10 @@ export default function Playlists() {
   }, []);
 
   return (
-    <div className="tracks-container">
-      <h1 className="tracks-title">Your Playlists</h1>
-      <h2>{playlists.length} Playlists</h2>
-      <ol className="tracks-list">
+    <div className="playlists-container">
+      <h1 className="playlists-title">Your Playlists</h1>
+      <h2 className="playlists-count">{playlists.length} Playlists</h2>
+      <ol className="playlists-list">
         {playlists.map((playlist) => (
           <PlayListItem key={playlist.id} playlist={playlist} />
         ))}
