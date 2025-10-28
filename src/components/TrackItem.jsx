@@ -1,4 +1,5 @@
 import React from 'react';
+import './TrackItem.css';
 
 /**
  * Displays a single track item with its details.
