@@ -46,4 +46,29 @@ describe('TopArtistsPage', () => {
             expect(spotifyApi.fetchUserTopArtists).toHaveBeenCalledWith(expect.any(String), 10, 'short_term');
         });
     });
+
+    test('shows error when access token missing', async () => {
+        jest.restoreAllMocks();
+        jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(null);
+        const apiSpy = jest.spyOn(spotifyApi, 'fetchUserTopArtists').mockResolvedValue({ artists: [], error: null });
+
+        render(<TopArtistsPage />);
+
+        await waitFor(() => {
+            expect(screen.queryByRole('status')).not.toBeInTheDocument();
+        });
+        expect(screen.getByRole('alert')).toHaveTextContent(/missing access token/i);
+        expect(apiSpy).not.toHaveBeenCalled();
+    });
+
+    test('shows error when API call fails', async () => {
+        jest.restoreAllMocks();
+        jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key) => key === 'spotify_access_token' ? 'test-token' : null);
+        jest.spyOn(spotifyApi, 'fetchUserTopArtists').mockRejectedValue(new Error('Network down'));
+
+        render(<TopArtistsPage />);
+        expect(screen.getByRole('status')).toHaveTextContent(/loading top artists/i);
+        const alert = await screen.findByRole('alert');
+        expect(alert).toHaveTextContent(/network down/i);
+    });
 });
