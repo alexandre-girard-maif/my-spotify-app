@@ -36,8 +36,8 @@ const routes = [
         loader: makeProtectedLoader(async (token) => {
           // Retrieve multiple data points for dashboard
           // Top 1 track and artist for summary
-          const topTrack = (await fetchUserTopTracks(token, 1, 'medium_term')).tracks[0];
-          const topArtist = (await fetchUserTopArtists(token, 1, 'medium_term')).artists[0];
+          const topTrack = (await fetchUserTopTracks(token, 1, 'short_term')).tracks[0];
+          const topArtist = (await fetchUserTopArtists(token, 1, 'short_term')).artists[0];
 
           console.log('Dashboard loader fetched topTrack and topArtist');
           console.log('Top Track:', topTrack);

@@ -3,7 +3,6 @@
 import { describe, expect, test } from '@jest/globals';
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
-import PlaylistsPage from '././PlaylistsPage';
 import { createRoutesStub } from 'react-router-dom';
 import { act } from 'react';
 import DashboardPage from './DashboardPage';
@@ -56,21 +55,19 @@ describe('DashboardPage', () => {
         // expect the document title to be set
         expect(document.title).toBe('Dashboard | Spotify App')
 
-        const preferredArtistHeading = await screen.findByRole('heading', { level: 2, name: 'Preferred Artist' })
-        expect(preferredArtistHeading).toBeInTheDocument()
+        // expect heading 2 to be in the document
+        const artistHeading = await screen.findByText('Preferred tracks and artists of the month.');
+        expect(artistHeading).toBeInTheDocument();
 
         // Verify preferred artist card is rendered
         const artistName = await screen.findByText(topArtistData.name);
         expect(artistName).toBeInTheDocument();
-
-        const preferredTrackHeading = await screen.findByRole('heading', { level: 2, name: 'Preferred Track' })
-        expect(preferredTrackHeading).toBeInTheDocument()
 
         // Verify preferred track card is rendered
         const trackName = await screen.findByText(topTrackData.name);
         expect(trackName).toBeInTheDocument();
 
         // uncomment below to debug screen
-        // screen.debug();
+        screen.debug();
     });
 });
