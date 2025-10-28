@@ -2,6 +2,7 @@ import React from 'react';
 import TopArtistItem from '../components/TopArtistItem';
 import { useLoaderData } from 'react-router-dom';
 import './TopArtistsPage.css';
+import './PageLayout.css';
 
 /**
  * Top Artists Page
@@ -17,8 +18,8 @@ export default function TopArtists() {
   }, []);
 
   return (
-    <div className="artists-container">
-      <h1 className="artists-title">Your Top {artists.length} Artists</h1>
+    <div className="artists-container page-container">
+      <h1 className="artists-title page-title">Your Top {artists.length} Artists</h1>
       <ol className="artists-list">
         {artists.map((artist, i) => (
           <TopArtistItem key={artist.id} artist={artist} index={i} />

@@ -1,9 +1,4 @@
-.playlists-container {
-  margin: 5vh auto;
-  max-width: 800px;
-}
-
-.playlists-title { text-align: center; }
+/* Container & title now provided by .page-container and .page-title utilities */
 
 .playlists-count {
   text-align: center;
