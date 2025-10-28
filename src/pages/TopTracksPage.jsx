@@ -20,7 +20,7 @@ export default function TopTracks() {
 
   return (
     <div className="tracks-container page-container">
-      <h1 className="tracks-title page-title">Your Top {tracks.length} Tracks</h1>
+      <h1 className="tracks-title page-title">Your Top {tracks.length} Tracks of the Month</h1>
       <ol className="tracks-list">
         {tracks.map((track) => (
           <TrackItem key={track.id} track={track} />

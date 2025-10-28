@@ -19,7 +19,7 @@ export default function TopArtists() {
 
   return (
     <div className="artists-container page-container">
-      <h1 className="artists-title page-title">Your Top {artists.length} Artists</h1>
+      <h1 className="artists-title page-title">Your Top {artists.length} Artists of the Month</h1>
       <ol className="artists-list">
         {artists.map((artist, i) => (
           <TopArtistItem key={artist.id} artist={artist} index={i} />
