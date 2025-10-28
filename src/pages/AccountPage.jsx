@@ -49,7 +49,7 @@ export default function AccountPage() {
   return (
     <div className="account-page page-container">
       <h1 className="page-title">Spotify Account Info</h1>
-      {loading && <div className="account-loading" role="status">Loading account info…</div>}
+  {loading && <output className="account-loading">Loading account info…</output>}
       {error && !loading && <div className="account-error" role="alert">{error}</div>}
       {!loading && !error && profile && (
         <>

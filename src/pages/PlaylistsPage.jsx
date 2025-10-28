@@ -53,7 +53,7 @@ export default function Playlists() {
     <div className="playlists-container page-container">
       <h1 className="playlists-title page-title">Your Playlists</h1>
       <h2 className="playlists-count">{playlists.length} Playlists</h2>
-      {loading && <div className="playlists-loading" role="status">Loading playlists…</div>}
+  {loading && <output className="playlists-loading">Loading playlists…</output>}
       {error && !loading && <div className="playlists-error" role="alert">{error}</div>}
       {!loading && !error && (
         <ol className="playlists-list">
