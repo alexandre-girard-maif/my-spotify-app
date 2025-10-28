@@ -1,0 +1,27 @@
+.account-page {
+  margin-top: 10vh;
+  text-align: center;
+}
+
+.account-avatar {
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+}
+
+.account-details p {
+  margin: 0.25rem 0;
+}
+
+.account-link {
+  display: inline-block;
+  margin-top: 1rem;
+  color: #1DB954;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.account-link:hover {
+  text-decoration: underline;
+}
