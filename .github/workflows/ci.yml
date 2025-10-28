@@ -1,9 +1,9 @@
-name: Quality
+name: Build and Analyze with SonarCloud
 on:
   push:
   pull_request:
 jobs:
-  sonarcloud:
+  build-and-analyze:
     # don't run on dependabot branches
     if: github.actor != 'dependabot[bot]'
     name: SonarCloud
