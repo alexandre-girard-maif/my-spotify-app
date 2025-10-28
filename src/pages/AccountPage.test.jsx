@@ -29,6 +29,20 @@ describe('AccountPage', () => {
         jest.spyOn(spotifyApi, 'fetchAccountProfile').mockResolvedValue({ profile: profileData, error: null });
     });
 
+        test('shows skeleton during initial auth checking before data load', async () => {
+                // Token already mocked in beforeEach. Skeleton should render on first frame (checking state) before effect resolves.
+                render(
+                    <MemoryRouter initialEntries={['/account']}>
+                        <Routes>
+                            <Route path="/account" element={<AccountPage />} />
+                        </Routes>
+                    </MemoryRouter>
+                );
+                expect(screen.getByTestId('account-skeleton')).toBeInTheDocument();
+                const heading = await screen.findByRole('heading', { level: 1, name: 'Spotify Account Info' });
+                expect(heading).toBeInTheDocument();
+        });
+
     afterEach(() => {
         jest.restoreAllMocks();
     });
@@ -42,7 +56,12 @@ describe('AccountPage', () => {
                     </MemoryRouter>
                 );
 
-        // Loading indicator initially
+        // Skeleton first frame
+        expect(screen.getByTestId('account-skeleton')).toBeInTheDocument();
+        // Wait for skeleton to be replaced by loading state
+        await waitFor(() => {
+            expect(screen.queryByTestId('account-skeleton')).not.toBeInTheDocument();
+        });
         expect(screen.getByRole('status')).toHaveTextContent(/loading account info/i);
 
         const heading = await screen.findByRole('heading', { level: 1, name: 'Spotify Account Info' });
@@ -101,6 +120,11 @@ describe('AccountPage', () => {
                         </Routes>
                     </MemoryRouter>
                 );
+        // Skeleton first frame
+        expect(screen.getByTestId('account-skeleton')).toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.queryByTestId('account-skeleton')).not.toBeInTheDocument();
+        });
         expect(screen.getByRole('status')).toHaveTextContent(/loading account info/i);
         const alert = await screen.findByRole('alert');
         expect(alert).toHaveTextContent(/network down/i);

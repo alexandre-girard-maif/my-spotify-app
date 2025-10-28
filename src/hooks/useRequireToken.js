@@ -10,14 +10,20 @@ export function useRequireToken() {
   const [token, setToken] = React.useState(null);
 
   React.useEffect(() => {
-    const existing = localStorage.getItem(SPOTIFY_TOKEN_KEY);
-    if (!existing) {
-      navigate('/login', { replace: true });
+    // Defer the token check so that components can render an initial skeleton frame.
+    let active = true;
+    Promise.resolve().then(() => {
+      if (!active) return;
+      const existing = localStorage.getItem(SPOTIFY_TOKEN_KEY);
+      if (!existing) {
+        navigate('/login', { replace: true });
+        setChecking(false);
+        return;
+      }
+      setToken(existing);
       setChecking(false);
-      return;
-    }
-    setToken(existing);
-    setChecking(false);
+    });
+    return () => { active = false; };
   }, [navigate]);
 
   return { token, checking };

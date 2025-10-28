@@ -23,6 +23,19 @@ describe('TopArtistsPage', () => {
         jest.spyOn(spotifyApi, 'fetchUserTopArtists').mockResolvedValue({ artists: artistsData, error: null });
     });
 
+        test('shows skeleton during initial auth checking before data load', async () => {
+                render(
+                    <MemoryRouter initialEntries={['/top-artists']}>
+                        <Routes>
+                            <Route path="/top-artists" element={<TopArtistsPage />} />
+                        </Routes>
+                    </MemoryRouter>
+                );
+                expect(screen.getByTestId('artists-skeleton')).toBeInTheDocument();
+                const heading = await screen.findByRole('heading', { level: 1, name: `Your Top ${artistsData.length} Artists of the Month` });
+                expect(heading).toBeInTheDocument();
+        });
+
     afterEach(() => {
         jest.restoreAllMocks();
     });
@@ -36,7 +49,11 @@ describe('TopArtistsPage', () => {
                     </MemoryRouter>
                 );
 
-        // Loading indicator visible initially
+        // Skeleton first frame
+        expect(screen.getByTestId('artists-skeleton')).toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.queryByTestId('artists-skeleton')).not.toBeInTheDocument();
+        });
         expect(screen.getByRole('status')).toHaveTextContent(/loading top artists/i);
 
         const heading = await screen.findByRole('heading', { level: 1, name: `Your Top ${artistsData.length} Artists of the Month` });
@@ -84,6 +101,11 @@ describe('TopArtistsPage', () => {
                         </Routes>
                     </MemoryRouter>
                 );
+        // Skeleton first frame
+        expect(screen.getByTestId('artists-skeleton')).toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.queryByTestId('artists-skeleton')).not.toBeInTheDocument();
+        });
         expect(screen.getByRole('status')).toHaveTextContent(/loading top artists/i);
         const alert = await screen.findByRole('alert');
         expect(alert).toHaveTextContent(/network down/i);
