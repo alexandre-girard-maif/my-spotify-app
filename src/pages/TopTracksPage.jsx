@@ -54,7 +54,7 @@ export default function TopTracks() {
   return (
     <div className="tracks-container page-container">
       <h1 className="tracks-title page-title">Your Top {tracks.length} Tracks of the Month</h1>
-      {loading && <div className="tracks-loading" role="status">Loading top tracks…</div>}
+  {loading && <output className="tracks-loading">Loading top tracks…</output>}
       {error && !loading && <div className="tracks-error" role="alert">{error}</div>}
       {!loading && !error && (
         <ol className="tracks-list">
