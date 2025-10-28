@@ -1,0 +1,13 @@
+/* Container & title now provided by .page-container and .page-title utilities */
+
+.artists-list {
+  padding: 0;
+  list-style: decimal inside;
+}
+
+.artists-loading, .artists-error {
+  margin-top: 20vh;
+  text-align: center;
+}
+
+.artists-error { color: red; }

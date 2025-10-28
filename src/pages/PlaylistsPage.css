@@ -1,0 +1,20 @@
+/* Container & title now provided by .page-container and .page-title utilities */
+
+.playlists-count {
+  text-align: center;
+  font-weight: normal;
+  margin-top: 0.25rem;
+  color: #555;
+}
+
+.playlists-list {
+  padding: 0;
+  list-style: decimal inside;
+}
+
+.playlists-loading, .playlists-error {
+  margin-top: 20vh;
+  text-align: center;
+}
+
+.playlists-error { color: red; }

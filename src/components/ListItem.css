@@ -1,0 +1,18 @@
+.list-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  background-color: #f9f9f9;
+  min-height: 96px; /* ensures consistent vertical space */
+}
+
+/* Provide a subtle hover for interactive list items */
+.list-item:hover {
+  border-color: #ccc;
+  background-color: #f5f5f5;
+  transition: background-color 0.2s, border-color 0.2s;
+}

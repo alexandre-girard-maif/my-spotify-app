@@ -1,0 +1,37 @@
+.main-nav-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding-right: 2rem;
+  padding-left: 2rem;
+  box-sizing: border-box;
+}
+
+.main-nav-flex {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-link {
+  color: #fff;
+  margin: 0 1em;
+  text-decoration: none;
+  font-weight: normal;
+  transition: text-decoration 0.2s, font-weight 0.2s;
+}
+
+.nav-link.active {
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+@media (max-width: 640px) {
+  .main-nav-wrapper {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .nav-link {
+    margin: 0 0.5em;
+  }
+}

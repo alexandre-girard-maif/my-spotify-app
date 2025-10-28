@@ -1,5 +1,7 @@
 import React from 'react';
 import { useLoaderData } from 'react-router-dom';
+import './AccountPage.css';
+import './PageLayout.css';
 
 /**
  * Account component to display user profile information.
@@ -14,14 +16,16 @@ export default function AccountPage() {
   }, []);
 
   return (
-    <div style={{ marginTop: '10vh', textAlign: 'center' }}>
-      <h1>Spotify Account Info</h1>
-      <img src={profile.images?.[0]?.url} alt="avatar" style={{ borderRadius: '50%', width: 120, height: 120 }} />
+    <div className="account-page page-container">
+      <h1 className="page-title">Spotify Account Info</h1>
+      <img className="account-avatar" src={profile.images?.[0]?.url} alt="avatar" />
       <h2>{profile.display_name}</h2>
-      <p><b>Email:</b> {profile.email}</p>
-      <p><b>Country:</b> {profile.country}</p>
-      <p><b>Product:</b> {profile.product}</p>
-      <a href={profile.external_urls.spotify} target="_blank" rel="noopener noreferrer">Open Spotify Profile</a>
+      <div className="account-details">
+        <p><b>Email:</b> {profile.email}</p>
+        <p><b>Country:</b> {profile.country}</p>
+        <p><b>Product:</b> {profile.product}</p>
+      </div>
+      <a className="account-link" href={profile.external_urls.spotify} target="_blank" rel="noopener noreferrer">Open Spotify Profile</a>
     </div>
   );
 }

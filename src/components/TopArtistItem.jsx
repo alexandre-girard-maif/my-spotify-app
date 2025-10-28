@@ -1,4 +1,5 @@
 import React from 'react';
+import './TopArtistItem.css';
 
 /**
  * TopArtistItem component displays information about a single top artist.

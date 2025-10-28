@@ -33,7 +33,7 @@ describe('TopArtistItem component', () => {
         expect(listItem).toHaveTextContent('Genres: pop, rock');
         expect(listItem).toHaveTextContent('Followers: 1,000');
         expect(listItem).toHaveTextContent('Popularity: 85');
-        
+
         // should contain link to artist page
         const link = listItem.querySelector('a.artist-link');
         expect(link).toBeInTheDocument();
@@ -66,7 +66,7 @@ describe('TopArtistItem component', () => {
         expect(listItem).toHaveTextContent('2. No Image Artist');
         expect(listItem).toHaveTextContent('Genres: jazz');
         expect(listItem).toHaveTextContent('Followers: 500');
-        
+
         // should contain link to artist page
         const link = listItem.querySelector('a.artist-link');
         expect(link).toBeInTheDocument();
