@@ -8,7 +8,6 @@ import { RouterProvider } from 'react-router';
 // Global styles: order matters (theme first, then base, then components)
 import './styles/theme.css';
 import './styles/index.css';
-import './styles/App.css';
 import './styles/AppHero.css';
 
 const router = createBrowserRouter(routes);
