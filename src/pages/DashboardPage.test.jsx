@@ -56,7 +56,7 @@ describe('DashboardPage', () => {
         expect(document.title).toBe('Dashboard | Spotify App')
 
         // expect heading 2 to be in the document
-        const artistHeading = await screen.findByText('Preferred tracks and artists of the month.');
+        const artistHeading = await screen.findByText('Preferred track and artist of the month.');
         expect(artistHeading).toBeInTheDocument();
 
         // Verify preferred artist card is rendered

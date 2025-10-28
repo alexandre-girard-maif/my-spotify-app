@@ -23,7 +23,7 @@ const DashboardPage = () => {
         <div className="dashboard-page">
             <header className="dashboard-header">
                 <h1>Welcome to Your Dashboard</h1>
-                <p>Preferred tracks and artists of the month.</p>
+                <p>Preferred track and artist of the month.</p>
             </header>
 
             <section className="dashboard-content">
