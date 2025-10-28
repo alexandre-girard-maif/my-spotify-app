@@ -2,10 +2,10 @@
 
 import { describe, expect, test } from '@jest/globals';
 import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react';
-import AccountPage from './AccountPage';
-import { createRoutesStub } from 'react-router-dom';
-import { act } from 'react';
+import { render, screen, waitFor } from '@testing-library/react';
+import AccountPage from './AccountPage.jsx';
+import * as spotifyApi from '../api/spotify.js';
+import { beforeEach, afterEach, jest } from '@jest/globals';
 
 const profileData = {
   display_name: 'Test User',
@@ -19,53 +19,48 @@ const profileData = {
 };
 
 describe('AccountPage', () => {
-    const Stub = createRoutesStub([
-        { 
-            path: '/account', 
-            Component: AccountPage, 
-            loader: async () => ({
-                profile: profileData,
-                error: null,
-            }),
-            HydrateFallback: () => null, // No fallback needed for this test
-        }
-    ]);
-    test('sets the document title correctly', async () => {
-        act(() => {
-            render(<Stub initialEntries={['/account']} />);
+    beforeEach(() => {
+        const tokenValue = 'test-token';
+        jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key) => {
+            if (key === 'spotify_access_token') return tokenValue;
+            return null;
         });
+        jest.spyOn(spotifyApi, 'fetchAccountProfile').mockResolvedValue({ profile: profileData, error: null });
+    });
 
-        // Wait for the heading to appear to ensure routing/render updates are settled
-        const heading = await screen.findByRole('heading', { level: 1, name: 'Spotify Account Info' })
-        expect(heading).toBeInTheDocument()
+    afterEach(() => {
+        jest.restoreAllMocks();
+    });
 
-        // expect the document title to be set
-        expect(document.title).toBe('Account | Spotify App')
+    test('fetches and renders account profile, sets title', async () => {
+        render(<AccountPage />);
 
-        // Verify profile image is rendered
-        const img = await screen.findByAltText('avatar')
-        expect(img).toBeInTheDocument()
-        expect(img).toHaveAttribute('src', profileData.images[0].url)
+        // Loading indicator initially
+        expect(screen.getByRole('status')).toHaveTextContent(/loading account info/i);
 
-        // Verify heading 2 with title
-        const heading2 = await screen.findByRole('heading', { level: 2, name: profileData.display_name })
-        expect(heading2).toBeInTheDocument()
+        const heading = await screen.findByRole('heading', { level: 1, name: 'Spotify Account Info' });
+        expect(heading).toBeInTheDocument();
 
-        // Verify profile details are rendered
-        const email = await screen.findByText(profileData.email)
-        expect(email).toBeInTheDocument()
+        expect(document.title).toBe('Account | Spotify App');
 
-        const country = await screen.findByText(profileData.country)
-        expect(country).toBeInTheDocument()
+        const img = await screen.findByAltText('avatar');
+        expect(img).toBeInTheDocument();
+        expect(img).toHaveAttribute('src', profileData.images[0].url);
 
-        const product = await screen.findByText(profileData.product)
-        expect(product).toBeInTheDocument()
+        const heading2 = await screen.findByRole('heading', { level: 2, name: profileData.display_name });
+        expect(heading2).toBeInTheDocument();
 
-        const profileLink = await screen.findByRole('link', { name: 'Open Spotify Profile' })
-        expect(profileLink).toBeInTheDocument()
-        expect(profileLink).toHaveAttribute('href', profileData.external_urls.spotify)
+        expect(await screen.findByText(profileData.email)).toBeInTheDocument();
+        expect(await screen.findByText(profileData.country)).toBeInTheDocument();
+        expect(await screen.findByText(profileData.product)).toBeInTheDocument();
 
-        // uncomment below to debug screen
-        // screen.debug();
+        const profileLink = await screen.findByRole('link', { name: 'Open Spotify Profile' });
+        expect(profileLink).toBeInTheDocument();
+        expect(profileLink).toHaveAttribute('href', profileData.external_urls.spotify);
+
+        await waitFor(() => {
+            expect(spotifyApi.fetchAccountProfile).toHaveBeenCalledTimes(1);
+            expect(spotifyApi.fetchAccountProfile).toHaveBeenCalledWith(expect.any(String));
+        });
     });
 });

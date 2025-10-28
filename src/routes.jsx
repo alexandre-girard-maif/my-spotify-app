@@ -1,7 +1,5 @@
 // redirect no longer needed directly; helper handles it
 import Account from './pages/AccountPage.jsx';
-import { fetchAccountProfile } from './api/spotify.js';
-import { makeProtectedLoader } from './loaders/protectedLoader.js';
 import WelcomePage from './pages/WelcomePage.jsx';
 import TopTracks from './pages/TopTracksPage.jsx';
 import TopArtists from './pages/TopArtistsPage.jsx';
@@ -27,8 +25,6 @@ const routes = [
       {
         path: 'account',
         element: <Account />,
-        loader: makeProtectedLoader(token => fetchAccountProfile(token)),
-        hydrateFallbackElement: <div>Loading account info from Spotify...</div>,
       },
       {
         path: 'dashboard',
