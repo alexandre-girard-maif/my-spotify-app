@@ -2,10 +2,10 @@
 
 import { describe, expect, test } from '@jest/globals';
 import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react';
-import PlaylistsPage from '././PlaylistsPage';
-import { createRoutesStub } from 'react-router-dom';
-import { act } from 'react';
+import { render, screen, waitFor } from '@testing-library/react';
+import PlaylistsPage from './PlaylistsPage.jsx';
+import * as spotifyApi from '../api/spotify.js';
+import { beforeEach, afterEach, jest } from '@jest/globals';
 
 const playlistsData = [
     { id: 'playlist1', name: 'My Playlist 1', images: [{ url: 'https://via.placeholder.com/56' }], owner: { display_name: 'User1' }, tracks: { total: 5 }, external_urls: { spotify: 'https://open.spotify.com/playlist/playlist1' } },
@@ -13,41 +13,40 @@ const playlistsData = [
 ];
 
 describe('PlaylistsPage', () => {
-    const Stub = createRoutesStub([
-        { 
-            path: '/playlists', 
-            Component: PlaylistsPage, 
-            loader: async () => ({
-                playlists: playlistsData,
-                error: null,
-            }),
-            HydrateFallback: () => null, // No fallback needed for this test
-        }
-    ]);
-
-    test('sets the document title correctly', async () => {
-        act(() => {
-            render(<Stub initialEntries={['/playlists']} />);
+    beforeEach(() => {
+        const tokenValue = 'test-token';
+        jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key) => {
+            if (key === 'spotify_access_token') return tokenValue;
+            return null;
         });
+        jest.spyOn(spotifyApi, 'fetchUserPlaylists').mockResolvedValue({ playlists: playlistsData, error: null });
+    });
 
-        // Wait for the heading to appear to ensure routing/render updates are settled
-        const heading = await screen.findByRole('heading', { level: 1, name: 'Your Playlists' })
-        expect(heading).toBeInTheDocument()
+    afterEach(() => {
+        jest.restoreAllMocks();
+    });
 
+    test('fetches and renders playlists, sets title', async () => {
+        render(<PlaylistsPage />);
 
-        // expect the document title to be set
-        expect(document.title).toBe('Playlists | Spotify App')
+        // Loading indicator initially
+        expect(screen.getByRole('status')).toHaveTextContent(/loading playlists/i);
 
-        const countHeading = await screen.findByRole('heading', { level: 2, name: `${playlistsData.length} Playlists` })
-        expect(countHeading).toBeInTheDocument()
+        const heading = await screen.findByRole('heading', { level: 1, name: 'Your Playlists' });
+        expect(heading).toBeInTheDocument();
 
-        // Verify all playlist items are rendered
+        expect(document.title).toBe('Playlists | Spotify App');
+
+        const countHeading = await screen.findByRole('heading', { level: 2, name: `${playlistsData.length} Playlists` });
+        expect(countHeading).toBeInTheDocument();
+
         for (const playlist of playlistsData) {
-            const playlistItem = await screen.findByTestId(`playlist-item-${playlist.id}`);
-            expect(playlistItem).toBeInTheDocument()
+            expect(await screen.findByTestId(`playlist-item-${playlist.id}`)).toBeInTheDocument();
         }
 
-        // uncomment below to debug screen
-        // screen.debug();
+        await waitFor(() => {
+            expect(spotifyApi.fetchUserPlaylists).toHaveBeenCalledTimes(1);
+            expect(spotifyApi.fetchUserPlaylists).toHaveBeenCalledWith(expect.any(String), 10);
+        });
     });
 });
