@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRequireToken } from '../hooks/useRequireToken.js';
 import './TopTracksPage.css';
 import './PageLayout.css';
 import TrackItem from '../components/TrackItem.jsx';
@@ -22,19 +22,13 @@ export default function TopTracks() {
     document.title = `Top Tracks | Spotify App`;
   }, []);
 
-  // Fetch top tracks
-  const navigate = useNavigate();
+  const token = useRequireToken();
 
   React.useEffect(() => {
+    if (!token) return; // redirect in hook
     let cancelled = false;
-    const token = localStorage.getItem('spotify_access_token');
-    if (!token) {
-      navigate('/login', { replace: true });
-      return;
-    }
     setLoading(true);
     setError(null);
-
     fetchUserTopTracks(token, limit, timeRange)
       .then(res => {
         if (cancelled) return;
@@ -44,7 +38,7 @@ export default function TopTracks() {
       .catch(err => { if (!cancelled) setError(err.message || 'Failed to load tracks'); })
       .finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
-  }, [navigate]);
+  }, [token]);
 
   return (
     <div className="tracks-container page-container">

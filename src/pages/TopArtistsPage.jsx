@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRequireToken } from '../hooks/useRequireToken.js';
 import TopArtistItem from '../components/TopArtistItem';
 import { fetchUserTopArtists } from '../api/spotify.js';
 import './TopArtistsPage.css';
@@ -20,15 +20,11 @@ export default function TopArtists() {
     document.title = `Top Artists | Spotify App`;
   }, []);
 
-  const navigate = useNavigate();
+  const token = useRequireToken();
 
   React.useEffect(() => {
+    if (!token) return; // redirect
     let cancelled = false;
-    const token = localStorage.getItem('spotify_access_token');
-    if (!token) {
-      navigate('/login', { replace: true });
-      return;
-    }
     setLoading(true);
     setError(null);
     fetchUserTopArtists(token, limit, timeRange)
@@ -40,7 +36,7 @@ export default function TopArtists() {
       .catch(err => { if (!cancelled) setError(err.message || 'Failed to load artists'); })
       .finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
-  }, [navigate]);
+  }, [token]);
 
   return (
     <div className="artists-container page-container">
