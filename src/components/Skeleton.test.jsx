@@ -29,6 +29,18 @@ describe('Skeleton', () => {
     const wrapper = items[0].closest('.skeleton-wrapper');
     expect(wrapper).toHaveClass('extra');
   });
+
+  test('stable keys preserved across re-render when count unchanged', () => {
+    const { rerender } = render(<Skeleton count={3} />);
+    const firstRenderItems = screen.getAllByTestId('skeleton-item');
+    // Rerender with same count
+    rerender(<Skeleton count={3} />);
+    const secondRenderItems = screen.getAllByTestId('skeleton-item');
+    // key attribute isn't directly exposed; alternative: compare DOM node identities
+    for (let i = 0; i < firstRenderItems.length; i++) {
+      expect(firstRenderItems[i]).toBe(secondRenderItems[i]);
+    }
+  });
 });
 
 describe('SkeletonTextLines', () => {
