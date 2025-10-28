@@ -1,11 +1,4 @@
-.tracks-container {
-  margin: 5vh auto;
-  max-width: 800px;
-}
-
-.tracks-title {
-  text-align: center;
-}
+/* Container & title now provided by .page-container and .page-title utilities */
 
 .tracks-list {
   padding: 0;

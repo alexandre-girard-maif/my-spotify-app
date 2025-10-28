@@ -1,6 +1,7 @@
 
 import React from 'react';
 import './TopTracksPage.css';
+import './PageLayout.css';
 import TrackItem from '../components/TrackItem.jsx';
 import { useLoaderData } from 'react-router-dom';
 
@@ -18,8 +19,8 @@ export default function TopTracks() {
     }, []);
 
   return (
-    <div className="tracks-container">
-      <h1 className="tracks-title">Your Top {tracks.length} Tracks</h1>
+    <div className="tracks-container page-container">
+      <h1 className="tracks-title page-title">Your Top {tracks.length} Tracks</h1>
       <ol className="tracks-list">
         {tracks.map((track) => (
           <TrackItem key={track.id} track={track} />

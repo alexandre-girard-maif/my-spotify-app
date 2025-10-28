@@ -1,11 +1,4 @@
-.artists-container {
-  margin: 5vh auto;
-  max-width: 800px;
-}
-
-.artists-title {
-  text-align: center;
-}
+/* Container & title now provided by .page-container and .page-title utilities */
 
 .artists-list {
   padding: 0;
