@@ -52,7 +52,7 @@ export default function TopArtists() {
   return (
     <div className="artists-container page-container">
       <h1 className="artists-title page-title">Your Top {artists.length} Artists of the Month</h1>
-      {loading && <div className="artists-loading" role="status">Loading top artists…</div>}
+      {loading && <output className="artists-loading">Loading top artists…</output>}
       {error && !loading && <div className="artists-error" role="alert">{error}</div>}
       {!loading && !error && (
         <ol className="artists-list">
