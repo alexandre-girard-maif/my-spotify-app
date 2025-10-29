@@ -31,43 +31,41 @@ const topArtistData = {
 
 describe('DashboardPage', () => {
     const Stub = createRoutesStub([
-        { 
-            path: '/dashboard', 
-            Component: DashboardPage, 
+        {
+            path: '/dashboard',
+            Component: DashboardPage,
             loader: async () => ({
                 topTrack: topTrackData,
                 topArtist: topArtistData,
                 error: null,
             }),
-            HydrateFallback: () => null, // No fallback needed for this test
+            HydrateFallback: () => null,
+        },
+        {
+            path: '/login',
+            Component: () => <div>Login Page</div>,
         }
     ]);
 
     test('sets the document title correctly', async () => {
+        // Ensure token present to avoid redirect
+        localStorage.setItem('spotify_access_token', 'test-token');
         act(() => {
             render(<Stub initialEntries={['/dashboard']} />);
         });
 
-        // Wait for the heading to appear to ensure routing/render updates are settled
-        const heading = await screen.findByRole('heading', { level: 1, name: 'Welcome to Your Dashboard' })
-        expect(heading).toBeInTheDocument()
+        // Heading present
+        const heading = await screen.findByRole('heading', { level: 1, name: 'Welcome to Your Dashboard' });
+        expect(heading).toBeInTheDocument();
 
-        // expect the document title to be set
-        expect(document.title).toBe('Dashboard | Spotify App')
+        // Subtitle
+        expect(await screen.findByText('Preferred track and artist of the month.')).toBeInTheDocument();
 
-        // expect heading 2 to be in the document
-        const artistHeading = await screen.findByText('Preferred track and artist of the month.');
-        expect(artistHeading).toBeInTheDocument();
+        // Title set
+        expect(document.title).toBe('Dashboard | Spotify App');
 
-        // Verify preferred artist card is rendered
-        const artistName = await screen.findByText(topArtistData.name);
-        expect(artistName).toBeInTheDocument();
-
-        // Verify preferred track card is rendered
-        const trackName = await screen.findByText(topTrackData.name);
-        expect(trackName).toBeInTheDocument();
-
-        // uncomment below to debug screen
-        screen.debug();
+        // Cards render artist & track names
+        expect(await screen.findByText(topArtistData.name)).toBeInTheDocument();
+        expect(await screen.findByText(topTrackData.name)).toBeInTheDocument();
     });
 });
