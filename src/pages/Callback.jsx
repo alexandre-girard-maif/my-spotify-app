@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { safeRedirect } from '../utils/redirect.js';
 
 const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
 let redirectUri = `${globalThis.location.origin}/callback`;
@@ -45,7 +46,7 @@ export default function Callback() {
         if (data.access_token) {
           localStorage.setItem('spotify_access_token', data.access_token);
           const storedNext = localStorage.getItem('post_auth_redirect');
-          const target = storedNext?.startsWith('/') ? storedNext : '/';
+          const target = safeRedirect(storedNext);
           localStorage.removeItem('post_auth_redirect');
           globalThis.location.replace(globalThis.location.origin + target);
         } else {

@@ -1,5 +1,8 @@
 
 import { createPkcePair } from '../api/pkce.js';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { safeRedirect } from '../utils/redirect.js';
 import '../styles/theme.css';
 
 const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
@@ -9,16 +12,26 @@ const scope = 'user-read-private user-read-email user-top-read playlist-read-pri
 
 export default function LoginPage() {
   const missingEnv = !clientId || !redirectUri;
-  // Capture intended post-auth path from query (?next=/desired/path)
+  const navigate = useNavigate();
   const params = new URLSearchParams(globalThis.location.search);
-  const nextParam = params.get('next');
-  const safeNext = nextParam?.startsWith('/') ? nextParam : '/';
+  const rawRedirect = params.get('redirect');
+  const decodedRedirect = rawRedirect ? decodeURIComponent(rawRedirect) : null;
+  const targetPath = safeRedirect(decodedRedirect);
+
+  // If already authenticated, skip login page and go directly.
+  useEffect(() => {
+    const existingToken = localStorage.getItem('spotify_access_token');
+    if (existingToken) {
+      navigate(targetPath, { replace: true });
+    }
+  }, [navigate, targetPath]);
+
   const handleLogin = async () => {
     if (missingEnv) return;
     const { codeVerifier, codeChallenge } = await createPkcePair(128);
     localStorage.setItem('spotify_code_verifier', codeVerifier);
     // Store desired redirect target for after callback
-    localStorage.setItem('post_auth_redirect', safeNext);
+    localStorage.setItem('post_auth_redirect', targetPath);
     const args = new URLSearchParams({
       response_type: 'code',
       client_id: clientId,
