@@ -1,5 +1,6 @@
 
 import { createPkcePair } from '../api/pkce.js';
+import { normalizePostAuthTarget } from '../utils/redirect.js';
 import '../styles/theme.css';
 import './PageLayout.css';
 import './LoginPage.css';
@@ -11,29 +12,9 @@ const scope = 'user-read-private user-read-email user-top-read playlist-read-pri
 export default function LoginPage() {
   const missingEnv = !clientId || !redirectUri;
   const params = new URLSearchParams(globalThis.location.search);
-  // Support both ?redirect=<encodedPath> and legacy ?next=<encodedPath>
+  // Support both ?redirect=<encoded> and legacy ?next=<encoded>
   const encodedTarget = params.get('redirect') || params.get('next');
-  let decodedTarget = '/';
-  if (encodedTarget) {
-    try {
-      // decode only once; if not URI encoded it will return original
-      const attempt = decodeURIComponent(encodedTarget);
-      if (attempt.startsWith('http://') || attempt.startsWith('https://')) {
-        // If full URL, only allow same-origin and then strip origin.
-        const urlObj = new URL(attempt);
-        if (urlObj.origin === globalThis.location.origin) {
-          decodedTarget = urlObj.pathname + urlObj.search + urlObj.hash;
-        } else {
-          decodedTarget = '/';
-        }
-      } else {
-        decodedTarget = attempt.startsWith('/') ? attempt : '/';
-      }
-    } catch {
-      decodedTarget = '/';
-    }
-  }
-  const safeNext = decodedTarget;
+  const safeNext = normalizePostAuthTarget(encodedTarget);
 
   const handleLogin = async () => {
     if (missingEnv) return;
