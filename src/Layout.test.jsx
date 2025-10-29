@@ -34,9 +34,10 @@ describe('Layout Component', () => {
         expect(playlistsLink.closest('a')).toHaveAttribute('href', '/playlists');
 
         // Footer
-        const footerElement = screen.getByRole('contentinfo');
-        expect(footerElement).toBeInTheDocument();
-        expect(footerElement).toHaveTextContent(`© ${new Date().getFullYear()} My Spotify App - ${version}`);
+    const footerElement = screen.getByRole('contentinfo');
+    expect(footerElement).toBeInTheDocument();
+    expect(footerElement).toHaveTextContent(`© ${new Date().getFullYear()} My Spotify App – v${version}`);
+    expect(footerElement).toHaveTextContent(/Spotify and related trademarks are owned by Spotify AB/i);
 
     });
 });

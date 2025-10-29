@@ -15,8 +15,12 @@ export default function Layout() {
       <main className="layout-main">
         <Outlet />
       </main>
-      <footer className="layout-footer">
-        &copy; {new Date().getFullYear()} My Spotify App - {version}
+      <footer className="layout-footer" role="contentinfo">
+        <p>
+          &copy; {new Date().getFullYear()} My Spotify App – v{version}
+          <br />
+          Spotify and related trademarks are owned by Spotify AB. This app is independent and not endorsed by Spotify.
+        </p>
       </footer>
     </div>
   );
