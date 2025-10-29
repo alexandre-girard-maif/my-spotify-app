@@ -16,7 +16,11 @@ export function useRequireToken() {
       if (!active) return;
       const existing = localStorage.getItem(SPOTIFY_TOKEN_KEY);
       if (!existing) {
-        navigate('/login', { replace: true });
+        // Include origin + path so that the login page can restore full context.
+        // We intentionally use globalThis.location pieces (not react-router) to avoid coupling.
+        const { origin, pathname, search, hash } = globalThis.location;
+        const fullTarget = `${origin}${pathname}${search}${hash}`;
+        navigate(`/login?next=${encodeURIComponent(fullTarget)}`, { replace: true });
         setChecking(false);
         return;
       }
