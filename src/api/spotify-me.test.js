@@ -1,7 +1,8 @@
 // src/api/spotify.test.js
 import { afterEach, describe, expect, jest, test } from "@jest/globals";
 
-import { fetchAccountProfile, fetchUserPlaylists, fetchUserTopArtists, fetchUserTopTracks, SPOTIFY_API_BASE } from "./spotify-me";
+import { fetchAccountProfile, fetchUserPlaylists, fetchUserTopArtists, fetchUserTopTracks } from "./spotify-me";
+import { SPOTIFY_API_BASE } from "./spotify-commons";
 
 describe("spotify-me API", () => {
   const originalFetch = globalThis.fetch;
