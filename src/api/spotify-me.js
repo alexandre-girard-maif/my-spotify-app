@@ -2,8 +2,7 @@
  * Spotify API interaction functions.
  */
 
-/** Base URL for Spotify API */
-export const SPOTIFY_API_BASE = 'https://api.spotify.com/v1';
+import { SPOTIFY_API_BASE } from "./spotify-commons";
 
 /**
  * Fetch the user's top artists from Spotify.

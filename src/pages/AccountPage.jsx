@@ -1,6 +1,6 @@
 import React from 'react';
 import { Skeleton, SkeletonTextLines } from '../components/Skeleton.jsx';
-import { fetchAccountProfile } from '../api/spotify.js';
+import { fetchAccountProfile } from '../api/spotify-me.js';
 import { useRequireToken } from '../hooks/useRequireToken.js';
 import './AccountPage.css';
 import './PageLayout.css';

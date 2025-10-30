@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchAccountProfile } from "../api/spotify.js";
+import { fetchAccountProfile } from "../api/spotify-me.js";
 
 /**
  * React hook to obtain the Spotify profile.
