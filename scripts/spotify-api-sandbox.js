@@ -1,6 +1,6 @@
 // load environment variables from .env.local file
 import dotenv from "dotenv";
-import { fetchPlaylistById } from "../src/api/spotify.js";
+import { fetchPlaylistById } from "../src/api/spotify-me.js";
 dotenv.config({ path: ".env.local" });
 
 /**

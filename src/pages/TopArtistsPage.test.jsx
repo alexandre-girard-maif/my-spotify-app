@@ -5,7 +5,7 @@ import '@testing-library/jest-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import TopArtistsPage from './TopArtistsPage.jsx';
-import * as spotifyApi from '../api/spotify.js';
+import * as spotifyApi from '../api/spotify-me.js';
 import { beforeEach, afterEach, jest } from '@jest/globals';
 
 const artistsData = [

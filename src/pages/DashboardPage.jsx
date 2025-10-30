@@ -4,7 +4,7 @@ import SimpleCard from '../components/SimpleCard';
 import './DashboardPage.css';
 import './PageLayout.css';
 import { useRequireToken } from '../hooks/useRequireToken.js';
-import { fetchUserTopArtists, fetchUserTopTracks } from '../api/spotify.js';
+import { fetchUserTopArtists, fetchUserTopTracks } from '../api/spotify-me.js';
 import { Skeleton, SkeletonTextLines } from '../components/Skeleton.jsx';
 
 /**

@@ -5,7 +5,7 @@ import { useRequireToken } from '../hooks/useRequireToken.js';
 import './TopTracksPage.css';
 import './PageLayout.css';
 import TrackItem from '../components/TrackItem.jsx';
-import { fetchUserTopTracks } from '../api/spotify.js';
+import { fetchUserTopTracks } from '../api/spotify-me.js';
 
 /**
  * TopTracks Page 
