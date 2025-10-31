@@ -4,12 +4,15 @@ import { fetchAccountProfile } from '../api/spotify-me.js';
 import { useRequireToken } from '../hooks/useRequireToken.js';
 import './AccountPage.css';
 import './PageLayout.css';
+import { handleTokenError } from '../utils/handleTokenError.js';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * Account component to display user profile information.
  * @returns JSX.Element
  */
 export default function AccountPage() {
+  const navigate = useNavigate();
   const [profile, setProfile] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
@@ -28,7 +31,11 @@ export default function AccountPage() {
     fetchAccountProfile(token)
       .then(res => {
         if (cancelled) return;
-        if (res.error) setError(res.error);
+        if (res.error) {
+          if (!handleTokenError(res.error, navigate)) {
+            setError(res.error);
+          }
+        }
         setProfile(res.profile || null);
       })
       .catch(err => { if (!cancelled) setError(err.message || 'Failed to load profile'); })
