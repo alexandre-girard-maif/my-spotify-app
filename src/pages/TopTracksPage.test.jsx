@@ -6,6 +6,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import TopTracksPage from './TopTracksPage.jsx';
 import * as spotifyApi from '../api/spotify-me.js';
+import * as tokenErrorUtil from '../utils/handleTokenError.js';
 
 const tracksData = [
     { id: 'track1', name: 'Track One', artists: [{ name: 'Artist A' }], album: { name: 'Album X', images: [{ url: 'album-x.jpg' }] }, popularity: 80, external_urls: { spotify: 'https://open.spotify.com/track/track1' } },
@@ -140,6 +141,59 @@ describe('TopTracksPage', () => {
         expect(screen.getByRole('status')).toBeInTheDocument();
         const alert = await screen.findByRole('alert');
         expect(alert).toHaveTextContent(/api failure/i);
+    });
+
+    test('falls back to setting error when handleTokenError returns false', async () => {
+        jest.restoreAllMocks();
+        // Token present
+        jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key) => key === 'spotify_access_token' ? 'test-token' : null);
+        // API returns a non-expired generic error string
+        jest.spyOn(spotifyApi, 'fetchUserTopTracks').mockResolvedValue({ tracks: null, error: 'Some other error' });
+        // Spy on handleTokenError and force false to exercise fallback branch
+        const handleSpy = jest.spyOn(tokenErrorUtil, 'handleTokenError').mockReturnValue(false);
+
+        render(
+            <MemoryRouter initialEntries={['/top-tracks']}>
+                <Routes>
+                    <Route path="/top-tracks" element={<TopTracksPage />} />
+                </Routes>
+            </MemoryRouter>
+        );
+
+        expect(screen.getByTestId('tracks-skeleton')).toBeInTheDocument();
+        await waitFor(() => { expect(screen.queryByTestId('tracks-skeleton')).not.toBeInTheDocument(); });
+        // Error alert should appear after loading finishes
+        const alert = await screen.findByRole('alert');
+        expect(alert).toHaveTextContent(/some other error/i);
+        expect(handleSpy).toHaveBeenCalledTimes(1);
+        expect(handleSpy).toHaveBeenCalledWith('Some other error', expect.any(Function));
+        expect(handleSpy).toHaveReturnedWith(false);
+    });
+
+    test('falls back to setting error when handleTokenError returns true', async () => {
+        jest.restoreAllMocks();
+        // Token present
+        jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key) => key === 'spotify_access_token' ? 'test-token' : null);
+        // API returns an expired token error
+        jest.spyOn(spotifyApi, 'fetchUserTopTracks').mockResolvedValue({ tracks: null, error: 'The access token expired' });
+        // Spy on handleTokenError and force true to exercise fallback branch
+        const handleSpy = jest.spyOn(tokenErrorUtil, 'handleTokenError').mockReturnValue(true);
+
+        render(
+            <MemoryRouter initialEntries={['/top-tracks']}>
+                <Routes>
+                    <Route path="/top-tracks" element={<TopTracksPage />} />
+                </Routes>
+            </MemoryRouter>
+        );
+
+        expect(screen.getByTestId('tracks-skeleton')).toBeInTheDocument();
+        await waitFor(() => { expect(screen.queryByTestId('tracks-skeleton')).not.toBeInTheDocument(); });
+        // Even though error was "handled", loading should finish and no alert shown
+        expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+        expect(handleSpy).toHaveBeenCalledTimes(1);
+        expect(handleSpy).toHaveBeenCalledWith('The access token expired', expect.any(Function));
+        expect(handleSpy).toHaveReturnedWith(true);
     });
 
     test('renders empty tracks list when API returns no tracks', async () => {
