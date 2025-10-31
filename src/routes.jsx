@@ -1,12 +1,12 @@
 // redirect no longer needed directly; helper handles it
-import Account from './pages/AccountPage.jsx';
 import WelcomePage from './pages/WelcomePage.jsx';
-import TopTracks from './pages/TopTracksPage.jsx';
-import TopArtists from './pages/TopArtistsPage.jsx';
-import Playlists from './pages/PlaylistsPage.jsx';
+import TopTracksPage from './pages/TopTracksPage.jsx';
+import TopArtistsPage from './pages/TopArtistsPage.jsx';
+import PlaylistsPage from './pages/PlaylistsPage.jsx';
 import Callback from './pages/Callback.jsx';
 import Layout from './Layout.jsx';
 import LoginPage from './pages/LoginPage.jsx';
+import AccountPage from './pages/AccountPage.jsx';
 
 /**
  * Application routes configuration.
@@ -23,19 +23,19 @@ const routes = [
       // protected routes with loaders
       {
         path: 'account',
-        element: <Account />,
+        element: <AccountPage />,
       },
       {
         path: 'top-tracks',
-        element: <TopTracks />,
+        element: <TopTracksPage />,
       },
       {
         path: 'top-artists',
-        element: <TopArtists />,
+        element: <TopArtistsPage />,
       },
       {
         path: 'playlists',
-        element: <Playlists />,
+        element: <PlaylistsPage />,
       },
     ],
   },

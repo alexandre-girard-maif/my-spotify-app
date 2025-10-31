@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
  * Playlists Page
  * @returns {JSX.Element}
  */
-export default function Playlists() {
+export default function PlaylistsPage() {
   const navigate = useNavigate();
   const [playlists, setPlaylists] = React.useState([]);
   const [loading, setLoading] = React.useState(true);

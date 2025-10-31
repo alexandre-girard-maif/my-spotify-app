@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
  * Top Artists Page
  * @returns {JSX.Element}
  */
-export default function TopArtists() {
+export default function TopArtistsPage() {
   const navigate = useNavigate();
   const [artists, setArtists] = React.useState([]);
   const [loading, setLoading] = React.useState(true);

@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
  * TopTracks Page 
  * @returns {JSX.Element}
  */
-export default function TopTracks() {
+export default function TopTracksPage() {
   const navigate = useNavigate();
   const [tracks, setTracks] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
