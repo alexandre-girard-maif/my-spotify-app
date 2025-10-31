@@ -9,7 +9,7 @@ import * as spotifyApi from '../api/spotify-me.js';
 
 const tracksData = [
     { id: 'track1', name: 'Track One', artists: [{ name: 'Artist A' }], album: { name: 'Album X', images: [{ url: 'album-x.jpg' }] }, popularity: 80, external_urls: { spotify: 'https://open.spotify.com/track/track1' } },
-    { id: 'track2', name: 'Track Two', artists: [{ name: 'Artist B' }], album: { name: 'Album Y', images: [{ url: 'album-y.jpg' }] }, popularity: 75, external_urls: { spotify: 'https://open.spotify.com/track/track2' }  },
+    { id: 'track2', name: 'Track Two', artists: [{ name: 'Artist B' }], album: { name: 'Album Y', images: [{ url: 'album-y.jpg' }] }, popularity: 75, external_urls: { spotify: 'https://open.spotify.com/track/track2' } },
 ];
 
 describe('TopTracksPage', () => {
@@ -24,31 +24,31 @@ describe('TopTracksPage', () => {
         jest.spyOn(spotifyApi, 'fetchUserTopTracks').mockResolvedValue({ tracks: tracksData, error: null });
     });
 
-        test('shows skeleton during initial auth checking before data load', async () => {
-                render(
-                    <MemoryRouter initialEntries={['/top-tracks']}>
-                        <Routes>
-                            <Route path="/top-tracks" element={<TopTracksPage />} />
-                        </Routes>
-                    </MemoryRouter>
-                );
-                expect(screen.getByTestId('tracks-skeleton')).toBeInTheDocument();
-                const heading = await screen.findByRole('heading', { level: 1, name: `Your Top ${tracksData.length} Tracks of the Month` });
-                expect(heading).toBeInTheDocument();
-        });
+    test('shows skeleton during initial auth checking before data load', async () => {
+        render(
+            <MemoryRouter initialEntries={['/top-tracks']}>
+                <Routes>
+                    <Route path="/top-tracks" element={<TopTracksPage />} />
+                </Routes>
+            </MemoryRouter>
+        );
+        expect(screen.getByTestId('tracks-skeleton')).toBeInTheDocument();
+        const heading = await screen.findByRole('heading', { level: 1, name: `Your Top ${tracksData.length} Tracks of the Month` });
+        expect(heading).toBeInTheDocument();
+    });
 
     afterEach(() => {
         jest.restoreAllMocks();
     });
 
-        test('fetches and renders top tracks, sets title', async () => {
-                render(
-                    <MemoryRouter initialEntries={['/top-tracks']}>
-                        <Routes>
-                            <Route path="/top-tracks" element={<TopTracksPage />} />
-                        </Routes>
-                    </MemoryRouter>
-                );
+    test('fetches and renders top tracks, sets title', async () => {
+        render(
+            <MemoryRouter initialEntries={['/top-tracks']}>
+                <Routes>
+                    <Route path="/top-tracks" element={<TopTracksPage />} />
+                </Routes>
+            </MemoryRouter>
+        );
 
         // Skeleton first frame
         expect(screen.getByTestId('tracks-skeleton')).toBeInTheDocument();
@@ -76,26 +76,26 @@ describe('TopTracksPage', () => {
         });
     });
 
-        test('redirects to login when access token missing', async () => {
+    test('redirects to login when access token missing', async () => {
         jest.restoreAllMocks();
         // No token in localStorage
         jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(null);
         // Ensure API not called
         const apiSpy = jest.spyOn(spotifyApi, 'fetchUserTopTracks').mockResolvedValue({ tracks: [], error: null });
-                render(
-                    <MemoryRouter initialEntries={['/top-tracks']}>
-                        <Routes>
-                            <Route path="/top-tracks" element={<TopTracksPage />} />
-                            <Route path="/login" element={<div data-testid="login-page">Login Page</div>} />
-                        </Routes>
-                    </MemoryRouter>
-                );
+        render(
+            <MemoryRouter initialEntries={['/top-tracks']}>
+                <Routes>
+                    <Route path="/top-tracks" element={<TopTracksPage />} />
+                    <Route path="/login" element={<div data-testid="login-page">Login Page</div>} />
+                </Routes>
+            </MemoryRouter>
+        );
 
-                // Should navigate to login page
-                await waitFor(() => {
-                    expect(screen.getByTestId('login-page')).toBeInTheDocument();
-                });
-                expect(apiSpy).not.toHaveBeenCalled();
+        // Should navigate to login page
+        await waitFor(() => {
+            expect(screen.getByTestId('login-page')).toBeInTheDocument();
+        });
+        expect(apiSpy).not.toHaveBeenCalled();
     });
 
     test('shows error when API call fails', async () => {
@@ -105,13 +105,13 @@ describe('TopTracksPage', () => {
         // API rejects
         jest.spyOn(spotifyApi, 'fetchUserTopTracks').mockRejectedValue(new Error('Network down'));
 
-                render(
-                    <MemoryRouter initialEntries={['/top-tracks']}>
-                        <Routes>
-                            <Route path="/top-tracks" element={<TopTracksPage />} />
-                        </Routes>
-                    </MemoryRouter>
-                );
+        render(
+            <MemoryRouter initialEntries={['/top-tracks']}>
+                <Routes>
+                    <Route path="/top-tracks" element={<TopTracksPage />} />
+                </Routes>
+            </MemoryRouter>
+        );
         // Skeleton first frame
         expect(screen.getByTestId('tracks-skeleton')).toBeInTheDocument();
         await waitFor(() => {
@@ -156,7 +156,7 @@ describe('TopTracksPage', () => {
         expect(screen.getByTestId('tracks-skeleton')).toBeInTheDocument();
         await waitFor(() => { expect(screen.queryByTestId('tracks-skeleton')).not.toBeInTheDocument(); });
         expect(screen.getByRole('status')).toBeInTheDocument();
-        const heading = await screen.findByRole('heading', { level:1, name: 'Your Top 0 Tracks of the Month' });
+        const heading = await screen.findByRole('heading', { level: 1, name: 'Your Top 0 Tracks of the Month' });
         expect(heading).toBeInTheDocument();
         await waitFor(() => { expect(screen.queryByRole('status')).not.toBeInTheDocument(); });
         // List should be rendered but empty
@@ -182,7 +182,7 @@ describe('TopTracksPage', () => {
         expect(screen.getByRole('status')).toBeInTheDocument();
         unmount();
         resolveFn({ tracks: tracksData, error: null });
-        await new Promise(r => setTimeout(r,0));
+        await new Promise(r => setTimeout(r, 0));
         expect(apiSpy).toHaveBeenCalledTimes(1);
     });
 
@@ -204,7 +204,7 @@ describe('TopTracksPage', () => {
         expect(screen.getByRole('status')).toBeInTheDocument();
         unmount();
         rejectFn({});
-        await new Promise(r => setTimeout(r,0));
+        await new Promise(r => setTimeout(r, 0));
         expect(apiSpy).toHaveBeenCalledTimes(1);
         expect(screen.queryByRole('alert')).not.toBeInTheDocument();
     });
