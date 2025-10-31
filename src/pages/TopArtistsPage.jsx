@@ -3,6 +3,7 @@ import { Skeleton, SkeletonTextLines } from '../components/Skeleton.jsx';
 import { useRequireToken } from '../hooks/useRequireToken.js';
 import TopArtistItem from '../components/TopArtistItem';
 import { fetchUserTopArtists } from '../api/spotify-me.js';
+import { handleTokenError } from '../utils/handleTokenError.js';
 import './TopArtistsPage.css';
 import './PageLayout.css';
 import { useNavigate } from 'react-router-dom';
@@ -33,13 +34,8 @@ export default function TopArtists() {
     fetchUserTopArtists(token, limit, timeRange)
       .then(res => {
         if (cancelled) return;
-                if (res.error) {
-          // if error is about access token expiry redirect to login
-          if (res.error === 'The access token expired') {
-            const { origin, pathname, search, hash } = globalThis.location;
-            const fullTarget = `${origin}${pathname}${search}${hash}`;
-            navigate(`/login?next=${encodeURIComponent(fullTarget)}`, { replace: true });
-          } else {
+        if (res.error) {
+          if (!handleTokenError(res.error, navigate)) {
             setError(res.error);
           }
         }
@@ -48,7 +44,7 @@ export default function TopArtists() {
       .catch(err => { if (!cancelled) setError(err.message || 'Failed to load artists'); })
       .finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
-  }, [token, checking]);
+  }, [token, checking, navigate]);
 
   if (checking) {
     return (

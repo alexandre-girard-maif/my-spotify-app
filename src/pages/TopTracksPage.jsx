@@ -6,6 +6,7 @@ import './TopTracksPage.css';
 import './PageLayout.css';
 import TrackItem from '../components/TrackItem.jsx';
 import { fetchUserTopTracks } from '../api/spotify-me.js';
+import { handleTokenError } from '../utils/handleTokenError.js';
 import { useNavigate } from 'react-router-dom';
 
 /**
@@ -36,12 +37,7 @@ export default function TopTracks() {
       .then(res => {
         if (cancelled) return;
         if (res.error) {
-          // if error is about access token expiry redirect to login
-          if (res.error === 'The access token expired') {
-            const { origin, pathname, search, hash } = globalThis.location;
-            const fullTarget = `${origin}${pathname}${search}${hash}`;
-            navigate(`/login?next=${encodeURIComponent(fullTarget)}`, { replace: true });
-          } else {
+          if (!handleTokenError(res.error, navigate)) {
             setError(res.error);
           }
         }
@@ -50,7 +46,7 @@ export default function TopTracks() {
       .catch(err => { if (!cancelled) setError(err.message || 'Failed to load tracks'); })
       .finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
-  }, [token, checking]);
+  }, [token, checking, navigate]);
 
   if (checking) {
     return (
