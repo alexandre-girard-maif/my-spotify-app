@@ -5,12 +5,14 @@ import TopArtistItem from '../components/TopArtistItem';
 import { fetchUserTopArtists } from '../api/spotify-me.js';
 import './TopArtistsPage.css';
 import './PageLayout.css';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * Top Artists Page
  * @returns {JSX.Element}
  */
 export default function TopArtists() {
+  const navigate = useNavigate();
   const [artists, setArtists] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
@@ -31,7 +33,16 @@ export default function TopArtists() {
     fetchUserTopArtists(token, limit, timeRange)
       .then(res => {
         if (cancelled) return;
-        if (res.error) setError(res.error);
+                if (res.error) {
+          // if error is about access token expiry redirect to login
+          if (res.error === 'The access token expired') {
+            const { origin, pathname, search, hash } = globalThis.location;
+            const fullTarget = `${origin}${pathname}${search}${hash}`;
+            navigate(`/login?next=${encodeURIComponent(fullTarget)}`, { replace: true });
+          } else {
+            setError(res.error);
+          }
+        }
         setArtists(res.artists || []);
       })
       .catch(err => { if (!cancelled) setError(err.message || 'Failed to load artists'); })

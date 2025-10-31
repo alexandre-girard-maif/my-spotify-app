@@ -5,12 +5,14 @@ import PlayListItem from '../components/PlayListItem.jsx';
 import { fetchUserPlaylists } from '../api/spotify-me.js';
 import './PlaylistsPage.css';
 import './PageLayout.css';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * Playlists Page
  * @returns {JSX.Element}
  */
 export default function Playlists() {
+  const navigate = useNavigate();
   const [playlists, setPlaylists] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
@@ -30,7 +32,16 @@ export default function Playlists() {
     fetchUserPlaylists(token, limit)
       .then(res => {
         if (cancelled) return;
-        if (res.error) setError(res.error);
+        if (res.error) {
+          // if error is about access token expiry redirect to login
+          if (res.error === 'The access token expired') {
+            const { origin, pathname, search, hash } = globalThis.location;
+            const fullTarget = `${origin}${pathname}${search}${hash}`;
+            navigate(`/login?next=${encodeURIComponent(fullTarget)}`, { replace: true });
+          } else {
+            setError(res.error);
+          }
+        }
         setPlaylists(res.playlists || []);
       })
       .catch(err => { if (!cancelled) setError(err.message || 'Failed to load playlists'); })

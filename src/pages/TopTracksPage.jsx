@@ -36,7 +36,7 @@ export default function TopTracks() {
       .then(res => {
         if (cancelled) return;
         if (res.error) {
-          // if error is about auth, redirect to login
+          // if error is about access token expiry redirect to login
           if (res.error === 'The access token expired') {
             const { origin, pathname, search, hash } = globalThis.location;
             const fullTarget = `${origin}${pathname}${search}${hash}`;
