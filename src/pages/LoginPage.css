@@ -23,7 +23,9 @@
 }
 
 .login-btn {
-  display: inline-block;
+  /* Force button to occupy its own line so the error appears directly beneath */
+  display: block;
+  margin: 0 auto;
   background: #1DB954;
   color: #fff;
   border: none;
@@ -52,11 +54,12 @@
 }
 
 .login-error {
-  margin-top: 1.25rem;
+  /* Ensure error is on its own line immediately under the button */
+  display: block;
+  margin: 0.4rem auto 0; /* small gap below button */
   font-size: 0.9rem;
   color: #b00020;
   background: #ffecec;
-  display: inline-block;
   padding: 0.75rem 1rem;
   border-radius: 6px;
   max-width: 480px;
