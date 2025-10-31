@@ -6,10 +6,11 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import TopTracksPage from './TopTracksPage.jsx';
 import * as spotifyApi from '../api/spotify-me.js';
+import * as tokenErrorUtil from '../utils/handleTokenError.js';
 
 const tracksData = [
     { id: 'track1', name: 'Track One', artists: [{ name: 'Artist A' }], album: { name: 'Album X', images: [{ url: 'album-x.jpg' }] }, popularity: 80, external_urls: { spotify: 'https://open.spotify.com/track/track1' } },
-    { id: 'track2', name: 'Track Two', artists: [{ name: 'Artist B' }], album: { name: 'Album Y', images: [{ url: 'album-y.jpg' }] }, popularity: 75, external_urls: { spotify: 'https://open.spotify.com/track/track2' }  },
+    { id: 'track2', name: 'Track Two', artists: [{ name: 'Artist B' }], album: { name: 'Album Y', images: [{ url: 'album-y.jpg' }] }, popularity: 75, external_urls: { spotify: 'https://open.spotify.com/track/track2' } },
 ];
 
 describe('TopTracksPage', () => {
@@ -24,31 +25,31 @@ describe('TopTracksPage', () => {
         jest.spyOn(spotifyApi, 'fetchUserTopTracks').mockResolvedValue({ tracks: tracksData, error: null });
     });
 
-        test('shows skeleton during initial auth checking before data load', async () => {
-                render(
-                    <MemoryRouter initialEntries={['/top-tracks']}>
-                        <Routes>
-                            <Route path="/top-tracks" element={<TopTracksPage />} />
-                        </Routes>
-                    </MemoryRouter>
-                );
-                expect(screen.getByTestId('tracks-skeleton')).toBeInTheDocument();
-                const heading = await screen.findByRole('heading', { level: 1, name: `Your Top ${tracksData.length} Tracks of the Month` });
-                expect(heading).toBeInTheDocument();
-        });
+    test('shows skeleton during initial auth checking before data load', async () => {
+        render(
+            <MemoryRouter initialEntries={['/top-tracks']}>
+                <Routes>
+                    <Route path="/top-tracks" element={<TopTracksPage />} />
+                </Routes>
+            </MemoryRouter>
+        );
+        expect(screen.getByTestId('tracks-skeleton')).toBeInTheDocument();
+        const heading = await screen.findByRole('heading', { level: 1, name: `Your Top ${tracksData.length} Tracks of the Month` });
+        expect(heading).toBeInTheDocument();
+    });
 
     afterEach(() => {
         jest.restoreAllMocks();
     });
 
-        test('fetches and renders top tracks, sets title', async () => {
-                render(
-                    <MemoryRouter initialEntries={['/top-tracks']}>
-                        <Routes>
-                            <Route path="/top-tracks" element={<TopTracksPage />} />
-                        </Routes>
-                    </MemoryRouter>
-                );
+    test('fetches and renders top tracks, sets title', async () => {
+        render(
+            <MemoryRouter initialEntries={['/top-tracks']}>
+                <Routes>
+                    <Route path="/top-tracks" element={<TopTracksPage />} />
+                </Routes>
+            </MemoryRouter>
+        );
 
         // Skeleton first frame
         expect(screen.getByTestId('tracks-skeleton')).toBeInTheDocument();
@@ -76,26 +77,26 @@ describe('TopTracksPage', () => {
         });
     });
 
-        test('redirects to login when access token missing', async () => {
+    test('redirects to login when access token missing', async () => {
         jest.restoreAllMocks();
         // No token in localStorage
         jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(null);
         // Ensure API not called
         const apiSpy = jest.spyOn(spotifyApi, 'fetchUserTopTracks').mockResolvedValue({ tracks: [], error: null });
-                render(
-                    <MemoryRouter initialEntries={['/top-tracks']}>
-                        <Routes>
-                            <Route path="/top-tracks" element={<TopTracksPage />} />
-                            <Route path="/login" element={<div data-testid="login-page">Login Page</div>} />
-                        </Routes>
-                    </MemoryRouter>
-                );
+        render(
+            <MemoryRouter initialEntries={['/top-tracks']}>
+                <Routes>
+                    <Route path="/top-tracks" element={<TopTracksPage />} />
+                    <Route path="/login" element={<div data-testid="login-page">Login Page</div>} />
+                </Routes>
+            </MemoryRouter>
+        );
 
-                // Should navigate to login page
-                await waitFor(() => {
-                    expect(screen.getByTestId('login-page')).toBeInTheDocument();
-                });
-                expect(apiSpy).not.toHaveBeenCalled();
+        // Should navigate to login page
+        await waitFor(() => {
+            expect(screen.getByTestId('login-page')).toBeInTheDocument();
+        });
+        expect(apiSpy).not.toHaveBeenCalled();
     });
 
     test('shows error when API call fails', async () => {
@@ -105,13 +106,13 @@ describe('TopTracksPage', () => {
         // API rejects
         jest.spyOn(spotifyApi, 'fetchUserTopTracks').mockRejectedValue(new Error('Network down'));
 
-                render(
-                    <MemoryRouter initialEntries={['/top-tracks']}>
-                        <Routes>
-                            <Route path="/top-tracks" element={<TopTracksPage />} />
-                        </Routes>
-                    </MemoryRouter>
-                );
+        render(
+            <MemoryRouter initialEntries={['/top-tracks']}>
+                <Routes>
+                    <Route path="/top-tracks" element={<TopTracksPage />} />
+                </Routes>
+            </MemoryRouter>
+        );
         // Skeleton first frame
         expect(screen.getByTestId('tracks-skeleton')).toBeInTheDocument();
         await waitFor(() => {
@@ -142,6 +143,59 @@ describe('TopTracksPage', () => {
         expect(alert).toHaveTextContent(/api failure/i);
     });
 
+    test('falls back to setting error when handleTokenError returns false', async () => {
+        jest.restoreAllMocks();
+        // Token present
+        jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key) => key === 'spotify_access_token' ? 'test-token' : null);
+        // API returns a non-expired generic error string
+        jest.spyOn(spotifyApi, 'fetchUserTopTracks').mockResolvedValue({ tracks: null, error: 'Some other error' });
+        // Spy on handleTokenError and force false to exercise fallback branch
+        const handleSpy = jest.spyOn(tokenErrorUtil, 'handleTokenError').mockReturnValue(false);
+
+        render(
+            <MemoryRouter initialEntries={['/top-tracks']}>
+                <Routes>
+                    <Route path="/top-tracks" element={<TopTracksPage />} />
+                </Routes>
+            </MemoryRouter>
+        );
+
+        expect(screen.getByTestId('tracks-skeleton')).toBeInTheDocument();
+        await waitFor(() => { expect(screen.queryByTestId('tracks-skeleton')).not.toBeInTheDocument(); });
+        // Error alert should appear after loading finishes
+        const alert = await screen.findByRole('alert');
+        expect(alert).toHaveTextContent(/some other error/i);
+        expect(handleSpy).toHaveBeenCalledTimes(1);
+        expect(handleSpy).toHaveBeenCalledWith('Some other error', expect.any(Function));
+        expect(handleSpy).toHaveReturnedWith(false);
+    });
+
+    test('falls back to setting error when handleTokenError returns true', async () => {
+        jest.restoreAllMocks();
+        // Token present
+        jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key) => key === 'spotify_access_token' ? 'test-token' : null);
+        // API returns an expired token error
+        jest.spyOn(spotifyApi, 'fetchUserTopTracks').mockResolvedValue({ tracks: null, error: 'The access token expired' });
+        // Spy on handleTokenError and force true to exercise fallback branch
+        const handleSpy = jest.spyOn(tokenErrorUtil, 'handleTokenError').mockReturnValue(true);
+
+        render(
+            <MemoryRouter initialEntries={['/top-tracks']}>
+                <Routes>
+                    <Route path="/top-tracks" element={<TopTracksPage />} />
+                </Routes>
+            </MemoryRouter>
+        );
+
+        expect(screen.getByTestId('tracks-skeleton')).toBeInTheDocument();
+        await waitFor(() => { expect(screen.queryByTestId('tracks-skeleton')).not.toBeInTheDocument(); });
+        // Even though error was "handled", loading should finish and no alert shown
+        expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+        expect(handleSpy).toHaveBeenCalledTimes(1);
+        expect(handleSpy).toHaveBeenCalledWith('The access token expired', expect.any(Function));
+        expect(handleSpy).toHaveReturnedWith(true);
+    });
+
     test('renders empty tracks list when API returns no tracks', async () => {
         jest.restoreAllMocks();
         jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key) => key === 'spotify_access_token' ? 'test-token' : null);
@@ -156,7 +210,7 @@ describe('TopTracksPage', () => {
         expect(screen.getByTestId('tracks-skeleton')).toBeInTheDocument();
         await waitFor(() => { expect(screen.queryByTestId('tracks-skeleton')).not.toBeInTheDocument(); });
         expect(screen.getByRole('status')).toBeInTheDocument();
-        const heading = await screen.findByRole('heading', { level:1, name: 'Your Top 0 Tracks of the Month' });
+        const heading = await screen.findByRole('heading', { level: 1, name: 'Your Top 0 Tracks of the Month' });
         expect(heading).toBeInTheDocument();
         await waitFor(() => { expect(screen.queryByRole('status')).not.toBeInTheDocument(); });
         // List should be rendered but empty
@@ -182,7 +236,7 @@ describe('TopTracksPage', () => {
         expect(screen.getByRole('status')).toBeInTheDocument();
         unmount();
         resolveFn({ tracks: tracksData, error: null });
-        await new Promise(r => setTimeout(r,0));
+        await new Promise(r => setTimeout(r, 0));
         expect(apiSpy).toHaveBeenCalledTimes(1);
     });
 
@@ -204,7 +258,7 @@ describe('TopTracksPage', () => {
         expect(screen.getByRole('status')).toBeInTheDocument();
         unmount();
         rejectFn({});
-        await new Promise(r => setTimeout(r,0));
+        await new Promise(r => setTimeout(r, 0));
         expect(apiSpy).toHaveBeenCalledTimes(1);
         expect(screen.queryByRole('alert')).not.toBeInTheDocument();
     });

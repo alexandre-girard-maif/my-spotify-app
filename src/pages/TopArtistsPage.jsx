@@ -3,14 +3,17 @@ import { Skeleton, SkeletonTextLines } from '../components/Skeleton.jsx';
 import { useRequireToken } from '../hooks/useRequireToken.js';
 import TopArtistItem from '../components/TopArtistItem';
 import { fetchUserTopArtists } from '../api/spotify-me.js';
+import { handleTokenError } from '../utils/handleTokenError.js';
 import './TopArtistsPage.css';
 import './PageLayout.css';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * Top Artists Page
  * @returns {JSX.Element}
  */
 export default function TopArtists() {
+  const navigate = useNavigate();
   const [artists, setArtists] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
@@ -31,13 +34,17 @@ export default function TopArtists() {
     fetchUserTopArtists(token, limit, timeRange)
       .then(res => {
         if (cancelled) return;
-        if (res.error) setError(res.error);
+        if (res.error) {
+          if (!handleTokenError(res.error, navigate)) {
+            setError(res.error);
+          }
+        }
         setArtists(res.artists || []);
       })
       .catch(err => { if (!cancelled) setError(err.message || 'Failed to load artists'); })
       .finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
-  }, [token, checking]);
+  }, [token, checking, navigate]);
 
   if (checking) {
     return (

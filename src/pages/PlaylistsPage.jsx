@@ -3,14 +3,17 @@ import { Skeleton, SkeletonTextLines } from '../components/Skeleton.jsx';
 import { useRequireToken } from '../hooks/useRequireToken.js';
 import PlayListItem from '../components/PlayListItem.jsx';
 import { fetchUserPlaylists } from '../api/spotify-me.js';
+import { handleTokenError } from '../utils/handleTokenError.js';
 import './PlaylistsPage.css';
 import './PageLayout.css';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * Playlists Page
  * @returns {JSX.Element}
  */
 export default function Playlists() {
+  const navigate = useNavigate();
   const [playlists, setPlaylists] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
@@ -30,13 +33,17 @@ export default function Playlists() {
     fetchUserPlaylists(token, limit)
       .then(res => {
         if (cancelled) return;
-        if (res.error) setError(res.error);
+        if (res.error) {
+          if (!handleTokenError(res.error, navigate)) {
+            setError(res.error);
+          }
+        }
         setPlaylists(res.playlists || []);
       })
       .catch(err => { if (!cancelled) setError(err.message || 'Failed to load playlists'); })
       .finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
-  }, [token, checking]);
+  }, [token, checking, navigate]);
 
   if (checking) {
     return (

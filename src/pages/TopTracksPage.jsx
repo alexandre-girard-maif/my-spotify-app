@@ -6,12 +6,15 @@ import './TopTracksPage.css';
 import './PageLayout.css';
 import TrackItem from '../components/TrackItem.jsx';
 import { fetchUserTopTracks } from '../api/spotify-me.js';
+import { handleTokenError } from '../utils/handleTokenError.js';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * TopTracks Page 
  * @returns {JSX.Element}
  */
 export default function TopTracks() {
+  const navigate = useNavigate();
   const [tracks, setTracks] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
@@ -33,13 +36,17 @@ export default function TopTracks() {
     fetchUserTopTracks(token, limit, timeRange)
       .then(res => {
         if (cancelled) return;
-        if (res.error) setError(res.error);
+        if (res.error) {
+          if (!handleTokenError(res.error, navigate)) {
+            setError(res.error);
+          }
+        }
         setTracks(res.tracks || []);
       })
       .catch(err => { if (!cancelled) setError(err.message || 'Failed to load tracks'); })
       .finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
-  }, [token, checking]);
+  }, [token, checking, navigate]);
 
   if (checking) {
     return (
