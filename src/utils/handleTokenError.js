@@ -7,9 +7,9 @@
  * @param {function} navigate - React Router navigate function
  * @returns {boolean} true if redirected, false otherwise
  */
-export function handleTokenError(error, navigate) {
+export function handleTokenError(error, navigate, loc = globalThis.location) {
   if (error === 'The access token expired') {
-    const { origin, pathname, search, hash } = globalThis.location;
+    const { origin, pathname, search, hash } = loc || {};
     const fullTarget = `${origin}${pathname}${search}${hash}`;
     navigate(`/login?next=${encodeURIComponent(fullTarget)}`, { replace: true });
     return true;
