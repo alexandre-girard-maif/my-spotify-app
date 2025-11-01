@@ -26,18 +26,18 @@ describe('TopArtistItem component', () => {
         // should contain artist image
         const img = listItem.querySelector('img');
         expect(img).toBeInTheDocument();
-        expect(img).toHaveAttribute('src', 'test-medium.jpg');
+        expect(img).toHaveAttribute('src', artist.images[1].url);
 
         // should contain artist details
-        expect(listItem).toHaveTextContent('Test Artist');
-        expect(listItem).toHaveTextContent('Genres: pop, rock');
-        expect(listItem).toHaveTextContent('Followers: 1,000');
-        expect(listItem).toHaveTextContent('Popularity: 85');
+        expect(listItem).toHaveTextContent(artist.name);
+        expect(listItem).toHaveTextContent(`Genres: ${artist.genres.join(', ')}`);
+        expect(listItem).toHaveTextContent(`Followers: ${artist.followers.total.toLocaleString()}`);
+        expect(listItem).toHaveTextContent(`Popularity: ${artist.popularity}`);
 
         // should contain link to artist page
         const link = listItem.querySelector('a.artist-link');
         expect(link).toBeInTheDocument();
-        expect(link).toHaveAttribute('href', 'https://open.spotify.com/artist/artist1');
+        expect(link).toHaveAttribute('href', artist.external_urls.spotify);
 
         // uncomment to debug
         //screen.debug();
@@ -63,14 +63,14 @@ describe('TopArtistItem component', () => {
         expect(img).not.toBeInTheDocument();
 
         // should contain artist details
-        expect(listItem).toHaveTextContent('No Image Artist');
-        expect(listItem).toHaveTextContent('Genres: jazz');
-        expect(listItem).toHaveTextContent('Followers: 500');
+        expect(listItem).toHaveTextContent(artist.name);
+        expect(listItem).toHaveTextContent(`Genres: ${artist.genres.join(', ')}`);
+        expect(listItem).toHaveTextContent(`Followers: ${artist.followers.total.toLocaleString()}`);
 
         // should contain link to artist page
         const link = listItem.querySelector('a.artist-link');
         expect(link).toBeInTheDocument();
-        expect(link).toHaveAttribute('href', 'https://open.spotify.com/artist/artist2');
+        expect(link).toHaveAttribute('href', artist.external_urls.spotify);
 
         // uncomment to debug
         //screen.debug();
