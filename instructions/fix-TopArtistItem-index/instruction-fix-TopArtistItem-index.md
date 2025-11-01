@@ -6,5 +6,4 @@ Le composant `TopArtistItem.jsx` affiche un index incorrect pour les artistes. A
 ## Correction
 
 - Corriger l'affichage de l'index dans le composant `TopArtistItem.jsx` pour qu'il commence à 1 au lieu de 0.
-- Mettre à jour les tests associés dans `TopArtistItem.test.jsx` pour refléter ce changement.
-- Renforcer les assertions dans les tests pour vérifier que l'index est correctement affiché.
+- Mettre à jour les tests associés dans `TopArtistItem.test.jsx` pour refléter ce changement en renforçant les assertions sur l'index affiché.
