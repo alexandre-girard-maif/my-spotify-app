@@ -23,7 +23,8 @@ Créer une page de détail pour afficher les informations d'une playlist Spotify
 - La page de détail de la playlist doit afficher correctement les informations de la playlist et la liste des pistes.
 - Les erreurs lors de la récupération des données doivent être gérées et affichées de manière appropriée.
 - Les fonctionnalités supplémentaires doivent être implémentées et fonctionner correctement.
-- Les tests doivent couvrir les principales fonctionnalités de la page de détail de la playlist.    
+- Les tests doivent être passés avec succès avec le test `instructions/playlist-detail-page/ressources/PlaylistPage.test.jsx` à déplacer dans les sources.
+- Le style de la page doit utiliser `src/styles/PlaylistDetailPage.css`.
 
 ## Conseils d'implémentation
 
