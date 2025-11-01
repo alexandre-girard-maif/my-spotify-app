@@ -4,7 +4,7 @@ import { describe, expect, test } from '@jest/globals';
 import '@testing-library/jest-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
-import PlaylistsPage from './PlaylistsPage.jsx';
+import PlaylistsPage, { limit } from './PlaylistsPage.jsx';
 import * as spotifyApi from '../api/spotify-me.js';
 import { beforeEach, afterEach, jest } from '@jest/globals';
 
@@ -50,7 +50,7 @@ describe('PlaylistsPage', () => {
         const heading = await screen.findByRole('heading', { level: 1, name: 'Your Playlists' });
         expect(heading).toBeInTheDocument();
 
-        const countHeading = await screen.findByRole('heading', { level: 2, name: `${playlistsData.length} Playlists` });
+        const countHeading = await screen.findByRole('heading', { level: 2, name: `${limit} Playlists` });
         expect(countHeading).toBeInTheDocument();
 
         // verify each playlist item rendered

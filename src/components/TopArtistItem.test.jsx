@@ -29,7 +29,7 @@ describe('TopArtistItem component', () => {
         expect(img).toHaveAttribute('src', 'test-medium.jpg');
 
         // should contain artist details
-        expect(listItem).toHaveTextContent('1. Test Artist');
+        expect(listItem).toHaveTextContent('Test Artist');
         expect(listItem).toHaveTextContent('Genres: pop, rock');
         expect(listItem).toHaveTextContent('Followers: 1,000');
         expect(listItem).toHaveTextContent('Popularity: 85');
@@ -63,7 +63,7 @@ describe('TopArtistItem component', () => {
         expect(img).not.toBeInTheDocument();
 
         // should contain artist details
-        expect(listItem).toHaveTextContent('2. No Image Artist');
+        expect(listItem).toHaveTextContent('No Image Artist');
         expect(listItem).toHaveTextContent('Genres: jazz');
         expect(listItem).toHaveTextContent('Followers: 500');
 

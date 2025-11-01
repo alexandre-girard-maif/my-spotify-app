@@ -9,6 +9,11 @@ import './PageLayout.css';
 import { useNavigate } from 'react-router-dom';
 
 /**
+ * Number of playlists to fetch
+ */
+export const limit = 10;
+
+/**
  * Playlists Page
  * @returns {JSX.Element}
  */
@@ -23,9 +28,6 @@ export default function PlaylistsPage() {
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
 
-  // Number of playlists to fetch
-  const limit = 10;
-
   // require token to fetch playlists
   const { token } = useRequireToken();
 
@@ -34,8 +36,7 @@ export default function PlaylistsPage() {
     document.title = `Playlists | Spotify App`;
   }, []);
 
-
-
+  
   React.useEffect(() => {
     if (!token) return; // wait until check completes
     // fetch user playlists when token changes
@@ -55,7 +56,7 @@ export default function PlaylistsPage() {
   return (
     <div className="playlists-container page-container">
       <h1 className="playlists-title page-title">Your Playlists</h1>
-      <h2 className="playlists-count">{playlists.length} Playlists</h2>
+      <h2 className="playlists-count">{limit} Playlists</h2>
       {loading && <output className="playlists-loading" data-testid="loading-indicator">Loading playlists…</output>}
       {error && !loading && <div className="playlists-error" role="alert">{error}</div>}
       {!loading && !error && (
