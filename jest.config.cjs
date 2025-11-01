@@ -11,6 +11,7 @@ module.exports = {
   // ignore e2e tests
   testPathIgnorePatterns: [
     "/e2e-tests/",
+    "/instructions/"
   ],
   
   collectCoverageFrom: [
