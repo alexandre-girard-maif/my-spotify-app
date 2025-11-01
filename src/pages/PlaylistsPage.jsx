@@ -13,26 +13,34 @@ import { useNavigate } from 'react-router-dom';
  * @returns {JSX.Element}
  */
 export default function PlaylistsPage() {
+  // Initialize navigate function
   const navigate = useNavigate();
+
+  // state for playlists data
   const [playlists, setPlaylists] = React.useState([]);
+
+  // state for loading and error
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
+
+  // Number of playlists to fetch
   const limit = 10;
 
+  // require token to fetch playlists
+  const { token } = useRequireToken();
+
+  // Set document title
   React.useEffect(() => {
     document.title = `Playlists | Spotify App`;
   }, []);
 
-  const { token, checking } = useRequireToken();
+
 
   React.useEffect(() => {
-    if (checking || !token) return; // wait until check completes
-    let cancelled = false;
-    setLoading(true);
-    setError(null);
+    if (!token) return; // wait until check completes
+    // fetch user playlists when token changes
     fetchUserPlaylists(token, limit)
       .then(res => {
-        if (cancelled) return;
         if (res.error) {
           if (!handleTokenError(res.error, navigate)) {
             setError(res.error);
@@ -40,27 +48,15 @@ export default function PlaylistsPage() {
         }
         setPlaylists(res.playlists || []);
       })
-      .catch(err => { if (!cancelled) setError(err.message || 'Failed to load playlists'); })
-      .finally(() => { if (!cancelled) setLoading(false); });
-    return () => { cancelled = true; };
-  }, [token, checking, navigate]);
-
-  if (checking) {
-    return (
-      <div className="playlists-container page-container" data-testid="playlists-skeleton">
-        <Skeleton width="55%" height="32px" />
-        <Skeleton width="40%" height="24px" />
-        <SkeletonTextLines lines={2} />
-        <Skeleton count={4} height="56px" />
-      </div>
-    );
-  }
+      .catch(err => { setError(err.message); })
+      .finally(() => { setLoading(false); });
+  }, [token, navigate]);
 
   return (
     <div className="playlists-container page-container">
       <h1 className="playlists-title page-title">Your Playlists</h1>
       <h2 className="playlists-count">{playlists.length} Playlists</h2>
-  {loading && <output className="playlists-loading">Loading playlists…</output>}
+      {loading && <output className="playlists-loading" data-testid="loading-indicator">Loading playlists…</output>}
       {error && !loading && <div className="playlists-error" role="alert">{error}</div>}
       {!loading && !error && (
         <ol className="playlists-list">
