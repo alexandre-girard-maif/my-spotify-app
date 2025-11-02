@@ -1,9 +1,9 @@
 import React from 'react';
-import { fetchAccountProfile } from '../api/spotify-me.js';
-import { useRequireToken } from '../hooks/useRequireToken.js';
+import { fetchAccountProfile } from '../../api/spotify-me.js';
+import { useRequireToken } from '../../hooks/useRequireToken.js';
 import './AccountPage.css';
-import './PageLayout.css';
-import { handleTokenError } from '../utils/handleTokenError.js';
+import '../PageLayout.css';
+import { handleTokenError } from '../../utils/handleTokenError.js';
 import { useNavigate } from 'react-router-dom';
 
 /**
