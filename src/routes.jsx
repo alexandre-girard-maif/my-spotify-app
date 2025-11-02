@@ -5,7 +5,7 @@ import PlaylistsPage from './pages/PlaylistsPage.jsx';
 import Callback from './pages/Callback.jsx';
 import Layout from './Layout.jsx';
 import LoginPage from './pages/LoginPage.jsx';
-import AccountPage from './pages/AccountPage.jsx';
+import AccountPage from './pages/AccountPage/AccountPage.jsx';
 
 /**
  * Application routes configuration.

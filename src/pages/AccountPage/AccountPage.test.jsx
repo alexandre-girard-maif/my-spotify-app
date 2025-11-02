@@ -4,8 +4,8 @@ import { describe, expect, test } from '@jest/globals';
 import '@testing-library/jest-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
-import AccountPage from './AccountPage/AccountPage.jsx';
-import * as spotifyApi from '../api/spotify-me.js';
+import AccountPage from './AccountPage.jsx';
+import * as spotifyApi from '../../api/spotify-me.js';
 import { beforeEach, afterEach, jest } from '@jest/globals';
 
 const profileData = {
