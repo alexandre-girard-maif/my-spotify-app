@@ -38,7 +38,7 @@ export default function PlaylistsPage() {
 
   
   React.useEffect(() => {
-    if (!token) return; // wait until check completes
+    if (!token) return; // wait for auth check
     // fetch user playlists when token changes
     fetchUserPlaylists(token, limit)
       .then(res => {
