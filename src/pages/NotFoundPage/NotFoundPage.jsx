@@ -10,6 +10,7 @@ import '../PageLayout.css';
 export default function NotFoundPage() {
   // Initialize navigate function
   const navigate = useNavigate();
+  React.useEffect(() => { document.title = 'Not Found | Spotify App'; }, []);
   
   return (
     <div className="notfound-container page-container">
