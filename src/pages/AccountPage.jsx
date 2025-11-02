@@ -1,5 +1,4 @@
 import React from 'react';
-import { Skeleton, SkeletonTextLines } from '../components/Skeleton.jsx';
 import { fetchAccountProfile } from '../api/spotify-me.js';
 import { useRequireToken } from '../hooks/useRequireToken.js';
 import './AccountPage.css';
@@ -12,46 +11,40 @@ import { useNavigate } from 'react-router-dom';
  * @returns JSX.Element
  */
 export default function AccountPage() {
+  // Initialize navigate function
   const navigate = useNavigate();
+
+  // state for profile data
   const [profile, setProfile] = React.useState(null);
+
+  // state for loading and error
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
 
+  // require token to fetch profile
+  const { token } = useRequireToken();
+
+  // Set document title
   React.useEffect(() => {
     document.title = `Account | Spotify App`;
   }, []);
 
-  const { token, checking } = useRequireToken();
-
+  
   React.useEffect(() => {
-    if (checking || !token) return; // wait for check or redirect
-    let cancelled = false;
-    setLoading(true);
-    setError(null);
+    if (!token) return; // wait for auth check
+    // fetch user profile when token changes
     fetchAccountProfile(token)
       .then(res => {
-        if (cancelled) return;
         if (res.error) {
           if (!handleTokenError(res.error, navigate)) {
             setError(res.error);
           }
         }
-        setProfile(res.profile || null);
+        setProfile(res.profile);
       })
-      .catch(err => { if (!cancelled) setError(err.message || 'Failed to load profile'); })
-      .finally(() => { if (!cancelled) setLoading(false); });
-    return () => { cancelled = true; };
-  }, [token, checking]);
-
-  if (checking) {
-    return (
-      <div className="account-page page-container" data-testid="account-skeleton">
-        <Skeleton width="128px" height="128px" />
-        <Skeleton width="60%" height="28px" />
-        <SkeletonTextLines lines={3} />
-      </div>
-    );
-  }
+      .catch(err => { setError(err.message); })
+      .finally(() => { setLoading(false); });
+  }, [token, navigate]);
 
   return (
     <div className="account-page page-container">

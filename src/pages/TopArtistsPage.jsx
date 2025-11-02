@@ -1,5 +1,4 @@
 import React from 'react';
-import { Skeleton, SkeletonTextLines } from '../components/Skeleton.jsx';
 import { useRequireToken } from '../hooks/useRequireToken.js';
 import TopArtistItem from '../components/TopArtistItem';
 import { fetchUserTopArtists } from '../api/spotify-me.js';
@@ -9,31 +8,43 @@ import './PageLayout.css';
 import { useNavigate } from 'react-router-dom';
 
 /**
+ * Number of artists to fetch
+ */
+const limit = 10;
+
+/** 
+ * Time range for top artists
+ */
+const timeRange = 'short_term';
+
+/**
  * Top Artists Page
  * @returns {JSX.Element}
  */
 export default function TopArtistsPage() {
+  // Initialize navigate function
   const navigate = useNavigate();
+
+  // state for artists data
   const [artists, setArtists] = React.useState([]);
+
+  // state for loading and error
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
-  const limit = 10;
-  const timeRange = 'short_term';
+  
+  // require token to fetch playlists
+  const { token } = useRequireToken();
 
+  // Set document title
   React.useEffect(() => {
     document.title = `Top Artists | Spotify App`;
   }, []);
 
-  const { token, checking } = useRequireToken();
-
   React.useEffect(() => {
-    if (checking || !token) return; // wait for auth check
-    let cancelled = false;
-    setLoading(true);
-    setError(null);
+    if (!token) return; // wait for auth check
+    // fetch user top artists when token changes
     fetchUserTopArtists(token, limit, timeRange)
       .then(res => {
-        if (cancelled) return;
         if (res.error) {
           if (!handleTokenError(res.error, navigate)) {
             setError(res.error);
@@ -41,20 +52,9 @@ export default function TopArtistsPage() {
         }
         setArtists(res.artists || []);
       })
-      .catch(err => { if (!cancelled) setError(err.message || 'Failed to load artists'); })
-      .finally(() => { if (!cancelled) setLoading(false); });
-    return () => { cancelled = true; };
-  }, [token, checking, navigate]);
-
-  if (checking) {
-    return (
-      <div className="artists-container page-container" data-testid="artists-skeleton">
-        <Skeleton width="70%" height="32px" />
-        <SkeletonTextLines lines={2} />
-        <Skeleton count={6} height="56px" />
-      </div>
-    );
-  }
+      .catch(err => { setError(err.message ); })
+      .finally(() => { setLoading(false); });
+  }, [token, navigate]);
 
   return (
     <div className="artists-container page-container">

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Skeleton, SkeletonTextLines } from '../components/Skeleton.jsx';
 import { useRequireToken } from '../hooks/useRequireToken.js';
 import PlayListItem from '../components/PlayListItem.jsx';
 import { fetchUserPlaylists } from '../api/spotify-me.js';
@@ -38,7 +37,7 @@ export default function PlaylistsPage() {
 
   
   React.useEffect(() => {
-    if (!token) return; // wait until check completes
+    if (!token) return; // wait for auth check
     // fetch user playlists when token changes
     fetchUserPlaylists(token, limit)
       .then(res => {
