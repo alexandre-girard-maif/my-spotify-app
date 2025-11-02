@@ -10,7 +10,6 @@ export function useRequireToken() {
   const [token, setToken] = React.useState(null);
 
   React.useEffect(() => {
-    // Defer the token check so that components can render an initial skeleton frame.
     let active = true;
     Promise.resolve().then(() => {
       if (!active) return;
