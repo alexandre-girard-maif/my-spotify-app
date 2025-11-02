@@ -5,6 +5,7 @@ import PlaylistsPage from './pages/PlaylistsPage.jsx';
 import Callback from './pages/Callback.jsx';
 import Layout from './Layout.jsx';
 import LoginPage from './pages/LoginPage.jsx';
+import NotFoundPage from './pages/NotFoundPage/NotFoundPage.jsx';
 import AccountPage from './pages/AccountPage/AccountPage.jsx';
 
 /**
@@ -23,6 +24,11 @@ const routes = [
       { path: 'top-tracks', element: <TopTracksPage /> },
       { path: 'top-artists', element: <TopArtistsPage /> },
       { path: 'playlists', element: <PlaylistsPage /> },
+      {
+        // 404 page
+        path: "*",
+        element: <NotFoundPage />
+      }
     ],
   },
 ];
