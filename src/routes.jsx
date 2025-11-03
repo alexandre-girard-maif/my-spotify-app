@@ -1,5 +1,5 @@
 import WelcomePage from './pages/WelcomePage.jsx';
-import TopTracksPage from './pages/TopTracksPage.jsx';
+import TopTracksPage from './pages/TopTracksPage/TopTracksPage.jsx';
 import TopArtistsPage from './pages/TopArtistsPage/TopArtistsPage.jsx';
 import PlaylistsPage from './pages/PlaylistsPage/PlaylistsPage.jsx';
 import Callback from './pages/Callback.jsx';

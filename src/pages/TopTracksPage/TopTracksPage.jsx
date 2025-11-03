@@ -1,11 +1,11 @@
 
 import React from 'react';
-import { useRequireToken } from '../hooks/useRequireToken.js';
+import { useRequireToken } from '../../hooks/useRequireToken.js';
 import './TopTracksPage.css';
-import './PageLayout.css';
-import TrackItem from '../components/TrackItem.jsx';
-import { fetchUserTopTracks } from '../api/spotify-me.js';
-import { handleTokenError } from '../utils/handleTokenError.js';
+import '../PageLayout.css';
+import TrackItem from '../../components/TrackItem.jsx';
+import { fetchUserTopTracks } from '../../api/spotify-me.js';
+import { handleTokenError } from '../../utils/handleTokenError.js';
 import { useNavigate } from 'react-router-dom';
 
 /**

@@ -4,9 +4,9 @@ import { describe, expect, test, beforeEach, afterEach, jest } from '@jest/globa
 import '@testing-library/jest-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
-import TopTracksPage from './TopTracksPage/TopTracksPage.jsx';
-import * as spotifyApi from '../api/spotify-me.js';
-import * as tokenErrorUtil from '../utils/handleTokenError.js';
+import TopTracksPage from './TopTracksPage.jsx';
+import * as spotifyApi from '../../api/spotify-me.js';
+import * as tokenErrorUtil from '../../utils/handleTokenError.js';
 
 const tracksData = [
     { id: 'track1', name: 'Track One', artists: [{ name: 'Artist A' }], album: { name: 'Album X', images: [{ url: 'album-x.jpg' }] }, popularity: 80, external_urls: { spotify: 'https://open.spotify.com/track/track1' } },
