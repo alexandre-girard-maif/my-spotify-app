@@ -1,4 +1,4 @@
-import WelcomePage from './pages/WelcomePage.jsx';
+import WelcomePage from './pages/WelcomePage/WelcomePage.jsx';
 import TopTracksPage from './pages/TopTracksPage/TopTracksPage.jsx';
 import TopArtistsPage from './pages/TopArtistsPage/TopArtistsPage.jsx';
 import PlaylistsPage from './pages/PlaylistsPage/PlaylistsPage.jsx';

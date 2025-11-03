@@ -1,6 +1,6 @@
 import React from 'react';
 import './WelcomePage.css';
-import './PageLayout.css';
+import '../PageLayout.css';
 
 export default function WelcomePage() {
   // set document title
