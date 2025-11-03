@@ -46,7 +46,7 @@ export default function PlaylistsPage() {
             setError(res.error);
           }
         }
-        setPlaylists(res.playlists || []);
+        setPlaylists(res.playlists);
       })
       .catch(err => { setError(err.message); })
       .finally(() => { setLoading(false); });
