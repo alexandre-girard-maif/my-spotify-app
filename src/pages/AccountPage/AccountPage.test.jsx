@@ -66,7 +66,7 @@ describe('AccountPage', () => {
         expect(await screen.findByText(profileData.email)).toBeInTheDocument();
         expect(await screen.findByText(profileData.country)).toBeInTheDocument();
         expect(await screen.findByText(profileData.product)).toBeInTheDocument();
-        
+
         const profileLink = await screen.findByRole('link', { name: 'Open Spotify Profile' });
         expect(profileLink).toBeInTheDocument();
         expect(profileLink).toHaveAttribute('href', profileData.external_urls.spotify);
@@ -89,7 +89,7 @@ describe('AccountPage', () => {
             </MemoryRouter>
         );
 
-         // wait for loading to finish
+        // wait for loading to finish
         await waitFor(() => {
             expect(screen.queryByTestId('loading-indicator')).not.toBeInTheDocument();
         });
@@ -110,7 +110,7 @@ describe('AccountPage', () => {
             </MemoryRouter>
         );
 
-         // wait for loading to finish
+        // wait for loading to finish
         await waitFor(() => {
             expect(screen.queryByTestId('loading-indicator')).not.toBeInTheDocument();
         });
@@ -118,5 +118,29 @@ describe('AccountPage', () => {
         // verify error message displayed
         const alert = await screen.findByRole('alert');
         expect(alert).toHaveTextContent('Network error');
-    });    
+    });
+
+    test('displays error message on fetch failure', async () => {
+        jest.spyOn(spotifyApi, 'fetchAccountProfile').mockResolvedValue({ profile: null, error: 'The access token expired' });
+
+        render(
+            <MemoryRouter initialEntries={['/account']}>
+                <Routes>
+                    <Route path="/account" element={<AccountPage />} />
+                    <Route path="/login" element={<div>Login Page</div>} />
+                </Routes>
+            </MemoryRouter>
+        );
+
+        // loading state
+        expect(screen.getByRole('status')).toHaveTextContent(/loading account info/i);
+
+        // wait for loading to finish
+        await waitFor(() => {
+            expect(screen.queryByTestId('loading-indicator')).not.toBeInTheDocument();
+        });
+
+        // verify redirected to login
+        expect(screen.getByText('Login Page')).toBeInTheDocument();
+    });
 });

@@ -29,7 +29,7 @@ export default function AccountPage() {
     document.title = `Account | Spotify App`;
   }, []);
 
-  
+
   React.useEffect(() => {
     if (!token) return; // wait for auth check
     // fetch user profile when token changes
@@ -49,7 +49,7 @@ export default function AccountPage() {
   return (
     <div className="account-page page-container">
       <h1 className="page-title">Spotify Account Info</h1>
-  {loading && <output className="account-loading">Loading account info…</output>}
+      {loading && <output className="account-loading" data-testid="loading-indicator">Loading account info…</output>}
       {error && !loading && <div className="account-error" role="alert">{error}</div>}
       {!loading && !error && profile && (
         <>
