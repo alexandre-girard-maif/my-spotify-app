@@ -120,7 +120,7 @@ describe('AccountPage', () => {
         expect(alert).toHaveTextContent('Network error');
     });
 
-    test('displays error message on fetch failure', async () => {
+    test('redirects to login on token expiration', async () => {
         jest.spyOn(spotifyApi, 'fetchAccountProfile').mockResolvedValue({ profile: null, error: 'The access token expired' });
 
         render(
