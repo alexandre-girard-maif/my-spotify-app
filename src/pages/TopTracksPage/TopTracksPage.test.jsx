@@ -85,24 +85,46 @@ describe('TopTracksPage', () => {
         expect(alert).toHaveTextContent('Failed to fetch top tracks');
     });
 
-    // test('displays error message on fetchUserPlaylists failure', async () => {
-    //     jest.spyOn(spotifyApi, 'fetchUserTopTracks').mockRejectedValue(new Error('Network error'));
+    test('displays error message on fetchUserTopTracks failure', async () => {
+        jest.spyOn(spotifyApi, 'fetchUserTopTracks').mockRejectedValue(new Error('Network error'));
 
-    //     render(
-    //         <MemoryRouter initialEntries={['/playlists']}>
-    //             <Routes>
-    //                 <Route path="/top-tracks" element={<TopTracksPage />} />
-    //             </Routes>
-    //         </MemoryRouter>
-    //     );
+        render(
+            <MemoryRouter initialEntries={['/top-tracks']}>
+                <Routes>
+                    <Route path="/top-tracks" element={<TopTracksPage />} />
+                </Routes>
+            </MemoryRouter>
+        );
 
-    //     // wait for loading to finish
-    //     await waitFor(() => {
-    //         expect(screen.queryByTestId('loading-indicator')).not.toBeInTheDocument();
-    //     });
+        // wait for loading to finish
+        await waitFor(() => {
+            expect(screen.queryByTestId('loading-indicator')).not.toBeInTheDocument();
+        });
 
-    //     // verify error message displayed
-    //     const alert = await screen.findByRole('alert');
-    //     expect(alert).toHaveTextContent('Network error');
-    // });
+        // verify error message displayed
+        const alert = await screen.findByRole('alert');
+        expect(alert).toHaveTextContent('Network error');
+    });
+
+    test('redirects to login on token expiration', async () => {
+        jest.spyOn(spotifyApi, 'fetchUserTopTracks').mockResolvedValue({ tracks: [], error: 'The access token expired' });
+
+        render(
+            <MemoryRouter initialEntries={['/top-tracks']}>
+                <Routes>
+                    <Route path="/top-tracks" element={<TopTracksPage />} />
+                    <Route path="/login" element={<div>Login Page</div>} />
+                </Routes>
+            </MemoryRouter>
+        );
+
+        // wait for loading to finish
+        await waitFor(() => {
+            expect(screen.queryByTestId('loading-indicator')).not.toBeInTheDocument();
+        });
+
+        // verify redirect to login
+        const loginText = await screen.findByText('Login Page');
+        expect(loginText).toBeInTheDocument();
+    });
 });
