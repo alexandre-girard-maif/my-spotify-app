@@ -18,13 +18,17 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: npm run test:coverage
+      # only run SonarCloud analysis if the repository owner is the same as the actor (to avoid running on forks)
       - name: SonarCloud Scan
+        if: github.repository_owner == github.actor
         uses: SonarSource/sonarqube-scan-action@v6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       # Check the Quality Gate status.
+      # only run SonarCloud Quality Gate check if the repository owner is the same as the actor (to avoid running on forks)
       - name: SonarQube Quality Gate check
+        if: github.repository_owner == github.actor
         id: sonarqube-quality-gate-check
         uses: sonarsource/sonarqube-quality-gate-action@master
         env:
