@@ -26,3 +26,6 @@ dist-ssr
 # jest
 coverage
 test-report.xml
+
+# playwright
+playwright-report
