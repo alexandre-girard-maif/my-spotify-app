@@ -82,4 +82,47 @@ describe('TopArtistsPage', () => {
         const alert = await screen.findByRole('alert');
         expect(alert).toHaveTextContent(/failed to fetch top artists/i);
     });
+
+    test('displays error message on fetchUserTopArtists failure', async () => {
+        jest.spyOn(spotifyApi, 'fetchUserTopArtists').mockRejectedValue(new Error('Network error'));
+
+        render(
+            <MemoryRouter initialEntries={['/top-artists']}>
+                <Routes>
+                    <Route path="/top-artists" element={<TopArtistsPage />} />
+                </Routes>
+            </MemoryRouter>
+        );
+
+        // wait for loading to finish
+        await waitFor(() => {
+            expect(screen.queryByTestId('loading-indicator')).not.toBeInTheDocument();
+        });
+
+        // verify error message displayed
+        const alert = await screen.findByRole('alert');
+        expect(alert).toHaveTextContent('Network error');
+    });
+
+    test('redirects to login on token expiration', async () => {
+        jest.spyOn(spotifyApi, 'fetchUserTopArtists').mockResolvedValue({ artists: [], error: 'The access token expired' });
+
+        render(
+            <MemoryRouter initialEntries={['/top-artists']}>
+                <Routes>
+                    <Route path="/top-artists" element={<TopArtistsPage />} />
+                    <Route path="/login" element={<div>Login Page</div>} />
+                </Routes>
+            </MemoryRouter>
+        );
+
+        // wait for loading to finish
+        await waitFor(() => {
+            expect(screen.queryByTestId('loading-indicator')).not.toBeInTheDocument();
+        });
+
+        // verify redirect to login
+        const loginText = await screen.findByText('Login Page');
+        expect(loginText).toBeInTheDocument();
+    });
 });

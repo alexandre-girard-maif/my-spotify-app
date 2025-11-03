@@ -50,7 +50,7 @@ export default function TopArtistsPage() {
             setError(res.error);
           }
         }
-        setArtists(res.artists || []);
+        setArtists(res.artists);
       })
       .catch(err => { setError(err.message ); })
       .finally(() => { setLoading(false); });
