@@ -13,19 +13,22 @@
  * @param {Location} [loc=globalThis.location] Location object (can be mocked in tests)
  * @returns {string} Safe relative path beginning with '/'
  */
-export function normalizePostAuthTarget(encodedTarget, loc = globalThis.location) {
-  if (!encodedTarget) return '/';
+export function normalizePostAuthTarget(
+  encodedTarget,
+  loc = globalThis.location
+) {
+  if (!encodedTarget) return "/";
   try {
     const attempt = decodeURIComponent(encodedTarget);
-    if (attempt.startsWith('http://') || attempt.startsWith('https://')) {
+    if (attempt.startsWith("http://") || attempt.startsWith("https://")) {
       const urlObj = new URL(attempt);
       if (urlObj.origin === loc.origin) {
-        return (urlObj.pathname || '/') + urlObj.search + urlObj.hash;
+        return (urlObj.pathname || "/") + urlObj.search + urlObj.hash;
       }
-      return '/';
+      return "/";
     }
-    return attempt.startsWith('/') ? attempt : '/';
+    return attempt.startsWith("/") ? attempt : "/";
   } catch {
-    return '/';
+    return "/";
   }
 }
