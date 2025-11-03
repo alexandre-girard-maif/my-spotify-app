@@ -20,7 +20,7 @@ module.exports = {
     "!src/main.jsx", // Exclude main.jsx from coverage
     "!src/App.jsx", // Exclude App.jsx from coverage
     "!src/api/pkce.js", // Exclude pkce.js from coverage
-    "!src/pages/LoginPage.jsx", // Exclude LoginPage.jsx from coverage
+    "!src/pages/LoginPage/LoginPage.jsx", // Exclude LoginPage.jsx from coverage
     "!src/pages/Callback.jsx", // Exclude Callback.jsx from coverage
     "!src/loaders/protectedLoader.js", // Exclude protectedLoader.js from coverage
     "!src/hooks/useSpotifyProfile.js", // Exclude useSpotifyProfile.js from coverage

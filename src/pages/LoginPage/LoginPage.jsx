@@ -1,8 +1,8 @@
 
-import { createPkcePair } from '../api/pkce.js';
-import { normalizePostAuthTarget } from '../utils/redirect.js';
-import '../styles/theme.css';
-import './PageLayout.css';
+import { createPkcePair } from '../../api/pkce.js';
+import { normalizePostAuthTarget } from '../../utils/redirect.js';
+import '../../styles/theme.css';
+import '../PageLayout.css';
 import './LoginPage.css';
 
 const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
