@@ -1,6 +1,6 @@
 import WelcomePage from './pages/WelcomePage.jsx';
 import TopTracksPage from './pages/TopTracksPage.jsx';
-import TopArtistsPage from './pages/TopArtistsPage.jsx';
+import TopArtistsPage from './pages/TopArtistsPage/TopArtistsPage.jsx';
 import PlaylistsPage from './pages/PlaylistsPage.jsx';
 import Callback from './pages/Callback.jsx';
 import Layout from './Layout.jsx';

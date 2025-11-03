@@ -1,10 +1,10 @@
 import React from 'react';
-import { useRequireToken } from '../hooks/useRequireToken.js';
-import TopArtistItem from '../components/TopArtistItem';
-import { fetchUserTopArtists } from '../api/spotify-me.js';
-import { handleTokenError } from '../utils/handleTokenError.js';
+import { useRequireToken } from '../../hooks/useRequireToken.js';
+import TopArtistItem from '../../components/TopArtistItem.jsx';
+import { fetchUserTopArtists } from '../../api/spotify-me.js';
+import { handleTokenError } from '../../utils/handleTokenError.js';
 import './TopArtistsPage.css';
-import './PageLayout.css';
+import '../PageLayout.css';
 import { useNavigate } from 'react-router-dom';
 
 /**
