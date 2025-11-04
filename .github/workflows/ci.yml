@@ -22,9 +22,14 @@ jobs:
         run: |
           echo 'github.actor=${{ github.actor }}'
           echo 'github.repository_owner=${{ github.repository_owner }}'
+          echo 'event_name=${{ github.event_name }}'
+          echo 'repository.fork=${{ github.event.repository.fork }}'
+          echo 'pr.head.repo.fork=${{ github.event.pull_request.head.repo.fork }}'
+          echo 'fork detected (computed)='${{ github.event.repository.fork || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork) }}
       # only run SonarCloud analysis if the repository owner is the same as the actor (to avoid running on forks)
       - name: SonarCloud Scan
-        if: github.repository_owner == github.actor
+        # Run scan only when NOT a fork (push) and NOT a forked PR
+        if: ${{ !github.event.repository.fork && !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork) }}
         uses: SonarSource/sonarqube-scan-action@v6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
@@ -32,7 +37,7 @@ jobs:
       # Check the Quality Gate status.
       # only run SonarCloud Quality Gate check if the repository owner is the same as the actor (to avoid running on forks)
       - name: SonarQube Quality Gate check
-        if: github.repository_owner == github.actor
+        if: ${{ !github.event.repository.fork && !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork) }}
         id: sonarqube-quality-gate-check
         uses: sonarsource/sonarqube-quality-gate-action@master
         env:
