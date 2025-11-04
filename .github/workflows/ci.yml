@@ -18,6 +18,10 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: npm run test:coverage
+      - name: Print GitHub Context
+        run: |
+          echo 'github.actor=${{ github.actor }}'
+          echo 'github.repository_owner=${{ github.repository_owner }}'
       # only run SonarCloud analysis if the repository owner is the same as the actor (to avoid running on forks)
       - name: SonarCloud Scan
         if: github.repository_owner == github.actor
