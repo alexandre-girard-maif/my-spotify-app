@@ -6,12 +6,14 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import TopTracksPage from './TopTracksPage.jsx';
 import * as spotifyApi from '../../api/spotify-me.js';
-import * as tokenErrorUtil from '../../utils/handleTokenError.js';
 
-const tracksData = [
-    { id: 'track1', name: 'Track One', artists: [{ name: 'Artist A' }], album: { name: 'Album X', images: [{ url: 'album-x.jpg' }] }, popularity: 80, external_urls: { spotify: 'https://open.spotify.com/track/track1' } },
-    { id: 'track2', name: 'Track Two', artists: [{ name: 'Artist B' }], album: { name: 'Album Y', images: [{ url: 'album-y.jpg' }] }, popularity: 75, external_urls: { spotify: 'https://open.spotify.com/track/track2' } },
-];
+const tracksData = {
+    items: [
+        { id: 'track1', name: 'Track One', artists: [{ name: 'Artist A' }], album: { name: 'Album X', images: [{ url: 'album-x.jpg' }] }, popularity: 80, external_urls: { spotify: 'https://open.spotify.com/track/track1' } },
+        { id: 'track2', name: 'Track Two', artists: [{ name: 'Artist B' }], album: { name: 'Album Y', images: [{ url: 'album-y.jpg' }] }, popularity: 75, external_urls: { spotify: 'https://open.spotify.com/track/track2' } },
+    ],
+    total: 2
+};
 
 describe('TopTracksPage', () => {
     beforeEach(() => {
@@ -22,7 +24,7 @@ describe('TopTracksPage', () => {
             return null;
         });
         // Mock API call
-        jest.spyOn(spotifyApi, 'fetchUserTopTracks').mockResolvedValue({ tracks: tracksData, error: null });
+        jest.spyOn(spotifyApi, 'fetchUserTopTracks').mockResolvedValue({ data: tracksData, error: null });
     });
 
     afterEach(() => {
@@ -49,11 +51,11 @@ describe('TopTracksPage', () => {
         });
 
         // verify tracks content rendered
-        const heading = await screen.findByRole('heading', { level: 1, name: `Your Top ${tracksData.length} Tracks of the Month` });
+        const heading = await screen.findByRole('heading', { level: 1, name: `Your Top ${tracksData.total} Tracks of the Month` });
         expect(heading).toBeInTheDocument();
 
         // Track items rendered
-        for (const track of tracksData) {
+        for (const track of tracksData.items) {
             expect(await screen.findByTestId(`track-item-${track.id}`)).toBeInTheDocument();
         }
 
@@ -65,7 +67,7 @@ describe('TopTracksPage', () => {
     });
 
     test('displays error message on fetch failure', async () => {
-        jest.spyOn(spotifyApi, 'fetchUserTopTracks').mockResolvedValue({ tracks: [], error: 'Failed to fetch top tracks' });
+        jest.spyOn(spotifyApi, 'fetchUserTopTracks').mockResolvedValue({ data: { items: [], total: 0 }, error: 'Failed to fetch top tracks' });
 
         render(
             <MemoryRouter initialEntries={['/top-tracks']}>

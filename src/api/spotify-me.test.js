@@ -3,6 +3,7 @@ import { afterEach, describe, expect, jest, test } from "@jest/globals";
 
 import { fetchAccountProfile, fetchUserPlaylists, fetchUserTopArtists, fetchUserTopTracks } from "./spotify-me";
 import { SPOTIFY_API_BASE } from "./spotify-commons";
+import { data } from "react-router-dom";
 
 describe("spotify-me API", () => {
   const originalFetch = globalThis.fetch;
@@ -131,7 +132,7 @@ describe("spotify-me API", () => {
     });
 
     test("returns tracks on successful fetch", async () => {
-        const mockTracks = { items: [{ id: "track1" }, { id: "track2" }] };
+        const mockTracks = { items: [{ id: "track1" }, { id: "track2" }], total: 2 };
         globalThis.fetch = jest.fn().mockResolvedValue({
             json: jest.fn().mockResolvedValue(mockTracks),
         });
@@ -144,7 +145,7 @@ describe("spotify-me API", () => {
             }
         );
         expect(result).toEqual({
-            tracks: mockTracks.items,
+            data: mockTracks,
             error: null,
         });
     });
@@ -170,7 +171,7 @@ describe("spotify-me API", () => {
         const result = await fetchUserTopTracks("any_token", 2, "short_term");
         expect(result).toEqual({
             error: "Failed to fetch top tracks.",
-            tracks: [],
+            data: { items: [], total: 0 },
         });
     });
   });

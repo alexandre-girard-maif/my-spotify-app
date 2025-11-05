@@ -120,8 +120,8 @@ export async function fetchUserTopTracks(token, limit = 10, timeRange = 'short_t
       return { error: data.error.message, tracks: [] };
     }
     // return fetched tracks
-    return { tracks: data.items, error: null };
+    return { data, error: null };
   } catch {
-    return { error: 'Failed to fetch top tracks.', tracks: [] };
+    return { error: 'Failed to fetch top tracks.', data: { items: [], total: 0 } };
   }
 }

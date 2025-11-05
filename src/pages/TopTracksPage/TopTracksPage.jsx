@@ -50,7 +50,7 @@ export default function TopTracksPage() {
             setError(res.error);
           }
         }
-        setTracks(res.tracks);
+        setTracks(res.data.items);
       })
       .catch(err => { setError(err.message); })
       .finally(() => { setLoading(false); });
