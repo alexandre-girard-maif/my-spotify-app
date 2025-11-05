@@ -76,9 +76,9 @@ describe("spotify-me API", () => {
     });
 
     test("returns playlists on successful fetch", async () => {
-        const mockPlaylists = { items: [{ id: "playlist1" }, { id: "playlist2" }] };
+        const mockData = { data: { items: [{ id: "playlist1" }, { id: "playlist2" }], total: 2 } };
         globalThis.fetch = jest.fn().mockResolvedValue({
-            json: jest.fn().mockResolvedValue(mockPlaylists),
+            json: jest.fn().mockResolvedValue(mockData),
         });
 
         const result = await fetchUserPlaylists("valid_token", 2);
@@ -88,8 +88,9 @@ describe("spotify-me API", () => {
                 headers: { Authorization: "Bearer valid_token" },
             }
         );
+
         expect(result).toEqual({
-            playlists: mockPlaylists.items,
+            data: mockData,
             error: null,
         });
     });
@@ -103,7 +104,7 @@ describe("spotify-me API", () => {
         const result = await fetchUserPlaylists("invalid_token", 2);
         expect(result).toEqual({
             error: "Invalid token",
-            playlists: [],
+            data: { items: [], total: 0 },
         });
     });
 
@@ -115,7 +116,7 @@ describe("spotify-me API", () => {
         const result = await fetchUserPlaylists("any_token", 2);
         expect(result).toEqual({
             error: "Failed to fetch playlists.",
-            playlists: [],
+            data: { items: [], total: 0 },
         });
     });
   });

@@ -8,10 +8,14 @@ import PlaylistsPage, { limit } from './PlaylistsPage.jsx';
 import * as spotifyApi from '../../api/spotify-me.js';
 import { beforeEach, afterEach, jest } from '@jest/globals';
 
-const playlistsData = [
-    { id: 'playlist1', name: 'My Playlist 1', images: [{ url: 'https://via.placeholder.com/56' }], owner: { display_name: 'User1' }, tracks: { total: 5 }, external_urls: { spotify: 'https://open.spotify.com/playlist/playlist1' } },
-    { id: 'playlist2', name: 'My Playlist 2', images: [{ url: 'https://via.placeholder.com/56' }], owner: { display_name: 'User2' }, tracks: { total: 10 }, external_urls: { spotify: 'https://open.spotify.com/playlist/playlist2' } },
-];
+const playlistsData = {
+    items: [
+        { id: 'playlist1', name: 'My Playlist 1', images: [{ url: 'https://via.placeholder.com/56' }], owner: { display_name: 'User1' }, tracks: { total: 5 }, external_urls: { spotify: 'https://open.spotify.com/playlist/playlist1' } },
+        { id: 'playlist2', name: 'My Playlist 2', images: [{ url: 'https://via.placeholder.com/56' }], owner: { display_name: 'User2' }, tracks: { total: 10 }, external_urls: { spotify: 'https://open.spotify.com/playlist/playlist2' } },
+    ],
+    total: 2
+};
+
 
 describe('PlaylistsPage', () => {
     beforeEach(() => {
@@ -20,7 +24,7 @@ describe('PlaylistsPage', () => {
             if (key === 'spotify_access_token') return tokenValue;
             return null;
         });
-        jest.spyOn(spotifyApi, 'fetchUserPlaylists').mockResolvedValue({ playlists: playlistsData, error: null });
+        jest.spyOn(spotifyApi, 'fetchUserPlaylists').mockResolvedValue({ data: playlistsData, error: null });
     });
 
     afterEach(() => {
@@ -54,7 +58,7 @@ describe('PlaylistsPage', () => {
         expect(countHeading).toBeInTheDocument();
 
         // verify each playlist item rendered
-        for (const playlist of playlistsData) {
+        for (const playlist of playlistsData.items) {
             expect(await screen.findByTestId(`playlist-item-${playlist.id}`)).toBeInTheDocument();
         }
 
@@ -66,7 +70,7 @@ describe('PlaylistsPage', () => {
     });
 
     test('displays error message on fetch failure', async () => {
-        jest.spyOn(spotifyApi, 'fetchUserPlaylists').mockResolvedValue({ playlists: [], error: 'Failed to fetch playlists' });
+        jest.spyOn(spotifyApi, 'fetchUserPlaylists').mockResolvedValue({ data: { items: [], total: 0 }, error: 'Failed to fetch playlists' });
 
         render(
             <MemoryRouter initialEntries={['/playlists']}>

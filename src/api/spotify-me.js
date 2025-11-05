@@ -86,13 +86,13 @@ export async function fetchUserPlaylists(token, limit = 10) {
 
     // handle potential API error
     if (data.error) {
-      return { error: data.error.message, playlists: [] };
+      return { error: data.error.message, data: { items: [], total: 0 } };
     }
 
-    // return fetched playlists
-    return { playlists: data.items, error: null };
+    // return fetched data
+    return { data, error: null };
   } catch {
-    return { error: 'Failed to fetch playlists.', playlists: [] };
+    return { error: 'Failed to fetch playlists.', data: { items: [], total: 0 } };
   }
 }
 
