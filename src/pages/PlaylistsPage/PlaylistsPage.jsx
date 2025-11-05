@@ -22,8 +22,7 @@ export default function PlaylistsPage() {
 
   // state for playlists data
   const [playlists, setPlaylists] = React.useState([]);
-  const [totalPlaylists, setTotalPlaylists] = React.useState(0);
-
+  
   // state for loading and error
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
@@ -48,7 +47,6 @@ export default function PlaylistsPage() {
           }
         }
         setPlaylists(res.data.items);
-        setTotalPlaylists(res.data.total);
       })
       .catch(err => { setError(err.message); })
       .finally(() => { setLoading(false); });
