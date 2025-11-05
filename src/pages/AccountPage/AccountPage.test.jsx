@@ -26,7 +26,7 @@ describe('AccountPage', () => {
             if (key === 'spotify_access_token') return tokenValue;
             return null;
         });
-        jest.spyOn(spotifyApi, 'fetchAccountProfile').mockResolvedValue({ profile: profileData, error: null });
+        jest.spyOn(spotifyApi, 'fetchAccountProfile').mockResolvedValue({ data: profileData, error: null });
     });
 
     afterEach(() => {

@@ -40,7 +40,7 @@ export default function AccountPage() {
             setError(res.error);
           }
         }
-        setProfile(res.profile);
+        setProfile(res.data);
       })
       .catch(err => { setError(err.message); })
       .finally(() => { setLoading(false); });

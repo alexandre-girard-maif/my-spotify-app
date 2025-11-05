@@ -3,7 +3,6 @@ import { afterEach, describe, expect, jest, test } from "@jest/globals";
 
 import { fetchAccountProfile, fetchUserPlaylists, fetchUserTopArtists, fetchUserTopTracks } from "./spotify-me";
 import { SPOTIFY_API_BASE } from "./spotify-commons";
-import { data } from "react-router-dom";
 
 describe("spotify-me API", () => {
   const originalFetch = globalThis.fetch;
@@ -36,7 +35,7 @@ describe("spotify-me API", () => {
         }
       );
       expect(result).toEqual({
-        profile: mockProfile,
+        data: mockProfile,
         error: null,
       });
     });
@@ -50,7 +49,7 @@ describe("spotify-me API", () => {
       const result = await fetchAccountProfile("invalid_token");
       expect(result).toEqual({
         error: "Invalid token",
-        profile: null,
+        data: null,
       });
     });
 

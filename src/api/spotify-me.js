@@ -55,11 +55,11 @@ export async function fetchAccountProfile(token) {
 
     // handle potential API error
     if (data.error) {
-      return { error: data.error.message, profile: null };
+      return { error: data.error.message, data: null };
     }
 
     // return fetched profile
-    return { profile: data, error: null };
+    return { data, error: null };
   } catch {
     return { error: 'Failed to fetch account info.', profile: null };
   }
