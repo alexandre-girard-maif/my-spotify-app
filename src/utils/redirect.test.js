@@ -8,6 +8,10 @@ describe('normalizePostAuthTarget', () => {
     expect(normalizePostAuthTarget(null, mockLoc)).toBe('/');
     expect(normalizePostAuthTarget(undefined, mockLoc)).toBe('/');
     expect(normalizePostAuthTarget('', mockLoc)).toBe('/');
+
+    expect(normalizePostAuthTarget(null)).toBe('/');
+    expect(normalizePostAuthTarget(undefined)).toBe('/');
+    expect(normalizePostAuthTarget('')).toBe('/');
   });
 
   test('accepts simple relative path', () => {

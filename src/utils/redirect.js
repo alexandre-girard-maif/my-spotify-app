@@ -23,7 +23,7 @@ export function normalizePostAuthTarget(
     if (attempt.startsWith("http://") || attempt.startsWith("https://")) {
       const urlObj = new URL(attempt);
       if (urlObj.origin === loc.origin) {
-        return (urlObj.pathname || "/") + urlObj.search + urlObj.hash;
+        return (urlObj.pathname) + urlObj.search + urlObj.hash;
       }
       return "/";
     }
