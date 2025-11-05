@@ -186,7 +186,7 @@ describe("spotify-me API", () => {
     });
 
     test("returns artists on successful fetch", async () => {
-        const mockArtists = { items: [{ id: "artist1" }, { id: "artist2" }] };
+        const mockArtists = { data: { items: [{ id: "artist1" }, { id: "artist2" }] }, total: 2 };
         globalThis.fetch = jest.fn().mockResolvedValue({
             json: jest.fn().mockResolvedValue(mockArtists),
         });
@@ -199,7 +199,7 @@ describe("spotify-me API", () => {
             }
         );
         expect(result).toEqual({
-            artists: mockArtists.items,
+            data: mockArtists,
             error: null,
         });
     });

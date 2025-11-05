@@ -10,12 +10,12 @@ import { useNavigate } from 'react-router-dom';
 /**
  * Number of artists to fetch
  */
-const limit = 10;
+export const limit = 10;
 
 /** 
  * Time range for top artists
  */
-const timeRange = 'short_term';
+export const timeRange = 'short_term';
 
 /**
  * Top Artists Page
@@ -50,7 +50,7 @@ export default function TopArtistsPage() {
             setError(res.error);
           }
         }
-        setArtists(res.artists);
+        setArtists(res.data.items);
       })
       .catch(err => { setError(err.message ); })
       .finally(() => { setLoading(false); });
@@ -58,8 +58,8 @@ export default function TopArtistsPage() {
 
   return (
     <div className="artists-container page-container">
-      <h1 className="artists-title page-title">Your Top {artists.length} Artists of the Month</h1>
-      {loading && <output className="artists-loading">Loading top artists…</output>}
+      <h1 className="artists-title page-title">Your Top {limit} Artists of the Month</h1>
+      {loading && <output className="artists-loading" data-testid="loading-indicator">Loading top artists…</output>}
       {error && !loading && <div className="artists-error" role="alert">{error}</div>}
       {!loading && !error && (
         <ol className="artists-list">

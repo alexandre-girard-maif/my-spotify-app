@@ -29,7 +29,7 @@ export async function fetchUserTopArtists(token, limit = 10, timeRange = 'short_
     }
 
     // return fetched artists
-    return { artists: data.items, error: null };
+    return { data, error: null };
   } catch {
     return { error: 'Failed to fetch top artists.', artists: [] };
   }
