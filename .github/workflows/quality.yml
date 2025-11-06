@@ -2,10 +2,10 @@ name: Analyze with SonarCloud
 on:
   push: 
     branches:
-      - main
+      - develop
   pull_request:
     branches:
-      - main
+      - develop
 jobs:
   build-and-analyze:
     # only run SonarCloud analysis if the repository owner is the same as the actor (to avoid running on forks)
