@@ -119,7 +119,7 @@ describe('PlaylistsPage', () => {
             <MemoryRouter initialEntries={['/playlists']}>
                 <Routes>
                     <Route path="/playlists" element={<PlaylistsPage />} />
-                    {/* Route where user is redirected after login when token is expired */}
+                    {/* Dummy login route for redirection when token is expired */}
                     <Route path="/login" element={<div>Login Page</div>} />
                 </Routes>
             </MemoryRouter>

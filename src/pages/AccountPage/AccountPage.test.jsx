@@ -127,6 +127,7 @@ describe('AccountPage', () => {
             <MemoryRouter initialEntries={['/account']}>
                 <Routes>
                     <Route path="/account" element={<AccountPage />} />
+                    {/* Dummy login route for redirection when token is expired */}
                     <Route path="/login" element={<div>Login Page</div>} />
                 </Routes>
             </MemoryRouter>

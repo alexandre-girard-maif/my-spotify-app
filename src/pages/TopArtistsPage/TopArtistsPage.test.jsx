@@ -113,6 +113,7 @@ describe('TopArtistsPage', () => {
             <MemoryRouter initialEntries={['/top-artists']}>
                 <Routes>
                     <Route path="/top-artists" element={<TopArtistsPage />} />
+                    {/* Dummy login route for redirection when token is expired */}
                     <Route path="/login" element={<div>Login Page</div>} />
                 </Routes>
             </MemoryRouter>

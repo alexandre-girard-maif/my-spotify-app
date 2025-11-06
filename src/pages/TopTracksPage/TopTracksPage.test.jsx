@@ -115,6 +115,7 @@ describe('TopTracksPage', () => {
             <MemoryRouter initialEntries={['/top-tracks']}>
                 <Routes>
                     <Route path="/top-tracks" element={<TopTracksPage />} />
+                    {/* Dummy login route for redirection when token is expired */}
                     <Route path="/login" element={<div>Login Page</div>} />
                 </Routes>
             </MemoryRouter>
