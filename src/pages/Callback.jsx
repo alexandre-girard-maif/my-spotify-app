@@ -1,6 +1,4 @@
-
-
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;

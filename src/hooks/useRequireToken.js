@@ -1,15 +1,15 @@
 // src/hooks/useRequireToken.js
 // Hook that returns the spotify access token, redirecting to /login if missing.
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SPOTIFY_TOKEN_KEY } from '../constants/auth.js';
 
 export function useRequireToken() {
   const navigate = useNavigate();
-  const [checking, setChecking] = React.useState(true);
-  const [token, setToken] = React.useState(null);
+  const [checking, setChecking] = useState(true);
+  const [token, setToken] = useState(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     let active = true;
     Promise.resolve().then(() => {
       if (!active) return;

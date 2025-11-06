@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { useRequireToken } from '../../hooks/useRequireToken.js';
 import TopArtistItem from '../../components/TopArtistItem.jsx';
 import { fetchUserTopArtists } from '../../api/spotify-me.js';
@@ -26,21 +26,21 @@ export default function TopArtistsPage() {
   const navigate = useNavigate();
 
   // state for artists data
-  const [artists, setArtists] = React.useState([]);
+  const [artists, setArtists] = useState([]);
 
   // state for loading and error
-  const [loading, setLoading] = React.useState(true);
-  const [error, setError] = React.useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   
   // require token to fetch playlists
   const { token } = useRequireToken();
 
   // Set document title
-  React.useEffect(() => {
+  useEffect(() => {
     document.title = `Top Artists | Spotify App`;
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!token) return; // wait for auth check
     // fetch user top artists when token changes
     fetchUserTopArtists(token, limit, timeRange)

@@ -1,6 +1,6 @@
 import { describe, test, expect, beforeEach, afterEach, jest } from '@jest/globals';
 import '@testing-library/jest-dom';
-import React from 'react';
+import { useEffect } from 'react';
 import { render, waitFor } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { useRequireToken } from './useRequireToken.js';
@@ -8,7 +8,7 @@ import { SPOTIFY_TOKEN_KEY } from '../constants/auth.js';
 
 function HookConsumer({ onValue }) {
   const value = useRequireToken();
-  React.useEffect(() => { onValue(value); }, [value, onValue]);
+  useEffect(() => { onValue(value); }, [value, onValue]);
   return null;
 }
 

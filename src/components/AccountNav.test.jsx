@@ -1,5 +1,4 @@
 // src/components/AccountNav.test.jsx
-import React from 'react';
 import { describe, expect, test } from '@jest/globals';
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
