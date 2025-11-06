@@ -103,16 +103,19 @@ export default defineConfig([
       ...jestRecommendedRules,
       // Tweak a high-noise rule to warn instead of error initially
       'testing-library/no-debugging-utils': 'warn',
-      // Stage adoption: downgrade stricter rules producing many hits so we can refactor incrementally
-      'testing-library/no-node-access': 'warn',
-      'testing-library/no-container': 'warn',
-      'testing-library/no-wait-for-multiple-assertions': 'warn',
-      'jest-dom/prefer-to-have-text-content': 'warn',
-      // Initial jest rule adjustments
-      'jest/no-disabled-tests': 'warn',
+      // Escalated: test suite now clean, enforce strict querying & assertion hygiene
+      'testing-library/no-node-access': 'error',
+      'testing-library/no-container': 'error',
+      'testing-library/no-wait-for-multiple-assertions': 'error',
+      'testing-library/prefer-screen-queries': 'error',
+      'jest-dom/prefer-to-have-text-content': 'error',
+      // Jest strictness
+      'jest/no-disabled-tests': 'error',
       'jest/no-identical-title': 'error',
-      'jest/expect-expect': 'warn',
+      'jest/expect-expect': 'error',
       'jest/no-commented-out-tests': 'off',
+      'jest/no-focused-tests': 'error',
+      'jest/no-conditional-expect': 'error',
     }
   }
 ]);
