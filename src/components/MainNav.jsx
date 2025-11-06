@@ -64,8 +64,6 @@ export default function MainNav() {
         // Log fetch errors silently
         console.error('Failed to fetch account profile:', err);
       })
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // run once, keep closure over initial profile state intentionally
 
   return (
