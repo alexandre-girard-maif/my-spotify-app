@@ -1,6 +1,6 @@
 // src/pages/TopArtistsPage.test.jsx
 
-import { describe, expect, it, test } from '@jest/globals';
+import { describe, expect, test } from '@jest/globals';
 import '@testing-library/jest-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
