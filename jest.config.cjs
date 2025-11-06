@@ -23,8 +23,6 @@ module.exports = {
     "!src/pages/LoginPage/LoginPage.jsx", // Exclude LoginPage.jsx from coverage
     "!src/pages/Callback.jsx", // Exclude Callback.jsx from coverage
     "!src/loaders/protectedLoader.js", // Exclude protectedLoader.js from coverage
-    // "!src/hooks/useSpotifyProfile.js", // Exclude useSpotifyProfile.js from coverage
-
   ],
   testResultsProcessor: 'jest-sonar-reporter',
   moduleNameMapper: {
