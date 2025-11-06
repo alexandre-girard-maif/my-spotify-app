@@ -2,7 +2,7 @@
 
 import { describe, expect, test } from '@jest/globals'
 import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import TopArtistItem from './TopArtistItem';
 
 describe('TopArtistItem component', () => {
@@ -22,20 +22,19 @@ describe('TopArtistItem component', () => {
         const listItem = screen.getByTestId(`top-artist-item-${artist.id}`);
         expect(listItem).toBeInTheDocument();
 
-        // should contain artist image
-        const img = listItem.querySelector('img');
+        // should contain artist image (use alt text)
+        const img = within(listItem).getByAltText(artist.name);
         expect(img).toBeInTheDocument();
         expect(img).toHaveAttribute('src', artist.images[1].url);
 
-        // should contain artist details
+        // details assertions
         expect(listItem).toHaveTextContent(artist.name);
         expect(listItem).toHaveTextContent(`Genres: ${artist.genres.join(', ')}`);
         expect(listItem).toHaveTextContent(`Followers: ${artist.followers.total.toLocaleString()}`);
         expect(listItem).toHaveTextContent(`Popularity: ${artist.popularity}`);
 
-        // should contain link to artist page
-        const link = listItem.querySelector('a.artist-link');
-        expect(link).toBeInTheDocument();
+        // link to artist page
+        const link = within(listItem).getByRole('link', { name: /view artist/i });
         expect(link).toHaveAttribute('href', artist.external_urls.spotify);
 
         // uncomment to debug
@@ -57,18 +56,16 @@ describe('TopArtistItem component', () => {
         const listItem = screen.getByTestId(`top-artist-item-${artist.id}`);
         expect(listItem).toBeInTheDocument();
 
-        // should not contain artist image
-        const img = listItem.querySelector('img');
-        expect(img).not.toBeInTheDocument();
+        // should not contain artist image (query by alt)
+        expect(within(listItem).queryByAltText(artist.name)).not.toBeInTheDocument();
 
-        // should contain artist details
+        // details assertions
         expect(listItem).toHaveTextContent(artist.name);
         expect(listItem).toHaveTextContent(`Genres: ${artist.genres.join(', ')}`);
         expect(listItem).toHaveTextContent(`Followers: ${artist.followers.total.toLocaleString()}`);
 
-        // should contain link to artist page
-        const link = listItem.querySelector('a.artist-link');
-        expect(link).toBeInTheDocument();
+        // link to artist page
+        const link = within(listItem).getByRole('link', { name: /view artist/i });
         expect(link).toHaveAttribute('href', artist.external_urls.spotify);
 
         // uncomment to debug
