@@ -1,5 +1,6 @@
 import js from '@eslint/js';
 import globals from 'globals';
+import reactPlugin from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import { defineConfig, globalIgnores } from 'eslint/config';
@@ -25,13 +26,20 @@ export default defineConfig([
       },
     },
     plugins: {
+      react: reactPlugin,
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
+    },
+    settings: {
+      react: { version: 'detect' }
     },
     rules: {
       ...baseJsRules,
       ...hooksRules,
       ...refreshRules,
+      // Mark JSX identifiers as used so no-unused-vars doesn't flag them
+      'react/jsx-uses-vars': 'warn',
+      'react/jsx-uses-react': 'off', // not needed with the new JSX transform
       // 'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
     },
   },
