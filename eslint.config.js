@@ -4,6 +4,8 @@ import reactPlugin from "eslint-plugin-react";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import jsxA11y from 'eslint-plugin-jsx-a11y';
+import testingLibrary from 'eslint-plugin-testing-library';
+import jestDom from 'eslint-plugin-jest-dom';
 import { defineConfig, globalIgnores } from "eslint/config";
 
 // Extract rule sets from plugin distributed configs to avoid using their legacy
@@ -13,6 +15,9 @@ const refreshRules = reactRefresh.configs.vite?.rules || {};
 const baseJsRules = js.configs.recommended.rules || {};
 const jsxRuntimeRules = reactPlugin.configs["jsx-runtime"]?.rules || {};
 const a11yRules = jsxA11y.configs.recommended?.rules || {};
+// Testing library & jest-dom recommended rules (scoped to test files later)
+const testingLibraryReactRules = testingLibrary.configs.react?.rules || {};
+const jestDomRecommendedRules = jestDom.configs.recommended?.rules || {};
 
 export default defineConfig([
   // Ignore build and generated/report folders & instructional resource snippets
@@ -77,4 +82,28 @@ export default defineConfig([
       globals: globals.node,
     },
   },
+  // Test files: include browser + jest globals and apply testing-library / jest-dom rules
+  {
+    files: ["**/*.test.{js,jsx}", "**/__tests__/**/*.{js,jsx}"],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: { ...globals.browser, ...globals.jest },
+      parserOptions: { ecmaVersion: "latest", ecmaFeatures: { jsx: true }, sourceType: "module" }
+    },
+    plugins: {
+      'testing-library': testingLibrary,
+      'jest-dom': jestDom,
+    },
+    rules: {
+      ...testingLibraryReactRules,
+      ...jestDomRecommendedRules,
+      // Tweak a high-noise rule to warn instead of error initially
+      'testing-library/no-debugging-utils': 'warn',
+      // Stage adoption: downgrade stricter rules producing many hits so we can refactor incrementally
+      'testing-library/no-node-access': 'warn',
+      'testing-library/no-container': 'warn',
+      'testing-library/no-wait-for-multiple-assertions': 'warn',
+      'jest-dom/prefer-to-have-text-content': 'warn',
+    }
+  }
 ]);
