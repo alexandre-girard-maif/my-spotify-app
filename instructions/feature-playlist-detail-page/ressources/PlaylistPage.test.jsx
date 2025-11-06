@@ -4,7 +4,7 @@ import { describe, expect, test } from '@jest/globals';
 import '@testing-library/jest-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
-import PlaylistPage from './PlaylistPage.jsx';
+import PlaylistPage from './PlaylistPage.js';
 import * as spotifyApi from '../api/spotify-playlists.js';
 import { beforeEach, afterEach, jest } from '@jest/globals';
 
@@ -139,7 +139,7 @@ describe('PlaylistPage', () => {
     });
 
     test("handleTokenError called on token expiry error", async () => {
-        const handleTokenErrorSpy = jest.spyOn(require('../utils/handleTokenError'), 'handleTokenError');
+        const handleTokenErrorSpy = jest.spyOn(require('../utils/handleTokenError.js'), 'handleTokenError');
         jest.spyOn(spotifyApi, 'fetchPlaylistById').mockResolvedValue({ playlist: null, error: 'The access token expired' });
 
         render(
