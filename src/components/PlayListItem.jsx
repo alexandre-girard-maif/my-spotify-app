@@ -1,4 +1,5 @@
-import React from 'react';
+import './PlayListItem.css';
+import './ListItem.css';
 
 /**
  * Playlist item component
@@ -7,18 +8,18 @@ import React from 'react';
  */
 export default function PlayListItem({ playlist }) {
   return (
-    <li key={playlist.id} data-testid={`playlist-item-${playlist.id}`} className="playlist-item">
+  <li key={playlist.id} data-testid={`playlist-item-${playlist.id}`} className="list-item playlist-item">
       <img
         src={playlist.images[0]?.url}
         alt="cover"
-        className="playlist-cover"
+        className="playlist-item-cover"
       />
-      <div className="playlist-details">
-        <div className="playlist-details-header">
-          <div className="playlist-title">{playlist.name}</div>
-          <div className="playlist-owner">By {playlist.owner.display_name}</div>
+      <div className="playlist-item-details">
+        <div className="playlist-item-details-header">
+          <div className="playlist-item-title">{playlist.name}</div>
+          <div className="playlist-item-owner">By {playlist.owner.display_name}</div>
         </div>
-        <div className="playlist-tracks">{playlist.tracks.total} tracks</div>
+        <div className="playlist-item-tracks">{playlist.tracks.total} tracks</div>
       </div>
       <a
         href={playlist.external_urls.spotify}

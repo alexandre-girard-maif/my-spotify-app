@@ -1,0 +1,15 @@
+/* Container & title now provided by .page-container and .page-title utilities */
+
+.tracks-list {
+  padding: 0;
+  list-style: decimal inside;
+}
+
+.tracks-loading, .tracks-error {
+  margin-top: 20vh;
+  text-align: center;
+}
+
+.tracks-error {
+  color: red;
+}

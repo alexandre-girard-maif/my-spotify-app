@@ -1,0 +1,68 @@
+import { useState, useEffect } from 'react';
+import { fetchAccountProfile } from '../../api/spotify-me.js';
+import { useRequireToken } from '../../hooks/useRequireToken.js';
+import './AccountPage.css';
+import '../PageLayout.css';
+import { handleTokenError } from '../../utils/handleTokenError.js';
+import { useNavigate } from 'react-router-dom';
+
+/**
+ * Account component to display user profile information.
+ * @returns JSX.Element
+ */
+export default function AccountPage() {
+  // Initialize navigate function
+  const navigate = useNavigate();
+
+  // state for profile data
+  const [profile, setProfile] = useState(null);
+
+  // state for loading and error
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // require token to fetch profile
+  const { token } = useRequireToken();
+
+  // Set document title
+  useEffect(() => {
+    document.title = `Account | Spotify App`;
+  }, []);
+
+
+  useEffect(() => {
+    if (!token) return; // wait for auth check
+    // fetch user profile when token changes
+    fetchAccountProfile(token)
+      .then(res => {
+        if (res.error) {
+          if (!handleTokenError(res.error, navigate)) {
+            setError(res.error);
+          }
+        }
+        setProfile(res.data);
+      })
+      .catch(err => { setError(err.message); })
+      .finally(() => { setLoading(false); });
+  }, [token, navigate]);
+
+  return (
+    <div className="account-page page-container">
+      <h1 className="page-title">Spotify Account Info</h1>
+      {loading && <output className="account-loading" data-testid="loading-indicator">Loading account info…</output>}
+      {error && !loading && <div className="account-error" role="alert">{error}</div>}
+      {!loading && !error && profile && (
+        <>
+          <img className="account-avatar" src={profile.images?.[0]?.url} alt="avatar" />
+          <h2>{profile.display_name}</h2>
+          <div className="account-details">
+            <p><b>Email:</b> {profile.email}</p>
+            <p><b>Country:</b> {profile.country}</p>
+            <p><b>Product:</b> {profile.product}</p>
+          </div>
+          <a className="account-link" href={profile.external_urls.spotify} target="_blank" rel="noopener noreferrer">Open Spotify Profile</a>
+        </>
+      )}
+    </div>
+  );
+}

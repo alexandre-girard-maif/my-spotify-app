@@ -1,4 +1,4 @@
-import React from 'react';
+import './TopArtistItem.css';
 
 /**
  * TopArtistItem component displays information about a single top artist.
@@ -20,7 +20,7 @@ export default function TopArtistItem({ artist, index }) {
       <div className="artist-details">
         <div className="artist-details-header">
           <div className="artist-title">
-            {index + 1}. {artist.name}
+            {index}. {artist.name}
           </div>
           <div className="artist-genres">
             Genres: {artist.genres.join(', ')}

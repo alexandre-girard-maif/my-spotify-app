@@ -1,4 +1,5 @@
-import React from 'react';
+import './TrackItem.css';
+import './ListItem.css';
 
 /**
  * Displays a single track item with its details.
@@ -7,7 +8,7 @@ import React from 'react';
  */
 export default function TrackItem({ track }) {
   return (
-    <li className="track-item" data-testid={`track-item-${track.id}`}>
+  <li className="list-item track-item" data-testid={`track-item-${track.id}`}>
       <img
         src={track.album.images[2]?.url || track.album.images[0]?.url}
         alt="cover"

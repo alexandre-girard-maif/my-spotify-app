@@ -1,0 +1,70 @@
+.login-container {
+  text-align: center;
+  margin-top: 12vh;
+}
+
+.login-title {
+  font-size: clamp(2rem, 6vw, 3rem);
+  background: linear-gradient(90deg,#1DB954,#1ed760);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin-bottom: 0.75rem;
+}
+
+.login-desc {
+  max-width: 640px;
+  margin: 0 auto 1.75rem;
+  line-height: 1.4;
+  font-size: 1.05rem;
+  color: #333;
+}
+
+.login-btn {
+  /* Force button to occupy its own line so the error appears directly beneath */
+  display: block;
+  margin: 0 auto;
+  background: #1DB954;
+  color: #fff;
+  border: none;
+  padding: 0.85rem 1.75rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background .2s ease, transform .15s ease;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+}
+
+.login-btn:hover:not(.btn--disabled) {
+  background: #1ed760;
+}
+
+.login-btn:active:not(.btn--disabled) {
+  transform: translateY(1px);
+}
+
+.btn--disabled,
+.login-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.login-error {
+  /* Ensure error is on its own line immediately under the button */
+  display: block;
+  margin: 0.4rem auto 0; /* small gap below button */
+  font-size: 0.9rem;
+  color: #b00020;
+  background: #ffecec;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  max-width: 480px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .login-btn { transition: none; }
+}

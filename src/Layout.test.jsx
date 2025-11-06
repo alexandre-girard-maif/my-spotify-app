@@ -11,32 +11,29 @@ import { version } from '../package.json';
 describe('Layout Component', () => {
     test('renders the layout with correct elements', () => {
         render(<MemoryRouter><Layout /></MemoryRouter>);
-        
+
         // Header
         const headerElement = screen.getByRole('banner');
         expect(headerElement).toBeInTheDocument();
-        const titleElement = screen.getByText('My Spotify App');
-        expect(titleElement).toBeInTheDocument();
-        // Check if the title is wrapped in a link to home
-        expect(titleElement.closest('a')).toHaveAttribute('href', '/');
+        const homeLink = screen.getByRole('link', { name: /go to home/i });
+        expect(homeLink).toBeInTheDocument();
+        expect(homeLink).toHaveAttribute('href', '/');
 
         // Navigation
-        const topTracksLink = screen.getByText('Top Tracks');
-        expect(topTracksLink).toBeInTheDocument();
-        expect(topTracksLink.closest('a')).toHaveAttribute('href', '/top-tracks');
+        const topTracksLink = screen.getByRole('link', { name: /top tracks/i });
+        expect(topTracksLink).toHaveAttribute('href', '/top-tracks');
 
-        const topArtistsLink = screen.getByText('Top Artists');
-        expect(topArtistsLink).toBeInTheDocument();
-        expect(topArtistsLink.closest('a')).toHaveAttribute('href', '/top-artists');
+        const topArtistsLink = screen.getByRole('link', { name: /top artists/i });
+        expect(topArtistsLink).toHaveAttribute('href', '/top-artists');
 
-        const playlistsLink = screen.getByText('Playlists');
-        expect(playlistsLink).toBeInTheDocument();
-        expect(playlistsLink.closest('a')).toHaveAttribute('href', '/playlists');
+        const playlistsLink = screen.getByRole('link', { name: /playlists/i });
+        expect(playlistsLink).toHaveAttribute('href', '/playlists');
 
         // Footer
         const footerElement = screen.getByRole('contentinfo');
         expect(footerElement).toBeInTheDocument();
-        expect(footerElement).toHaveTextContent(`© ${new Date().getFullYear()} My Spotify App - ${version}`);
+        expect(footerElement).toHaveTextContent(`© ${new Date().getFullYear()} My Spotify App – v${version}`);
+        expect(footerElement).toHaveTextContent(/Spotify and related trademarks are owned by Spotify AB/i);
 
     });
 });

@@ -1,0 +1,36 @@
+/* Layout shared via .list-item utility */
+.playlist-item-cover {
+  width: 80px;
+  height: 80px;
+  border-radius: 6px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.playlist-item-details { flex: 1; }
+.playlist-item-details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+.playlist-item-title {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #000;
+}
+.playlist-item-owner {
+  font-size: 1em;
+  color: #555;
+  margin-left: 16px;
+}
+.playlist-item-tracks {
+  font-size: 0.9em;
+  color: #777;
+  margin-bottom: 4px;
+}
+.playlist-item-link {
+  font-size: 0.9em;
+  color: #1DB954;
+  text-decoration: none;
+  font-weight: bold;
+}
