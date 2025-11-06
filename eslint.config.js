@@ -6,6 +6,7 @@ import reactRefresh from "eslint-plugin-react-refresh";
 import jsxA11y from 'eslint-plugin-jsx-a11y';
 import testingLibrary from 'eslint-plugin-testing-library';
 import jestDom from 'eslint-plugin-jest-dom';
+import jestPlugin from 'eslint-plugin-jest';
 import { defineConfig, globalIgnores } from "eslint/config";
 
 // Extract rule sets from plugin distributed configs to avoid using their legacy
@@ -18,6 +19,7 @@ const a11yRules = jsxA11y.configs.recommended?.rules || {};
 // Testing library & jest-dom recommended rules (scoped to test files later)
 const testingLibraryReactRules = testingLibrary.configs.react?.rules || {};
 const jestDomRecommendedRules = jestDom.configs.recommended?.rules || {};
+const jestRecommendedRules = (jestPlugin.configs?.recommended?.rules) || {};
 
 export default defineConfig([
   // Ignore build and generated/report folders & instructional resource snippets
@@ -93,10 +95,12 @@ export default defineConfig([
     plugins: {
       'testing-library': testingLibrary,
       'jest-dom': jestDom,
+      'jest': jestPlugin,
     },
     rules: {
       ...testingLibraryReactRules,
       ...jestDomRecommendedRules,
+      ...jestRecommendedRules,
       // Tweak a high-noise rule to warn instead of error initially
       'testing-library/no-debugging-utils': 'warn',
       // Stage adoption: downgrade stricter rules producing many hits so we can refactor incrementally
@@ -104,6 +108,11 @@ export default defineConfig([
       'testing-library/no-container': 'warn',
       'testing-library/no-wait-for-multiple-assertions': 'warn',
       'jest-dom/prefer-to-have-text-content': 'warn',
+      // Initial jest rule adjustments
+      'jest/no-disabled-tests': 'warn',
+      'jest/no-identical-title': 'error',
+      'jest/expect-expect': 'warn',
+      'jest/no-commented-out-tests': 'off',
     }
   }
 ]);
