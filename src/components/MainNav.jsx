@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom';
-import { useSpotifyProfile } from '../hooks/useSpotifyProfile.js';
+import { useEffect, useState } from 'react';
+import { fetchAccountProfile } from '../api/spotify-me.js';
 import AccountNav from './AccountNav';
 import './MainNav.css';
 
@@ -27,7 +28,52 @@ const PlaylistsLink = () => <NavItem to="/playlists">Playlists</NavItem>;
  * @returns {JSX.Element}
  */
 export default function MainNav() {
-  const { profile, loading } = useSpotifyProfile();
+  const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    // Try read cache first
+    try {
+      const raw = localStorage.getItem('spotify_profile');
+      if (raw) {
+        setProfile(JSON.parse(raw));
+      }
+    } catch {
+      /* ignore parse errors */
+    }
+
+    const token = localStorage.getItem('spotify_access_token');
+    if (!token) return; // Not authenticated
+    if (profile) return; // Skip fetch if we already have cached profile
+
+    setLoading(true);
+    fetchAccountProfile(token)
+      .then((result) => {
+        if (cancelled) return;
+        if (result.error) {
+          setError(result.error);
+        } else if (result.data) {
+          setProfile(result.data);
+          try {
+            localStorage.setItem('spotify_profile', JSON.stringify(result.data));
+          } catch {
+            /* ignore quota errors */
+          }
+        }
+      })
+      .catch((err) => {
+        if (cancelled) return;
+        setError(err?.message || 'Failed to load profile');
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // run once, keep closure over initial profile state intentionally
 
   return (
     <div className="main-nav-wrapper">
@@ -36,7 +82,7 @@ export default function MainNav() {
         <TopArtistsLink />
         <PlaylistsLink />
       </nav>
-      <AccountNav profile={profile} loading={loading} />
+      <AccountNav profile={profile} loading={loading} error={error} />
     </div>
   );
 }
