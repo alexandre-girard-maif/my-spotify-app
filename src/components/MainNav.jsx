@@ -29,11 +29,8 @@ const PlaylistsLink = () => <NavItem to="/playlists">Playlists</NavItem>;
  */
 export default function MainNav() {
   const [profile, setProfile] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
-    let cancelled = false;
     // Try read cache first
     try {
       const raw = localStorage.getItem('spotify_profile');
@@ -46,16 +43,16 @@ export default function MainNav() {
 
     const token = localStorage.getItem('spotify_access_token');
     if (!token) return; // Not authenticated
-    if (profile) return; // Skip fetch if we already have cached profile
+    // if (profile) return; // Skip fetch if we already have cached profile
 
-    setLoading(true);
+    // Fetch profile from API
     fetchAccountProfile(token)
       .then((result) => {
-        if (cancelled) return;
         if (result.error) {
-          setError(result.error);
-        } else if (result.data) {
+          console.error('Failed to fetch account profile:', result);
+        } else {
           setProfile(result.data);
+          // Cache profile in localStorage
           try {
             localStorage.setItem('spotify_profile', JSON.stringify(result.data));
           } catch {
@@ -64,14 +61,10 @@ export default function MainNav() {
         }
       })
       .catch((err) => {
-        if (cancelled) return;
-        setError(err?.message || 'Failed to load profile');
+        // Log fetch errors silently
+        console.error('Failed to fetch account profile:', err);
       })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
 
-    return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // run once, keep closure over initial profile state intentionally
 
@@ -82,7 +75,7 @@ export default function MainNav() {
         <TopArtistsLink />
         <PlaylistsLink />
       </nav>
-      <AccountNav profile={profile} loading={loading} error={error} />
+      <AccountNav profile={profile} />
     </div>
   );
 }
