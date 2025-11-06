@@ -65,8 +65,8 @@ describe('PlaylistsPage', () => {
         // verify API called correctly
         await waitFor(() => {
             expect(spotifyApi.fetchUserPlaylists).toHaveBeenCalledTimes(1);
-            expect(spotifyApi.fetchUserPlaylists).toHaveBeenCalledWith('test-token', 10);
         });
+        expect(spotifyApi.fetchUserPlaylists).toHaveBeenCalledWith('test-token', 10);
     });
 
     test('displays error message on fetch failure', async () => {

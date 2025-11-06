@@ -74,8 +74,8 @@ describe('AccountPage', () => {
         // verify API called correctly
         await waitFor(() => {
             expect(spotifyApi.fetchAccountProfile).toHaveBeenCalledTimes(1);
-            expect(spotifyApi.fetchAccountProfile).toHaveBeenCalledWith(expect.any(String));
         });
+        expect(spotifyApi.fetchAccountProfile).toHaveBeenCalledWith(expect.any(String));
     });
 
     test('displays error message on fetch failure', async () => {

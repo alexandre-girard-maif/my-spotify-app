@@ -1,7 +1,7 @@
 import { describe, test, expect, beforeEach, afterEach, jest } from '@jest/globals';
 import '@testing-library/jest-dom';
 import { useEffect } from 'react';
-import { render, waitFor } from '@testing-library/react';
+import { render, waitFor, screen } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { useRequireToken } from './useRequireToken.js';
 import { SPOTIFY_TOKEN_KEY } from '../constants/auth.js';
@@ -39,14 +39,15 @@ describe('useRequireToken', () => {
     await waitFor(() => {
       const last = values[values.length-1];
       expect(last.checking).toBe(false);
-      expect(last.token).toBe('token-value');
     });
+    const final = values[values.length-1];
+    expect(final.token).toBe('token-value');
   });
 
   test('redirects to /login when token missing', async () => {
     getItemSpy.mockReturnValue(null);
     const values = [];
-    const { container } = render(
+    render(
       <MemoryRouter initialEntries={['/account']}>
         <Routes>
           <Route path="/account" element={<HookConsumer onValue={(v)=>values.push(v)} />} />
@@ -58,10 +59,10 @@ describe('useRequireToken', () => {
     await waitFor(() => {
       const last = values[values.length-1];
       expect(last.checking).toBe(false);
-      expect(last.token).toBe(null);
-      // Navigation effect: login page rendered
-      expect(container.querySelector('[data-testid="login-page"]')).toBeInTheDocument();
     });
+    const final = values[values.length-1];
+    expect(final.token).toBe(null);
+    expect(screen.getByTestId('login-page')).toBeInTheDocument();
   });
 
   test('cleanup prevents state update after unmount before microtask resolves', async () => {
