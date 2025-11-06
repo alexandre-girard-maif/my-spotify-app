@@ -1,10 +1,10 @@
-import React from 'react';
+import { useEffect } from 'react';
 import './WelcomePage.css';
 import '../PageLayout.css';
 
 export default function WelcomePage() {
   // set document title
-  React.useEffect(() => {
+  useEffect(() => {
     document.title = `Welcome | Spotify App`;
   }, []);
 

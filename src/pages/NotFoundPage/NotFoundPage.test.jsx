@@ -12,19 +12,18 @@ describe('NotFoundPage', () => {
             { path: '/non-existent', Component: NotFoundPage }
         ]);
 
-        const { container } = render(<Stub initialEntries={['/non-existent']} />);
+    render(<Stub initialEntries={['/non-existent']} />);
 
-        const titleElement = container.querySelector('.notfound-title');
-        expect(titleElement).toBeInTheDocument();
-        expect(titleElement).toHaveTextContent('404 – Page Not Found');
+    const titleElement = screen.getByRole('heading', { name: /404.*Page Not Found/i });
+    expect(titleElement).toBeInTheDocument();
+    expect(titleElement).toHaveTextContent('404 – Page Not Found');
 
-        const messageElement = container.querySelector('.notfound-message');
-        expect(messageElement).toBeInTheDocument();
-        expect(messageElement).toHaveTextContent(/doesn’t exist/i);
+    const messageElement = screen.getByText(/doesn’t exist/i);
+    expect(messageElement).toBeInTheDocument();
 
-        const button = screen.getByRole('button', { name: /go to home/i });
-        expect(button).toBeInTheDocument();
-        expect(button).toHaveClass('notfound-home-btn');
+    const button = screen.getByRole('button', { name: /go to home/i });
+    expect(button).toBeInTheDocument();
+    expect(button).toHaveClass('notfound-home-btn');
 
         expect(document.title).toBe('Not Found | Spotify App');
     });

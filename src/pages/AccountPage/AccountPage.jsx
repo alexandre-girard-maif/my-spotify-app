@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { fetchAccountProfile } from '../../api/spotify-me.js';
 import { useRequireToken } from '../../hooks/useRequireToken.js';
 import './AccountPage.css';
@@ -15,22 +15,22 @@ export default function AccountPage() {
   const navigate = useNavigate();
 
   // state for profile data
-  const [profile, setProfile] = React.useState(null);
+  const [profile, setProfile] = useState(null);
 
   // state for loading and error
-  const [loading, setLoading] = React.useState(true);
-  const [error, setError] = React.useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   // require token to fetch profile
   const { token } = useRequireToken();
 
   // Set document title
-  React.useEffect(() => {
+  useEffect(() => {
     document.title = `Account | Spotify App`;
   }, []);
 
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!token) return; // wait for auth check
     // fetch user profile when token changes
     fetchAccountProfile(token)

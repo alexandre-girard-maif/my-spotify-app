@@ -2,7 +2,7 @@
 
 import { describe, expect, test } from '@jest/globals';
 import '@testing-library/jest-dom';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { createRoutesStub } from 'react-router-dom';
 
 import WelcomePage from './WelcomePage.jsx';
@@ -16,12 +16,13 @@ describe('WelcomePage', () => {
             }
         ]);
 
-        const { container } = render(<Stub initialEntries={['/']} />);
-        
-        // get by class app-hero-title
-        const titleElement = container.querySelector('.app-hero-title');
-        expect(titleElement).toBeInTheDocument();
-        expect(titleElement.textContent).toBe('Welcome to My Spotify App');
+    render(<Stub initialEntries={['/']} />);
+
+    // Access title via text (not a semantic heading element in markup)
+    // Text node may include unexpected whitespace/newlines; use regex matcher
+    const titleElement = screen.getByText(/Welcome to My Spotify App/i);
+    expect(titleElement).toBeInTheDocument();
+    expect(titleElement).toHaveTextContent('Welcome to My Spotify App');
 
         // verify document title is set
         expect(document.title).toBe('Welcome | Spotify App');

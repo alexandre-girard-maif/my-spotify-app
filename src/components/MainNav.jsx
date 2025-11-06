@@ -1,4 +1,3 @@
-import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useSpotifyProfile } from '../hooks/useSpotifyProfile.js';
 import AccountNav from './AccountNav';

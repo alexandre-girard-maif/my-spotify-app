@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './NotFoundPage.css';
 import '../PageLayout.css';
@@ -12,7 +12,7 @@ export default function NotFoundPage() {
   const navigate = useNavigate();
 
   // Set document title
-  React.useEffect(() => { document.title = 'Not Found | Spotify App'; }, []);
+  useEffect(() => { document.title = 'Not Found | Spotify App'; }, []);
 
   return (
     <div className="notfound-container page-container">

@@ -1,5 +1,4 @@
-
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { useRequireToken } from '../../hooks/useRequireToken.js';
 import './TopTracksPage.css';
 import '../PageLayout.css';
@@ -25,22 +24,22 @@ export default function TopTracksPage() {
   const navigate = useNavigate();
 
   // state for tracks data
-  const [tracks, setTracks] = React.useState([]);
+  const [tracks, setTracks] = useState([]);
 
   // state for loading and error
-  const [loading, setLoading] = React.useState(true);
-  const [error, setError] = React.useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   // require token to fetch top tracks
   const { token } = useRequireToken();
 
   // set document title
-  React.useEffect(() => {
+  useEffect(() => {
     document.title = `Top Tracks | Spotify App`;
   }, []);
 
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!token) return; // wait for check or redirect
     // fetch user top tracks when token changes
     fetchUserTopTracks(token, limit, timeRange)

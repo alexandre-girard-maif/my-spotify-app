@@ -1,6 +1,6 @@
 // src/pages/TopArtistsPage.test.jsx
 
-import { describe, expect, it, test } from '@jest/globals';
+import { describe, expect, test } from '@jest/globals';
 import '@testing-library/jest-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
@@ -60,8 +60,8 @@ describe('TopArtistsPage', () => {
         // verify API called with correct params
         await waitFor(() => {
             expect(spotifyApi.fetchUserTopArtists).toHaveBeenCalledTimes(1);
-            expect(spotifyApi.fetchUserTopArtists).toHaveBeenCalledWith(expect.any(String), 10, 'short_term');
         });
+        expect(spotifyApi.fetchUserTopArtists).toHaveBeenCalledWith(expect.any(String), 10, 'short_term');
     });
 
     test('displays error message on fetch failure', async () => {

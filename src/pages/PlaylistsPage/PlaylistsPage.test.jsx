@@ -65,8 +65,8 @@ describe('PlaylistsPage', () => {
         // verify API called correctly
         await waitFor(() => {
             expect(spotifyApi.fetchUserPlaylists).toHaveBeenCalledTimes(1);
-            expect(spotifyApi.fetchUserPlaylists).toHaveBeenCalledWith('test-token', 10);
         });
+        expect(spotifyApi.fetchUserPlaylists).toHaveBeenCalledWith('test-token', 10);
     });
 
     test('displays error message on fetch failure', async () => {
@@ -112,7 +112,9 @@ describe('PlaylistsPage', () => {
     });
 
     test("handleTokenError called on token expiry error", async () => {
-        const handleTokenErrorSpy = jest.spyOn(require('../../utils/handleTokenError.js'), 'handleTokenError');
+        // Import module to spy in ESM context (avoid commonjs require to satisfy ESLint)
+        const handleTokenErrorModule = await import('../../utils/handleTokenError.js');
+        const handleTokenErrorSpy = jest.spyOn(handleTokenErrorModule, 'handleTokenError');
         jest.spyOn(spotifyApi, 'fetchUserPlaylists').mockResolvedValue({ playlists: [], error: 'The access token expired' });
 
         render(

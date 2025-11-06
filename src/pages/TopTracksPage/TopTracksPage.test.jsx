@@ -62,8 +62,8 @@ describe('TopTracksPage', () => {
         // API called with expected params
         await waitFor(() => {
             expect(spotifyApi.fetchUserTopTracks).toHaveBeenCalledTimes(1);
-            expect(spotifyApi.fetchUserTopTracks).toHaveBeenCalledWith('test-token', 10, 'short_term');
         });
+        expect(spotifyApi.fetchUserTopTracks).toHaveBeenCalledWith('test-token', 10, 'short_term');
     });
 
     test('displays error message on fetch failure', async () => {
