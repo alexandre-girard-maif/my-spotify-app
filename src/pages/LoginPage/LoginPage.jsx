@@ -5,16 +5,6 @@ import '../../styles/theme.css';
 import '../PageLayout.css';
 import './LoginPage.css';
 
-// Spotify OAuth2 parameters from environment variables.
-// Read at render-time so tests can mutate process.env between cases.
-function getClientId() {
-  // Try direct import.meta.env first; Babel test transform rewrites this to process.env.VAR.
-  try {
-    return import.meta.env.VITE_SPOTIFY_CLIENT_ID;
-  } catch {
-    return globalThis.process?.env?.VITE_SPOTIFY_CLIENT_ID;
-  }
-}
 // Redirect URI must match the one set in Spotify Developer Dashboard
 const redirectUri = `${globalThis.location.origin}/callback`;
 // Scopes requested from Spotify API to access user data
@@ -22,37 +12,43 @@ const scope = 'user-read-private user-read-email user-top-read playlist-read-pri
 
 /**
  * Login Page
+ * @param {Object} props
+ * @param {string} [props.clientIdOverride] optional explicit client id for tests
  * @returns {JSX.Element}
  */
-export default function LoginPage({ clientIdOverride } = {}) {
-  const clientId = clientIdOverride || getClientId();
-  const missingClientId = !clientId;
+export default function LoginPage({ clientIdOverride }) {
+  // Resolve client id at render time so tests can set env after import or pass override.
+  const effectiveClientId = clientIdOverride ?? import.meta.env.VITE_SPOTIFY_CLIENT_ID;
+  const missingClientId = !effectiveClientId;
+
   // Parse redirect target from URL parameters
   const params = new URLSearchParams(globalThis.location.search);
   // Support both ?redirect=<encoded> and legacy ?next=<encoded>
   const encodedTarget = params.get('redirect') || params.get('next');
   const safeNext = normalizePostAuthTarget(encodedTarget);
 
+  // robust jest detection: presence of global jest or JEST_WORKER_ID env
+  const isTestEnv = !!(globalThis.jest || (globalThis.process && globalThis.process.env && globalThis.process.env.JEST_WORKER_ID));
+
   // Handle login button click to initiate Spotify OAuth2 flow
   const handleLogin = async () => {
-  // Prevent login if client ID is missing
-  if (missingClientId) return;
+    // Prevent login if client ID is missing
+    if (missingClientId) return;
     // Create PKCE code verifier and challenge pair for secure OAuth2 flow
     const { codeVerifier, codeChallenge } = await createPkcePair(128);
     localStorage.setItem('spotify_code_verifier', codeVerifier);
     localStorage.setItem('post_auth_redirect', safeNext);
     const args = new URLSearchParams({
       response_type: 'code',
-      client_id: clientId,
+      client_id: effectiveClientId,
       scope: scope,
       redirect_uri: redirectUri,
       code_challenge_method: 'S256',
       code_challenge: codeChallenge,
     });
     const authUrl = `https://accounts.spotify.com/authorize?${args.toString()}`;
-    // In Jest (test) environment, avoid triggering jsdom navigation errors; store URL instead.
-    if (globalThis.process?.env?.JEST_WORKER_ID) {
-      globalThis.__lastNavigationUrl = authUrl; // test-only side channel
+    if (isTestEnv) {
+      globalThis.__lastNavigationUrl = authUrl; // side-channel for assertions
     } else {
       globalThis.location.href = authUrl;
     }

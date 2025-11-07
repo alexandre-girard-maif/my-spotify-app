@@ -24,16 +24,21 @@ afterEach(() => {
 
 describe('LoginPage', () => {
     test('renders heading', () => {
-        render(<LoginPage />);
+        // use explicit override prop to avoid relying on env mutation
+        render(<LoginPage clientIdOverride="test-client-id" />);
         const heading = screen.getByRole('heading', { name: /welcome to my spotify app/i });
         expect(heading).toBeInTheDocument();
+        // button should be enabled when client id provided via override
+        expect(screen.getByRole('button', { name: /login with spotify/i })).toBeEnabled();
     });
 
     test('disabled state when client id missing', () => {
-        if (globalThis.process?.env) delete globalThis.process.env.VITE_SPOTIFY_CLIENT_ID; // ensure missing
         render(<LoginPage />);
+
+        // button should be disabled when no client id
         const button = screen.getByRole('button', { name: /login with spotify/i });
         expect(button).toBeDisabled();
+        // announce error message
         expect(screen.getByRole('alert')).toHaveTextContent(/client id is not configured/i);
     });
 
@@ -48,6 +53,7 @@ describe('LoginPage', () => {
         const navUrl = globalThis.__lastNavigationUrl;
         expect(navUrl).toMatch(/https:\/\/accounts\.spotify\.com\/authorize\?/);
         expect(navUrl).toContain('client_id=test-client-id');
+        // default redirect should be root when no redirect query param provided
         expect(localStorage.getItem('post_auth_redirect')).toBe('/');
     });
 });
