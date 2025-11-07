@@ -33,8 +33,6 @@ export default function LoginPage({ clientIdOverride, onNavigate }) {
 
   // Handle login button click to initiate Spotify OAuth2 flow
   const handleLogin = async () => {
-    // Prevent login if client ID is missing
-    if (missingClientId) return;
     // Create PKCE code verifier and challenge pair for secure OAuth2 flow
     const { codeVerifier, codeChallenge } = await createPkcePair(128);
     localStorage.setItem('spotify_code_verifier', codeVerifier);
