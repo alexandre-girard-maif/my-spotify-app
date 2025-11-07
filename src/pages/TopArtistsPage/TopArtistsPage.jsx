@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useRequireToken } from '../../hooks/useRequireToken.js';
-import TopArtistItem from '../../components/TopArtistItem.jsx';
+import TopArtistItem from '../../components/TopArtistItem/TopArtistItem.jsx';
 import { fetchUserTopArtists } from '../../api/spotify-me.js';
 import { handleTokenError } from '../../utils/handleTokenError.js';
 import './TopArtistsPage.css';

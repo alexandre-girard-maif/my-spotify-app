@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { fetchAccountProfile } from '../api/spotify-me.js';
-import AccountNav from './AccountNav';
+import { fetchAccountProfile } from '../../api/spotify-me.js';
+import AccountNav from '../AccountNav/AccountNav.jsx';
 import './MainNav.css';
 
 // Generic nav item wrapper to reduce duplication and centralize active class logic

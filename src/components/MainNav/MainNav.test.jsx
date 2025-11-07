@@ -5,7 +5,7 @@ import { describe, expect, test } from '@jest/globals'
 import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { MemoryRouter } from 'react-router-dom';
-import * as spotifyApi from '../api/spotify-me.js';
+import * as spotifyApi from '../../api/spotify-me.js';
 import MainNav from './MainNav';
 
 const profileData = {

@@ -6,7 +6,7 @@ import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import Layout from './Layout';
 import { MemoryRouter } from 'react-router';
-import { version } from '../package.json';
+import { version } from '../../../package.json';
 
 describe('Layout Component', () => {
     test('renders the layout with correct elements', () => {
