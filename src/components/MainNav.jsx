@@ -28,43 +28,49 @@ const PlaylistsLink = () => <NavItem to="/playlists">Playlists</NavItem>;
  * @returns {JSX.Element}
  */
 export default function MainNav() {
-  const [profile, setProfile] = useState(null);
+  // Lazily read cached profile once (outside effect) to avoid initial synchronous setState inside effect.
+  const initialProfile = (() => {
+    const raw = localStorage.getItem('spotify_profile');
+    try {
+      return raw ? JSON.parse(raw) : null;
+    } catch {
+      console.error('Failed to parse cached profile:', raw);
+      return null; // ignore parse errors
+    }
+  })();
+
+  const [profile, setProfile] = useState(initialProfile);
+  // Derive initial loading: if we have a token and no cached profile, we will fetch.
+  const [loading, setLoading] = useState(() => {
+    const token = localStorage.getItem('spotify_access_token');
+    return !!token && !initialProfile;
+  });
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Try read cache first
-    try {
-      const raw = localStorage.getItem('spotify_profile');
-      if (raw) {
-        setProfile(JSON.parse(raw));
-      }
-    } catch {
-      /* ignore parse errors */
-    }
-
     const token = localStorage.getItem('spotify_access_token');
-    if (!token) return; // Not authenticated
-    // if (profile) return; // Skip fetch if we already have cached profile
+    if (!token || profile) return; // Not authenticated or already have cached profile
 
-    // Fetch profile from API
+
     fetchAccountProfile(token)
       .then((result) => {
         if (result.error) {
           console.error('Failed to fetch account profile:', result);
-        } else {
-          setProfile(result.data);
-          // Cache profile in localStorage
-          try {
-            localStorage.setItem('spotify_profile', JSON.stringify(result.data));
-          } catch {
-            /* ignore quota errors */
-          }
+          setError(result.error);
+        }
+        setProfile(result.data);
+        try {
+          localStorage.setItem('spotify_profile', JSON.stringify(result.data));
+        } catch {
+          // ignore errors
         }
       })
       .catch((err) => {
-        // Log fetch errors silently
         console.error('Failed to fetch account profile:', err);
+        setError(err?.message || 'Failed to load profile');
       })
-  }, []); // run once, keep closure over initial profile state intentionally
+      .finally(() => { setLoading(false); });
+  }, [profile]);
 
   return (
     <div className="main-nav-wrapper">
@@ -73,7 +79,7 @@ export default function MainNav() {
         <TopArtistsLink />
         <PlaylistsLink />
       </nav>
-      <AccountNav profile={profile} />
+      <AccountNav profile={profile} loading={loading} error={error} />
     </div>
   );
 }

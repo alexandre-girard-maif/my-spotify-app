@@ -67,6 +67,20 @@ describe('MainNav', () => {
     expect(avatarImg).toHaveAttribute('src', mockProfile.images[0].url);
   });
 
+  test('log error when parse cached profile fails', () => {
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => { });
+    jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key) => {
+      if (key === 'spotify_profile') return 'invalid-json';
+      return null;
+    });
+
+    renderWithRouter();
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith('Failed to parse cached profile:', 'invalid-json');
+
+    consoleErrorSpy.mockRestore();
+  });
+
   test('log error when fetch profile fails', async () => {
     const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => { });
     jest.spyOn(spotifyApi, 'fetchAccountProfile').mockRejectedValue({ data: null, error: 'Fetch error' });
