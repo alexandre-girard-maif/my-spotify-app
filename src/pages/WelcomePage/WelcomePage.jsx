@@ -9,15 +9,15 @@ export default function WelcomePage() {
   }, []);
 
   return (
-    <div className="welcome-hero-bg page-container">
-      <div className="welcome-hero-card">
+    <div className="welcome-bg page-container">
+      <div className="welcome-card">
         <img
           src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_CMYK_Green.png"
           alt="Spotify Logo"
-          className="welcome-hero-logo"
+          className="welcome-logo"
         />
-  <div className="welcome-hero-title app-hero-title page-title">Welcome to My Spotify App</div>
-        <div className="welcome-hero-desc">
+  <div className="welcome-title page-title">Welcome to My Spotify App</div>
+        <div className="welcome-desc">
           Explore your Spotify music stats, discover your top tracks and artists, and browse your playlists.<br />
         </div>
       </div>

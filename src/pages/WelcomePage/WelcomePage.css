@@ -1,4 +1,4 @@
-.welcome-hero-bg {
+.welcome-bg {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -6,7 +6,7 @@
   padding: 4rem 1rem;
 }
 
-.welcome-hero-card {
+.welcome-card {
   background: #ffffffEE;
   backdrop-filter: blur(6px);
   border-radius: 16px;
@@ -17,121 +17,35 @@
   text-align: center;
 }
 
-.welcome-hero-logo {
+.welcome-logo {
   width: 160px;
   height: auto;
   display: block;
   margin: 0 auto 1.5rem auto;
 }
 
-.welcome-hero-title {
+.welcome-title {
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 1rem;
+  color: #191414;
 }
 
-.welcome-hero-desc {
+.welcome-desc {
   font-size: 1rem;
   line-height: 1.5;
   color: #333;
   margin-bottom: 1.75rem;
 }
 
-.welcome-hero-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  justify-content: center;
-}
-
-.welcome-hero-link {
-  background: #1DB954;
-  color: #fff;
-  padding: 0.65rem 1.1rem;
-  border-radius: 999px;
-  font-weight: 600;
-  text-decoration: none;
-  font-size: 0.95rem;
-  transition: background-color 0.2s, transform 0.2s;
-}
-
-.welcome-hero-link:hover {
-  background: #17a447;
-  transform: translateY(-2px);
-}
-
 @media (max-width: 480px) {
-  .welcome-hero-card {
+  .welcome-card {
     padding: 2rem 1.25rem;
   }
-  .welcome-hero-title {
+  .welcome-title {
     font-size: 1.65rem;
   }
-  .welcome-hero-logo {
+  .welcome-logo {
     width: 120px;
   }
-}
-
-/* Moved legacy AppHero styles (app-hero-*) here to consolidate hero styling */
-.app-hero-bg {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #191414 0%, #1DB954 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.app-hero-card {
-  background: rgba(255,255,255,0.97);
-  border-radius: 20px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
-  padding: 3em 2.5em;
-  max-width: 420px;
-  width: 100%;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.app-hero-logo {
-  width: 110px;
-  margin-bottom: 18px;
-}
-
-.app-hero-title {
-  color: #191414;
-  margin-bottom: 10px;
-  font-weight: 800;
-  font-size: 2em;
-  letter-spacing: 1px;
-}
-
-.app-hero-desc {
-  color: #333;
-  margin-bottom: 28px;
-  font-size: 1.13em;
-  line-height: 1.5;
-}
-
-.app-hero-links {
-  display: flex;
-  gap: 18px;
-  justify-content: center;
-}
-
-.app-hero-link {
-  background: #1DB954;
-  color: #fff;
-  padding: 0.7em 1.5em;
-  border-radius: 30px;
-  font-weight: 600;
-  text-decoration: none;
-  font-size: 1.08em;
-  transition: background 0.2s;
-  box-shadow: 0 2px 8px rgba(30,185,84,0.13);
-}
-
-.app-hero-link:hover {
-  background: #1ed760;
 }
