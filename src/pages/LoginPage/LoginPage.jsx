@@ -25,6 +25,7 @@ export default function LoginPage() {
   const encodedTarget = params.get('redirect') || params.get('next');
   const safeNext = normalizePostAuthTarget(encodedTarget);
 
+  // Handle login button click to initiate Spotify OAuth2 flow
   const handleLogin = async () => {
     // Prevent login if client ID is missing
     if (missingClientId) return;
