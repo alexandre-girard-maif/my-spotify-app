@@ -10,7 +10,6 @@ module.exports = {
   presets: ["@babel/preset-env", "@babel/preset-react"],
   plugins: [
     importMetaEnvToProcess, // rewrite import.meta.env.VAR -> process.env.VAR
-    ["babel-plugin-transform-import-meta", { module: "CommonJS" }],
     ["@babel/plugin-transform-react-jsx", { runtime: "automatic" }]
   ]
 };
