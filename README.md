@@ -19,7 +19,6 @@ A React application that integrates with the Spotify API to provide users with i
 3. Create a `.env.local` file with your Spotify API credentials
     ```env
     VITE_SPOTIFY_CLIENT_ID=YOUR_SPOTIFY_CLIENT_ID
-    VITE_SPOTIFY_REDIRECT_URI=http://127.0.0.1:5173/callback
     ```
 4. Start the development server
     ```bash
