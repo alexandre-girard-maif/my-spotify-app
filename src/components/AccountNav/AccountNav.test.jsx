@@ -3,7 +3,7 @@ import { describe, expect, test } from '@jest/globals';
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter, MemoryRouter } from 'react-router-dom';
-import AccountNav from './AccountNav/AccountNav';
+import AccountNav from './AccountNav';
 
 describe('AccountNav component', () => {
   test('renders avatar image when profile has an avatar', () => {
