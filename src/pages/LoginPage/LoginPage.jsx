@@ -5,8 +5,6 @@ import '../../styles/theme.css';
 import '../PageLayout.css';
 import './LoginPage.css';
 
-// Spotify OAuth2 parameters from environment variables 
-const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
 // Redirect URI must match the one set in Spotify Developer Dashboard
 const redirectUri = `${globalThis.location.origin}/callback`;
 // Scopes requested from Spotify API to access user data
@@ -14,33 +12,41 @@ const scope = 'user-read-private user-read-email user-top-read playlist-read-pri
 
 /**
  * Login Page
+ * @param {Object} props
+ * @param {string} [props.clientIdOverride] optional explicit client id (e.g. for tests)
+ * @param {(url:string)=>void} [props.onNavigate] optional navigation handler injection; defaults to assigning location.href
  * @returns {JSX.Element}
  */
-export default function LoginPage() {
-  // Check if client ID is configured
-  const missingClientId = !clientId;
+export default function LoginPage({ clientIdOverride, onNavigate }) {
+  // Resolve client id at render time so tests can set env after import or pass override.
+  const effectiveClientId = clientIdOverride ?? import.meta.env.VITE_SPOTIFY_CLIENT_ID;
+  const missingClientId = !effectiveClientId;
+
   // Parse redirect target from URL parameters
   const params = new URLSearchParams(globalThis.location.search);
   // Support both ?redirect=<encoded> and legacy ?next=<encoded>
   const encodedTarget = params.get('redirect') || params.get('next');
   const safeNext = normalizePostAuthTarget(encodedTarget);
 
+  // navigation handler (dependency injection for testability / decoupling)
+  const navigate = typeof onNavigate === 'function' ? onNavigate : (url) => { globalThis.location.href = url; };
+
+  // Handle login button click to initiate Spotify OAuth2 flow
   const handleLogin = async () => {
-    // Prevent login if client ID is missing
-    if (missingClientId) return;
     // Create PKCE code verifier and challenge pair for secure OAuth2 flow
     const { codeVerifier, codeChallenge } = await createPkcePair(128);
     localStorage.setItem('spotify_code_verifier', codeVerifier);
     localStorage.setItem('post_auth_redirect', safeNext);
     const args = new URLSearchParams({
       response_type: 'code',
-      client_id: clientId,
+      client_id: effectiveClientId,
       scope: scope,
       redirect_uri: redirectUri,
       code_challenge_method: 'S256',
       code_challenge: codeChallenge,
     });
-    globalThis.location = `https://accounts.spotify.com/authorize?${args.toString()}`;
+    const authUrl = `https://accounts.spotify.com/authorize?${args.toString()}`;
+    navigate(authUrl);
   };
 
   return (
