@@ -1,7 +1,7 @@
 
 import { Link, Outlet } from 'react-router-dom';
 import { version } from '../package.json';
-import MainNav from './components/MainNav';
+import MainNav from './components/MainNav/MainNav';
 import './Layout.css';
 
 export default function Layout() {
