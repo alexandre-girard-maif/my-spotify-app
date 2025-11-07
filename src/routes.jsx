@@ -3,7 +3,7 @@ import TopTracksPage from './pages/TopTracksPage/TopTracksPage.jsx';
 import TopArtistsPage from './pages/TopArtistsPage/TopArtistsPage.jsx';
 import PlaylistsPage from './pages/PlaylistsPage/PlaylistsPage.jsx';
 import Callback from './pages/Callback.jsx';
-import Layout from './Layout.jsx';
+import Layout from './components/Layout/Layout.jsx';
 import LoginPage from './pages/LoginPage/LoginPage.jsx';
 import NotFoundPage from './pages/NotFoundPage/NotFoundPage.jsx';
 import AccountPage from './pages/AccountPage/AccountPage.jsx';
