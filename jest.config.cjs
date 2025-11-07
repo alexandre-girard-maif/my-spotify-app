@@ -22,6 +22,7 @@ module.exports = {
     "!src/pages/Callback.jsx", // Exclude Callback.jsx from coverage
     "!src/loaders/protectedLoader.js", // Exclude protectedLoader.js from coverage
   ],
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
   testResultsProcessor: 'jest-sonar-reporter',
   moduleNameMapper: {
     "d3": "<rootDir>/node_modules/d3/dist/d3.min.js"

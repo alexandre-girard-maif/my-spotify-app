@@ -1,13 +1,53 @@
-import { describe, test } from '@jest/globals';
-import { render, screen } from '@testing-library/react';
+import { describe, test, beforeEach, afterEach, jest } from '@jest/globals';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import LoginPage from './LoginPage';
+/* eslint-env node */
+
+// Mock createPkcePair to avoid heavy crypto work and make deterministic assertions
+jest.mock('../../api/pkce.js', () => ({
+    createPkcePair: jest.fn().mockResolvedValue({ codeVerifier: 'verifier123', codeChallenge: 'challenge456' })
+}));
+
+const ORIGINAL_ENV = { ...globalThis.process?.env };
+
+beforeEach(() => {
+    localStorage.clear();
+});
+
+afterEach(() => {
+    if (globalThis.process) {
+        globalThis.process.env = { ...ORIGINAL_ENV };
+    }
+    jest.clearAllMocks();
+});
 
 describe('LoginPage', () => {
-  test('renders correctly', () => {
-    render(<LoginPage />);
-    // Use accessible role-based query for the page title
-    const heading = screen.getByRole('heading', { name: /welcome to my spotify app/i });
-    expect(heading).toBeInTheDocument();
-  });
+    test('renders heading', () => {
+        render(<LoginPage />);
+        const heading = screen.getByRole('heading', { name: /welcome to my spotify app/i });
+        expect(heading).toBeInTheDocument();
+    });
+
+    test('disabled state when client id missing', () => {
+        if (globalThis.process?.env) delete globalThis.process.env.VITE_SPOTIFY_CLIENT_ID; // ensure missing
+        render(<LoginPage />);
+        const button = screen.getByRole('button', { name: /login with spotify/i });
+        expect(button).toBeDisabled();
+        expect(screen.getByRole('alert')).toHaveTextContent(/client id is not configured/i);
+    });
+
+    test('initiates login flow when client id present', async () => {
+        render(<LoginPage clientIdOverride="test-client-id" />);
+        const button = screen.getByRole('button', { name: /login with spotify/i });
+        expect(button).toBeEnabled();
+        fireEvent.click(button);
+        await waitFor(() => {
+            expect(localStorage.getItem('spotify_code_verifier')).toBe('verifier123');
+        });
+        const navUrl = globalThis.__lastNavigationUrl;
+        expect(navUrl).toMatch(/https:\/\/accounts\.spotify\.com\/authorize\?/);
+        expect(navUrl).toContain('client_id=test-client-id');
+        expect(localStorage.getItem('post_auth_redirect')).toBe('/');
+    });
 });

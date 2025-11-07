@@ -5,8 +5,16 @@ import '../../styles/theme.css';
 import '../PageLayout.css';
 import './LoginPage.css';
 
-// Spotify OAuth2 parameters from environment variables 
-const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
+// Spotify OAuth2 parameters from environment variables.
+// Read at render-time so tests can mutate process.env between cases.
+function getClientId() {
+  // Try direct import.meta.env first; Babel test transform rewrites this to process.env.VAR.
+  try {
+    return import.meta.env.VITE_SPOTIFY_CLIENT_ID;
+  } catch {
+    return globalThis.process?.env?.VITE_SPOTIFY_CLIENT_ID;
+  }
+}
 // Redirect URI must match the one set in Spotify Developer Dashboard
 const redirectUri = `${globalThis.location.origin}/callback`;
 // Scopes requested from Spotify API to access user data
@@ -16,8 +24,8 @@ const scope = 'user-read-private user-read-email user-top-read playlist-read-pri
  * Login Page
  * @returns {JSX.Element}
  */
-export default function LoginPage() {
-  // Check if client ID is configured
+export default function LoginPage({ clientIdOverride } = {}) {
+  const clientId = clientIdOverride || getClientId();
   const missingClientId = !clientId;
   // Parse redirect target from URL parameters
   const params = new URLSearchParams(globalThis.location.search);
@@ -27,8 +35,8 @@ export default function LoginPage() {
 
   // Handle login button click to initiate Spotify OAuth2 flow
   const handleLogin = async () => {
-    // Prevent login if client ID is missing
-    if (missingClientId) return;
+  // Prevent login if client ID is missing
+  if (missingClientId) return;
     // Create PKCE code verifier and challenge pair for secure OAuth2 flow
     const { codeVerifier, codeChallenge } = await createPkcePair(128);
     localStorage.setItem('spotify_code_verifier', codeVerifier);
@@ -41,7 +49,13 @@ export default function LoginPage() {
       code_challenge_method: 'S256',
       code_challenge: codeChallenge,
     });
-    globalThis.location = `https://accounts.spotify.com/authorize?${args.toString()}`;
+    const authUrl = `https://accounts.spotify.com/authorize?${args.toString()}`;
+    // In Jest (test) environment, avoid triggering jsdom navigation errors; store URL instead.
+    if (globalThis.process?.env?.JEST_WORKER_ID) {
+      globalThis.__lastNavigationUrl = authUrl; // test-only side channel
+    } else {
+      globalThis.location.href = authUrl;
+    }
   };
 
   return (
