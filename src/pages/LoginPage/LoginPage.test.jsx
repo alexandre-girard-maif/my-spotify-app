@@ -43,16 +43,16 @@ describe('LoginPage', () => {
     });
 
     test('initiates login flow when client id present', async () => {
-        render(<LoginPage clientIdOverride="test-client-id" />);
+        let capturedUrl;
+        render(<LoginPage clientIdOverride="test-client-id" onNavigate={(url) => { capturedUrl = url; }} />);
         const button = screen.getByRole('button', { name: /login with spotify/i });
         expect(button).toBeEnabled();
         fireEvent.click(button);
         await waitFor(() => {
             expect(localStorage.getItem('spotify_code_verifier')).toBe('verifier123');
         });
-        const navUrl = globalThis.__lastNavigationUrl;
-        expect(navUrl).toMatch(/https:\/\/accounts\.spotify\.com\/authorize\?/);
-        expect(navUrl).toContain('client_id=test-client-id');
+        expect(capturedUrl).toMatch(/https:\/\/accounts\.spotify\.com\/authorize\?/);
+        expect(capturedUrl).toContain('client_id=test-client-id');
         // default redirect should be root when no redirect query param provided
         expect(localStorage.getItem('post_auth_redirect')).toBe('/');
     });

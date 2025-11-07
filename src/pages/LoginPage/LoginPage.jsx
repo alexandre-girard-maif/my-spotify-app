@@ -13,10 +13,11 @@ const scope = 'user-read-private user-read-email user-top-read playlist-read-pri
 /**
  * Login Page
  * @param {Object} props
- * @param {string} [props.clientIdOverride] optional explicit client id for tests
+ * @param {string} [props.clientIdOverride] optional explicit client id (e.g. for tests)
+ * @param {(url:string)=>void} [props.onNavigate] optional navigation handler injection; defaults to assigning location.href
  * @returns {JSX.Element}
  */
-export default function LoginPage({ clientIdOverride }) {
+export default function LoginPage({ clientIdOverride, onNavigate }) {
   // Resolve client id at render time so tests can set env after import or pass override.
   const effectiveClientId = clientIdOverride ?? import.meta.env.VITE_SPOTIFY_CLIENT_ID;
   const missingClientId = !effectiveClientId;
@@ -27,8 +28,8 @@ export default function LoginPage({ clientIdOverride }) {
   const encodedTarget = params.get('redirect') || params.get('next');
   const safeNext = normalizePostAuthTarget(encodedTarget);
 
-  // robust jest detection: presence of global jest or JEST_WORKER_ID env
-  const isTestEnv = !!(globalThis.jest || (globalThis.process && globalThis.process.env && globalThis.process.env.JEST_WORKER_ID));
+  // navigation handler (dependency injection for testability / decoupling)
+  const navigate = typeof onNavigate === 'function' ? onNavigate : (url) => { globalThis.location.href = url; };
 
   // Handle login button click to initiate Spotify OAuth2 flow
   const handleLogin = async () => {
@@ -47,11 +48,7 @@ export default function LoginPage({ clientIdOverride }) {
       code_challenge: codeChallenge,
     });
     const authUrl = `https://accounts.spotify.com/authorize?${args.toString()}`;
-    if (isTestEnv) {
-      globalThis.__lastNavigationUrl = authUrl; // side-channel for assertions
-    } else {
-      globalThis.location.href = authUrl;
-    }
+    navigate(authUrl);
   };
 
   return (
