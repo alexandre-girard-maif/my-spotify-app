@@ -32,7 +32,7 @@ export default function PlaylistsPage() {
 
   // Set document title
   useEffect(() => {
-    document.title = `Playlists | Spotify App`;
+    document.title = `Playlists | Music Discovery App`;
   }, []);
 
 

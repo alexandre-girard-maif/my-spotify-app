@@ -12,7 +12,7 @@ export default function NotFoundPage() {
   const navigate = useNavigate();
 
   // Set document title
-  useEffect(() => { document.title = 'Not Found | Spotify App'; }, []);
+  useEffect(() => { document.title = 'Not Found | Music Discovery App'; }, []);
 
   return (
     <div className="notfound-container page-container">

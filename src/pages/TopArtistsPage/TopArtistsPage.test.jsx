@@ -64,7 +64,7 @@ describe('TopArtistsPage', () => {
         renderTopArtistsPage();
 
         // Check document title
-        expect(document.title).toBe('Top Artists | Spotify App');
+        expect(document.title).toBe('Top Artists | Music Discovery App');
 
         // wait for loading to finish
         await waitForLoadingToFinish();

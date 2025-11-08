@@ -37,7 +37,7 @@ export default function TopArtistsPage() {
 
   // Set document title
   useEffect(() => {
-    document.title = `Top Artists | Spotify App`;
+    document.title = `Top Artists | Music Discovery App`;
   }, []);
 
   useEffect(() => {

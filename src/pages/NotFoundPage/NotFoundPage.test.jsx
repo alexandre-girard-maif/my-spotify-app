@@ -26,7 +26,7 @@ describe('NotFoundPage', () => {
         renderNotFoundPage();
 
         // Check document title
-        expect(document.title).toBe('Not Found | Spotify App');
+        expect(document.title).toBe('Not Found | Music Discovery App');
 
         // should render a heading of level 1 with text '404 – Page Not Found'
         const titleElement = screen.getByRole('heading', { name: /404.*Page Not Found/i });

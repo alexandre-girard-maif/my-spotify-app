@@ -35,7 +35,7 @@ export default function TopTracksPage() {
 
   // set document title
   useEffect(() => {
-    document.title = `Top Tracks | Spotify App`;
+    document.title = `Top Tracks | Music Discovery App`;
   }, []);
 
 

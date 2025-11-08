@@ -32,8 +32,6 @@ describe('Layout Component', () => {
         // Footer
         const footerElement = screen.getByRole('contentinfo');
         expect(footerElement).toBeInTheDocument();
-        expect(footerElement).toHaveTextContent(`© ${new Date().getFullYear()} My Spotify App – v${version}`);
-        expect(footerElement).toHaveTextContent(/Spotify and related trademarks are owned by Spotify AB/i);
-
+        expect(footerElement).toHaveTextContent(`© ${new Date().getFullYear()} Music Discovery App – v${version}`);
     });
 });

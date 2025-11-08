@@ -10,17 +10,17 @@ test("navigation in spotify-app is correct", async ({ page }) => {
   // await for the welcome title to be visible
   const welcomeTitle = page.locator(".welcome-title");
   await expect(welcomeTitle).toBeVisible();
-  await expect(welcomeTitle).toHaveText("Welcome to My Spotify App");
+  await expect(welcomeTitle).toHaveText("Welcome to music discovery app");
 
   // click on Top Tracks element and expect to navigate to Top Tracks page
   await page.click("text=Top Tracks");
-  await expect(page).toHaveTitle(/Top Tracks | Spotify App/);
+  await expect(page).toHaveTitle(/Top Tracks | Music discovery app/);
 
   // click on Top Artists element and expect to navigate to Top Artists page
   await page.click("text=Top Artists");
-  await expect(page).toHaveTitle(/Top Artists | Spotify App/);
+  await expect(page).toHaveTitle(/Top Artists | Music discovery app/);
 
   // click on Playlists element and expect to navigate to Playlists page
   await page.click("text=Playlists");
-  await expect(page).toHaveTitle(/Playlists | Spotify App/);
+  await expect(page).toHaveTitle(/Playlists | Music discovery app/);
 });
