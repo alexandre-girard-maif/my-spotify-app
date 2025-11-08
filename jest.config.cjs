@@ -18,7 +18,6 @@ module.exports = {
     "src/**/*.{js,jsx}", // Collect coverage from all js or jsx files in src folder
     "!src/main.jsx", // Exclude main.jsx from coverage
     "!src/api/pkce.js", // Exclude pkce.js from coverage
-    // "!src/pages/LoginPage/LoginPage.jsx", // Exclude LoginPage.jsx from coverage
     "!src/pages/Callback.jsx", // Exclude Callback.jsx from coverage
   ],
   setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
