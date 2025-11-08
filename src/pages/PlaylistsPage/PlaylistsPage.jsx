@@ -22,7 +22,7 @@ export default function PlaylistsPage() {
 
   // state for playlists data
   const [playlists, setPlaylists] = useState([]);
-  
+
   // state for loading and error
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -35,7 +35,7 @@ export default function PlaylistsPage() {
     document.title = `Playlists | Spotify App`;
   }, []);
 
-  
+
   useEffect(() => {
     if (!token) return; // wait for auth check
     // fetch user playlists when token changes
@@ -53,8 +53,8 @@ export default function PlaylistsPage() {
   }, [token, navigate]);
 
   return (
-    <div className="playlists-container page-container">
-      <h1 className="playlists-title page-title">Your Playlists</h1>
+    <section className="playlists-container page-container" aria-labelledby="playlists-title">
+      <h1 id="playlists-title" className="playlists-title page-title">Your Playlists</h1>
       <h2 className="playlists-count">{limit} Playlists</h2>
       {loading && <output className="playlists-loading" data-testid="loading-indicator">Loading playlists…</output>}
       {error && !loading && <div className="playlists-error" role="alert">{error}</div>}
@@ -65,6 +65,6 @@ export default function PlaylistsPage() {
           ))}
         </ol>
       )}
-    </div>
+    </section>
   );
 }

@@ -56,9 +56,9 @@ export default function TopTracksPage() {
   }, [token, navigate]);
 
   return (
-    <div className="tracks-container page-container">
-      <h1 className="tracks-title page-title">Your Top {tracks.length} Tracks of the Month</h1>
-      {loading && <output className="tracks-loading">Loading top tracks…</output>}
+    <section className="tracks-container page-container" aria-labelledby="tracks-title">
+      <h1 id="tracks-title" className="tracks-title page-title" >Your Top {tracks.length} Tracks of the Month</h1>
+      {loading && <output className="tracks-loading" data-testid="loading-indicator">Loading top tracks…</output>}
       {error && !loading && <div className="tracks-error" role="alert">{error}</div>}
       {!loading && !error && (
         <ol className="tracks-list">
@@ -67,6 +67,6 @@ export default function TopTracksPage() {
           ))}
         </ol>
       )}
-    </div>
+    </section>
   );
 }

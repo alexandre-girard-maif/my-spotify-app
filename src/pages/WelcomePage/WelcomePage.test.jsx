@@ -3,28 +3,44 @@
 import { describe, expect, test } from '@jest/globals';
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
-import { createRoutesStub } from 'react-router-dom';
 
 import WelcomePage from './WelcomePage.jsx';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 describe('WelcomePage', () => {
+    // Helper to render WelcomePage
+    const renderWelcomePage = () => {
+        return render(
+            <MemoryRouter initialEntries={['/']}>
+                <Routes>
+                    <Route path="/" element={<WelcomePage />} />
+                </Routes>
+            </MemoryRouter>
+        );
+    };
+
     test('renders welcome message', () => {
-        const Stub = createRoutesStub([
-            {
-                path: '/',
-                Component: WelcomePage,
-            }
-        ]);
+        // Render the WelcomePage
+        renderWelcomePage();
 
-    render(<Stub initialEntries={['/']} />);
-
-    // Access title via text (not a semantic heading element in markup)
-    // Text node may include unexpected whitespace/newlines; use regex matcher
-    const titleElement = screen.getByText(/Welcome to My Spotify App/i);
-    expect(titleElement).toBeInTheDocument();
-    expect(titleElement).toHaveTextContent('Welcome to My Spotify App');
-
-        // verify document title is set
+        // Check document title
         expect(document.title).toBe('Welcome | Spotify App');
+
+        // Check for welcome message
+        const welcomeMessage = screen.getByText(/Welcome to My Spotify App/i);
+        expect(welcomeMessage).toBeInTheDocument();
+
+        // should have a description paragraph
+        const description = screen.getByText(/Explore your Spotify music stats, discover your top tracks and artists, and browse your playlists./i);
+        expect(description).toBeInTheDocument();
+    });
+
+    test('verify styling and accessibility attributes using role', async () => {
+        // Render the WelcomePage
+        renderWelcomePage();
+
+        // should have div landmark with appropriate class names
+        const mainContainer = screen.getByRole('region');
+        expect(mainContainer).toHaveClass('welcome-bg page-container');
     });
 });

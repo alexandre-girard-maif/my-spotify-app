@@ -57,8 +57,8 @@ export default function TopArtistsPage() {
   }, [token, navigate]);
 
   return (
-    <div className="artists-container page-container">
-      <h1 className="artists-title page-title">Your Top {limit} Artists of the Month</h1>
+    <section className="artists-container page-container" aria-labelledby="artists-title">
+      <h1 id="artists-title" className="artists-title page-title">Your Top {limit} Artists of the Month</h1>
       {loading && <output className="artists-loading" data-testid="loading-indicator">Loading top artists…</output>}
       {error && !loading && <div className="artists-error" role="alert">{error}</div>}
       {!loading && !error && (
@@ -68,6 +68,6 @@ export default function TopArtistsPage() {
           ))}
         </ol>
       )}
-    </div>
+    </section>
   );
 }

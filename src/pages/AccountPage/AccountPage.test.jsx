@@ -1,13 +1,13 @@
 // src/pages/AccountPage.test.jsx
 
-import { describe, expect, test } from '@jest/globals';
+import { describe, expect, test, beforeEach, afterEach, jest } from '@jest/globals';
 import '@testing-library/jest-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import AccountPage from './AccountPage.jsx';
 import * as spotifyApi from '../../api/spotify-me.js';
-import { beforeEach, afterEach, jest } from '@jest/globals';
 
+// Mock profile data
 const profileData = {
     display_name: 'Test User',
     email: 'account@example.com',
@@ -19,111 +19,29 @@ const profileData = {
     }
 };
 
+// Mock token value
+const tokenValue = 'test-token';
+
+// Tests for AccountPage
 describe('AccountPage', () => {
+    // Setup mocks before each test
     beforeEach(() => {
-        const tokenValue = 'test-token';
-        jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key) => {
-            if (key === 'spotify_access_token') return tokenValue;
-            return null;
-        });
+        // Mock localStorage token access
+        jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key) => key === 'spotify_access_token' ? tokenValue : null);
+
+        // Default mock: successful profile fetch
         jest.spyOn(spotifyApi, 'fetchAccountProfile').mockResolvedValue({ data: profileData, error: null });
     });
 
+    // Restore mocks after each test
     afterEach(() => {
         jest.restoreAllMocks();
     });
 
-    test('fetches and renders account profile, sets title', async () => {
-        render(
-            <MemoryRouter initialEntries={['/account']}>
-                <Routes>
-                    <Route path="/account" element={<AccountPage />} />
-                </Routes>
-            </MemoryRouter>
-        );
-
-        expect(document.title).toBe('Account | Spotify App');
-
-        // loading state
-        expect(screen.getByRole('status')).toHaveTextContent(/loading account info/i);
-
-        // wait for loading to finish
-        await waitFor(() => {
-            expect(screen.queryByTestId('loading-indicator')).not.toBeInTheDocument();
-        });
-
-        // verify profile content rendered
-        const heading = await screen.findByRole('heading', { level: 1, name: 'Spotify Account Info' });
-        expect(heading).toBeInTheDocument();
-
-        const img = await screen.findByAltText('avatar');
-        expect(img).toBeInTheDocument();
-        expect(img).toHaveAttribute('src', profileData.images[0].url);
-
-        const heading2 = await screen.findByRole('heading', { level: 2, name: profileData.display_name });
-        expect(heading2).toBeInTheDocument();
-
-        expect(await screen.findByText(profileData.email)).toBeInTheDocument();
-        expect(await screen.findByText(profileData.country)).toBeInTheDocument();
-        expect(await screen.findByText(profileData.product)).toBeInTheDocument();
-
-        const profileLink = await screen.findByRole('link', { name: 'Open Spotify Profile' });
-        expect(profileLink).toBeInTheDocument();
-        expect(profileLink).toHaveAttribute('href', profileData.external_urls.spotify);
-
-        // verify API called correctly
-        await waitFor(() => {
-            expect(spotifyApi.fetchAccountProfile).toHaveBeenCalledTimes(1);
-        });
-        expect(spotifyApi.fetchAccountProfile).toHaveBeenCalledWith(expect.any(String));
-    });
-
-    test('displays error message on fetch failure', async () => {
-        jest.spyOn(spotifyApi, 'fetchAccountProfile').mockResolvedValue({ profile: null, error: 'Failed to fetch profile' });
-
-        render(
-            <MemoryRouter initialEntries={['/account']}>
-                <Routes>
-                    <Route path="/account" element={<AccountPage />} />
-                </Routes>
-            </MemoryRouter>
-        );
-
-        // wait for loading to finish
-        await waitFor(() => {
-            expect(screen.queryByTestId('loading-indicator')).not.toBeInTheDocument();
-        });
-
-        // verify error message displayed
-        const alert = await screen.findByRole('alert');
-        expect(alert).toHaveTextContent('Failed to fetch profile');
-    });
-
-    test('displays error message on fetchUserPlaylists failure', async () => {
-        jest.spyOn(spotifyApi, 'fetchAccountProfile').mockRejectedValue(new Error('Network error'));
-
-        render(
-            <MemoryRouter initialEntries={['/account']}>
-                <Routes>
-                    <Route path="/account" element={<AccountPage />} />
-                </Routes>
-            </MemoryRouter>
-        );
-
-        // wait for loading to finish
-        await waitFor(() => {
-            expect(screen.queryByTestId('loading-indicator')).not.toBeInTheDocument();
-        });
-
-        // verify error message displayed
-        const alert = await screen.findByRole('alert');
-        expect(alert).toHaveTextContent('Network error');
-    });
-
-    test('redirects to login on token expiration', async () => {
-        jest.spyOn(spotifyApi, 'fetchAccountProfile').mockResolvedValue({ profile: null, error: 'The access token expired' });
-
-        render(
+    // Helper to render AccountPage
+    const renderAccountPage = () => {
+        return render(
+            // render AccountPage within MemoryRouter
             <MemoryRouter initialEntries={['/account']}>
                 <Routes>
                     <Route path="/account" element={<AccountPage />} />
@@ -132,16 +50,125 @@ describe('AccountPage', () => {
                 </Routes>
             </MemoryRouter>
         );
+    };
 
-        // loading state
+    // Helper to wait for loading to finish
+    const waitForLoadingToFinish = async () => {
+        // initial loading state expectations
         expect(screen.getByRole('status')).toHaveTextContent(/loading account info/i);
-
-        // wait for loading to finish
         await waitFor(() => {
             expect(screen.queryByTestId('loading-indicator')).not.toBeInTheDocument();
         });
+    };
 
-        // verify redirected to login
+    test('renders account profile information', async () => {
+        // Render AccountPage
+        renderAccountPage();
+
+        // Check document title
+        expect(document.title).toBe('Account | Spotify App');
+
+        // Wait for loading to finish
+        await waitForLoadingToFinish();
+
+        // when loading is done, verify profile content rendered and api called correctly
+
+        // should call fetchAccountProfile with the token
+        expect(spotifyApi.fetchAccountProfile).toHaveBeenCalledTimes(1);
+        expect(spotifyApi.fetchAccountProfile).toHaveBeenCalledWith(tokenValue);
+
+        // should render a heading of level 1 with text 'Spotify Account Info'
+        const heading = await screen.findByRole('heading', { level: 1, name: 'Spotify Account Info' });
+        expect(heading).toBeInTheDocument();
+
+        // should render the profile avatar image with correct src and alt text 'avatar'
+        const img = await screen.findByAltText('avatar');
+        expect(img).toHaveAttribute('src', profileData.images[0].url);
+        expect(img).toHaveAttribute('alt', 'avatar');
+
+        // should render a heading of level 2 with the user's display name
+        const heading2 = await screen.findByRole('heading', { level: 2, name: profileData.display_name });
+        expect(heading2).toBeInTheDocument();
+
+        // should render profile details: email, country, product
+        expect(await screen.findByText(profileData.email)).toBeInTheDocument();
+        expect(await screen.findByText(profileData.country)).toBeInTheDocument();
+        expect(await screen.findByText(profileData.product)).toBeInTheDocument();
+
+        // should render link to Spotify profile
+        const profileLink = await screen.findByRole('link', { name: 'Open Spotify Profile' });
+        expect(profileLink).toHaveAttribute('href', profileData.external_urls.spotify);
+    });
+
+    test('displays error message on fetch failure', async () => {
+        // Mock fetchAccountProfile to return an error
+        jest.spyOn(spotifyApi, 'fetchAccountProfile').mockResolvedValue({ profile: null, error: 'Failed to fetch profile' });
+
+        // Render AccountPage
+        renderAccountPage();
+
+        // Wait for loading to finish
+        await waitForLoadingToFinish();
+
+        // Verify error message displayed
+        const alert = await screen.findByRole('alert');
+        expect(alert).toHaveTextContent('Failed to fetch profile');
+    });
+
+    test('displays error message on fetchUserPlaylists failure', async () => {
+        // Mock fetchAccountProfile to throw an error
+        jest.spyOn(spotifyApi, 'fetchAccountProfile').mockRejectedValue(new Error('Network error'));
+
+        // Render AccountPage
+        renderAccountPage();
+
+        // Wait for loading to finish
+        await waitForLoadingToFinish();
+
+        // Verify error message displayed
+        const alert = await screen.findByRole('alert');
+        expect(alert).toHaveTextContent('Network error');
+    });
+
+    test('redirects to login on token expiration', async () => {
+        // Mock fetchAccountProfile to return token expired error
+        jest.spyOn(spotifyApi, 'fetchAccountProfile').mockResolvedValue({ profile: null, error: 'The access token expired' });
+
+        // Render AccountPage
+        renderAccountPage();
+
+        // Wait for loading to finish
+        await waitForLoadingToFinish();
+
+        // Verify redirection to login page
         expect(screen.getByText('Login Page')).toBeInTheDocument();
+    });
+
+    test('verify styling and accessibility attributes using role', async () => {
+        // Render AccountPage
+        renderAccountPage();
+
+        // Verify loading indicator has correct attributes
+        const loadingIndicator = screen.getByRole('status');
+        expect(loadingIndicator).toHaveAttribute('aria-live', 'polite');
+
+        // Wait for loading to finish
+        await waitForLoadingToFinish();        
+
+        // Verify main container has correct class
+        const container = screen.getByRole('region', { name: /spotify account info/i });
+        expect(container).toHaveClass('account-page page-container');
+
+        // Verify title has correct class
+        const title = screen.getByRole('heading', { level: 1, name: /spotify account info/i });
+        expect(title).toHaveClass('page-title');
+
+        // Verify details section has correct class
+        const detailsSection = screen.getByRole('region', { name: /account details/i });
+        expect(detailsSection).toHaveClass('account-details');
+
+        // Verify profile link has correct class
+        const profileLink = screen.getByRole('link', { name: 'Open Spotify Profile' });
+        expect(profileLink).toHaveClass('account-link');
     });
 });
