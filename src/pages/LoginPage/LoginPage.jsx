@@ -1,6 +1,8 @@
 
 import { createPkcePair } from '../../api/pkce.js';
 import { normalizePostAuthTarget } from '../../utils/redirect.js';
+import { storePostAuthRedirect } from '../../utils/authRedirect.js';
+import { KEY_CODE_VERIFIER } from '../../constants/storageKeys.js';
 import '../../styles/theme.css';
 import '../PageLayout.css';
 import './LoginPage.css';
@@ -34,9 +36,9 @@ export default function LoginPage({ clientIdOverride, onNavigate }) {
   // Handle login button click to initiate Spotify OAuth2 flow
   const handleLogin = async () => {
     // Create PKCE code verifier and challenge pair for secure OAuth2 flow
-    const { codeVerifier, codeChallenge } = await createPkcePair(128);
-    localStorage.setItem('spotify_code_verifier', codeVerifier);
-    localStorage.setItem('post_auth_redirect', safeNext);
+  const { codeVerifier, codeChallenge } = await createPkcePair(128);
+  localStorage.setItem(KEY_CODE_VERIFIER, codeVerifier);
+  storePostAuthRedirect(safeNext);
     const args = new URLSearchParams({
       response_type: 'code',
       client_id: effectiveClientId,

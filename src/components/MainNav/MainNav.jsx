@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { fetchAccountProfile } from '../../api/spotify-me.js';
 import AccountNav from '../AccountNav/AccountNav.jsx';
 import './MainNav.css';
+import { KEY_ACCESS_TOKEN } from '../../constants/storageKeys.js';
 
 // Generic nav item wrapper to reduce duplication and centralize active class logic
 function NavItem({ to, children }) {
@@ -42,13 +43,13 @@ export default function MainNav() {
   const [profile, setProfile] = useState(initialProfile);
   // Derive initial loading: if we have a token and no cached profile, we will fetch.
   const [loading, setLoading] = useState(() => {
-    const token = localStorage.getItem('spotify_access_token');
+    const token = localStorage.getItem(KEY_ACCESS_TOKEN);
     return !!token && !initialProfile;
   });
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const token = localStorage.getItem('spotify_access_token');
+  const token = localStorage.getItem(KEY_ACCESS_TOKEN);
     if (!token || profile) return; // Not authenticated or already have cached profile
 
 
