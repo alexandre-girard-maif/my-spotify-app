@@ -132,4 +132,24 @@ describe('PlaylistsPage', () => {
         // Verify redirection to login page
         expect(screen.getByText('Login Page')).toBeInTheDocument();
     });
+
+    test('verify styling and accessibility attributes using role', async () => {
+        // Render the PlaylistsPage
+        renderPlaylistsPage();
+
+        // wait for loading to finish
+        await waitForLoadingToFinish();
+
+        // should have section landmark with appropriate class names
+        const region = screen.getByRole('region', { name: /your playlists/i });
+        expect(region).toHaveClass('playlists-container', 'page-container');
+
+        // should have heading level 1 with appropriate class name
+        const heading1 = screen.getByRole('heading', { level: 1, name: /your playlists/i });
+        expect(heading1).toHaveClass('playlists-title', 'page-title');
+
+        // should have heading level 2 with appropriate class name
+        const heading2 = screen.getByRole('heading', { level: 2, name: new RegExp(`${limit} Playlists`, 'i') });
+        expect(heading2).toHaveClass('playlists-count');
+    });
 });
