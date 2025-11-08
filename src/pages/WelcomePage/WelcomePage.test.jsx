@@ -6,7 +6,7 @@ import { render, screen } from '@testing-library/react';
 
 import WelcomePage from './WelcomePage.jsx';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import { buildTitle } from '../../constants/appMeta.js';
+import { APP_NAME, buildTitle } from '../../constants/appMeta.js';
 
 describe('WelcomePage', () => {
     // Helper to render WelcomePage
@@ -28,7 +28,7 @@ describe('WelcomePage', () => {
         expect(document.title).toBe(buildTitle('Welcome'));
 
         // Check for welcome message
-        const welcomeMessage = screen.getByText(/Welcome to music discovery app/i);
+        const welcomeMessage = screen.getByText(`Welcome to ${APP_NAME}`);
         expect(welcomeMessage).toBeInTheDocument();
 
         // should have a description paragraph
