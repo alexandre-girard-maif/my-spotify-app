@@ -8,6 +8,7 @@ import PlaylistsPage, { limit } from './PlaylistsPage.jsx';
 import * as spotifyApi from '../../api/spotify-me.js';
 import { beforeEach, afterEach, jest } from '@jest/globals';
 
+// Mock playlists data
 const playlistsData = {
     items: [
         { id: 'playlist1', name: 'My Playlist 1', images: [{ url: 'https://via.placeholder.com/56' }], owner: { display_name: 'User1' }, tracks: { total: 5 }, external_urls: { spotify: 'https://open.spotify.com/playlist/playlist1' } },
@@ -16,108 +17,29 @@ const playlistsData = {
     total: 2
 };
 
+// Mock token value
+const tokenValue = 'test-token';
 
+// Tests for PlaylistsPage
 describe('PlaylistsPage', () => {
+    // Setup mocks before each test
     beforeEach(() => {
-        const tokenValue = 'test-token';
-        jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key) => {
-            if (key === 'spotify_access_token') return tokenValue;
-            return null;
-        });
+        // Mock localStorage token access
+        jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key) => key === 'spotify_access_token' ? tokenValue : null);
+
+        // Default mock: successful playlists fetch
         jest.spyOn(spotifyApi, 'fetchUserPlaylists').mockResolvedValue({ data: playlistsData, error: null });
     });
 
+    // Restore mocks after each test
     afterEach(() => {
         jest.restoreAllMocks();
     });
 
-    test('fetches and renders playlists, sets title', async () => {
-        render(
-            <MemoryRouter initialEntries={['/playlists']}>
-                <Routes>
-                    <Route path="/playlists" element={<PlaylistsPage />} />
-                </Routes>
-            </MemoryRouter>
-        );
-
-        expect(document.title).toBe('Playlists | Spotify App');
-
-        // loading state
-        expect(screen.getByRole('status')).toHaveTextContent(/loading playlists/i);
-
-        // wait for loading to finish
-        await waitFor(() => {
-            expect(screen.queryByTestId('loading-indicator')).not.toBeInTheDocument();
-        });
-
-        // verify playlists content rendered
-        const heading = await screen.findByRole('heading', { level: 1, name: 'Your Playlists' });
-        expect(heading).toBeInTheDocument();
-
-        const countHeading = await screen.findByRole('heading', { level: 2, name: `${limit} Playlists` });
-        expect(countHeading).toBeInTheDocument();
-
-        // verify each playlist item rendered
-        for (const playlist of playlistsData.items) {
-            expect(await screen.findByTestId(`playlist-item-${playlist.id}`)).toBeInTheDocument();
-        }
-
-        // verify API called correctly
-        await waitFor(() => {
-            expect(spotifyApi.fetchUserPlaylists).toHaveBeenCalledTimes(1);
-        });
-        expect(spotifyApi.fetchUserPlaylists).toHaveBeenCalledWith('test-token', 10);
-    });
-
-    test('displays error message on fetch failure', async () => {
-        jest.spyOn(spotifyApi, 'fetchUserPlaylists').mockResolvedValue({ data: { items: [], total: 0 }, error: 'Failed to fetch playlists' });
-
-        render(
-            <MemoryRouter initialEntries={['/playlists']}>
-                <Routes>
-                    <Route path="/playlists" element={<PlaylistsPage />} />
-                </Routes>
-            </MemoryRouter>
-        );
-
-        // wait for loading to finish
-        await waitFor(() => {
-            expect(screen.queryByTestId('loading-indicator')).not.toBeInTheDocument();
-        });
-
-        // verify error message displayed
-        const alert = await screen.findByRole('alert');
-        expect(alert).toHaveTextContent('Failed to fetch playlists');
-    });
-
-    test('displays error message on fetchUserPlaylists failure', async () => {
-        jest.spyOn(spotifyApi, 'fetchUserPlaylists').mockRejectedValue(new Error('Network error'));
-
-        render(
-            <MemoryRouter initialEntries={['/playlists']}>
-                <Routes>
-                    <Route path="/playlists" element={<PlaylistsPage />} />
-                </Routes>
-            </MemoryRouter>
-        );
-
-        // wait for loading to finish
-        await waitFor(() => {
-            expect(screen.queryByTestId('loading-indicator')).not.toBeInTheDocument();
-        });
-
-        // verify error message displayed
-        const alert = await screen.findByRole('alert');
-        expect(alert).toHaveTextContent('Network error');
-    });
-
-    test("handleTokenError called on token expiry error", async () => {
-        // Import module to spy in ESM context (avoid commonjs require to satisfy ESLint)
-        const handleTokenErrorModule = await import('../../utils/handleTokenError.js');
-        const handleTokenErrorSpy = jest.spyOn(handleTokenErrorModule, 'handleTokenError');
-        jest.spyOn(spotifyApi, 'fetchUserPlaylists').mockResolvedValue({ playlists: [], error: 'The access token expired' });
-
-        render(
+    // Helper to render PlaylistsPage
+    const renderPlaylistsPage = () => {
+        return render(
+            // render PlaylistsPage within MemoryRouter
             <MemoryRouter initialEntries={['/playlists']}>
                 <Routes>
                     <Route path="/playlists" element={<PlaylistsPage />} />
@@ -126,13 +48,88 @@ describe('PlaylistsPage', () => {
                 </Routes>
             </MemoryRouter>
         );
+    };
 
-        // wait for loading to finish
+    // Helper to wait for loading to finish
+    const waitForLoadingToFinish = async () => {
+        // initial loading state expectations
+        expect(screen.getByRole('status')).toHaveTextContent(/loading playlists/i);
         await waitFor(() => {
             expect(screen.queryByTestId('loading-indicator')).not.toBeInTheDocument();
         });
+    };
 
-        // verify handleTokenError called
-        expect(handleTokenErrorSpy).toHaveBeenCalledWith('The access token expired', expect.any(Function));
+    test('renders playlists page', async () => {
+        // Render the PlaylistsPage
+        renderPlaylistsPage();
+
+        // Check document title
+        expect(document.title).toBe('Playlists | Spotify App');
+
+        // wait for loading to finish
+        await waitForLoadingToFinish();
+
+        // when loading is done, verify playlists content rendered and api called correctly
+
+        // should call fetchUserPlaylists with the token
+        expect(spotifyApi.fetchUserPlaylists).toHaveBeenCalledTimes(1);
+        expect(spotifyApi.fetchUserPlaylists).toHaveBeenCalledWith(tokenValue, limit);
+
+        /// should render a heading of level 1 with text 'Your Playlists'
+        const heading = await screen.findByRole('heading', { level: 1, name: 'Your Playlists' });
+        expect(heading).toBeInTheDocument();
+
+        // should render heading of level 2 showing total playlist count
+        const countHeading = await screen.findByRole('heading', { level: 2, name: `${limit} Playlists` });
+        expect(countHeading).toBeInTheDocument();
+
+        // verify each playlist item rendered, don't check details here as covered in PlaylistItem tests
+        for (const playlist of playlistsData.items) {
+            expect(await screen.findByTestId(`playlist-item-${playlist.id}`)).toBeInTheDocument();
+        }
+    });
+
+    test('displays error message on fetch failure', async () => {
+        // Mock fetchUserPlaylists to return error
+        jest.spyOn(spotifyApi, 'fetchUserPlaylists').mockResolvedValue({ data: { items: [], total: 0 }, error: 'Failed to fetch playlists' });
+
+        // Render the PlaylistsPage
+        renderPlaylistsPage();
+
+        // wait for loading to finish
+        await waitForLoadingToFinish();
+
+        // verify error message displayed
+        const alert = await screen.findByRole('alert');
+        expect(alert).toHaveTextContent('Failed to fetch playlists');
+    });
+
+    test('displays error message on fetchUserPlaylists failure', async () => {
+        // Mock fetchUserPlaylists to return error
+        jest.spyOn(spotifyApi, 'fetchUserPlaylists').mockRejectedValue(new Error('Network error'));
+
+        // Render the PlaylistsPage
+        renderPlaylistsPage();
+
+        // wait for loading to finish
+        await waitForLoadingToFinish();
+
+        // verify error message displayed
+        const alert = await screen.findByRole('alert');
+        expect(alert).toHaveTextContent('Network error');
+    });
+
+    test('redirects to login on token expiration', async () => {
+        // Mock fetchUserPlaylists to return token expired error
+        jest.spyOn(spotifyApi, 'fetchUserPlaylists').mockResolvedValue({ playlists: [], error: 'The access token expired' });
+
+        // Render the PlaylistsPage
+        renderPlaylistsPage();
+
+        // Wait for loading to finish
+        await waitForLoadingToFinish();
+
+        // Verify redirection to login page
+        expect(screen.getByText('Login Page')).toBeInTheDocument();
     });
 });
