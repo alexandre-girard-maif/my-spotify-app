@@ -1,5 +1,5 @@
 import './TrackItem.css';
-import './ListItem.css';
+import '../ListItem.css';
 
 /**
  * Displays a single track item with its details.

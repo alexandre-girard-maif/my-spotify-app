@@ -1,0 +1,40 @@
+name: Analyze with SonarCloud
+on:
+  push: 
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+jobs:
+  build-and-analyze:
+    # only run SonarCloud analysis if the repository owner is the same as the actor (to avoid running on forks)
+    if: ${{ !github.event.repository.fork && !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork) }}
+    name: Build and Analyze
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the code repository
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      # Set up Node.js environment
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+      # Install dependencies
+      - run: npm ci
+      # Run tests with coverage reporting for SonarCloud
+      - run: npm run test:coverage
+      # Analyze the code with SonarCloud
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarqube-scan-action@v6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      # Check the Quality Gate status.
+      - name: SonarQube Quality Gate check
+        id: sonarqube-quality-gate-check
+        uses: sonarsource/sonarqube-quality-gate-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

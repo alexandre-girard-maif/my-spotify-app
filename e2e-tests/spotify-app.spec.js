@@ -8,7 +8,7 @@ test("navigation in spotify-app is correct", async ({ page }) => {
   await expect(page).toHaveTitle(/Spotify App/);
 
   // await for the welcome title to be visible
-  const welcomeTitle = page.locator(".app-hero-title");
+  const welcomeTitle = page.locator(".welcome-title");
   await expect(welcomeTitle).toBeVisible();
   await expect(welcomeTitle).toHaveText("Welcome to My Spotify App");
 

@@ -1,44 +1,22 @@
-name: Build and Analyze with SonarCloud
+name: Build and Test
 on:
   push:
   pull_request:
 jobs:
-  build-and-analyze:
-    # don't run on dependabot branches
-    if: github.actor != 'dependabot[bot]'
-    name: Build and Analyze
+  build-and-test:
+    name: Build and Test
     runs-on: ubuntu-latest
     steps:
+      # Checkout the code repository
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      # Set up Node.js environment
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: 'npm'
+      # Install dependencies
       - run: npm ci
-      - run: npm run test:coverage
-      - name: Print GitHub Context
-        run: |
-          echo 'github.actor=${{ github.actor }}'
-          echo 'github.repository_owner=${{ github.repository_owner }}'
-          echo 'event_name=${{ github.event_name }}'
-          echo 'repository.fork=${{ github.event.repository.fork }}'
-          echo 'pr.head.repo.fork=${{ github.event.pull_request.head.repo.fork }}'
-          echo 'fork detected (computed)='${{ github.event.repository.fork || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork) }}
-      # only run SonarCloud analysis if the repository owner is the same as the actor (to avoid running on forks)
-      - name: SonarCloud Scan
-        # Run scan only when NOT a fork (push) and NOT a forked PR
-        if: ${{ !github.event.repository.fork && !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork) }}
-        uses: SonarSource/sonarqube-scan-action@v6
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      # Check the Quality Gate status.
-      # only run SonarCloud Quality Gate check if the repository owner is the same as the actor (to avoid running on forks)
-      - name: SonarQube Quality Gate check
-        if: ${{ !github.event.repository.fork && !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork) }}
-        id: sonarqube-quality-gate-check
-        uses: sonarsource/sonarqube-quality-gate-action@master
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      # Run tests
+      - run: npm run test
+      # Run linting
+      - run: npm run lint

@@ -1,5 +1,5 @@
 import './PlayListItem.css';
-import './ListItem.css';
+import '../ListItem.css';
 
 /**
  * Playlist item component
