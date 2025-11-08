@@ -60,9 +60,9 @@ export default function AccountPage() {
           <img className="account-avatar" src={profile.images?.[0]?.url} alt="avatar" />
           <h2>{profile.display_name}</h2>
           <div className="account-details">
-            <p className="account-details"><b>Email:</b> {profile.email}</p>
-            <p><b>Country:</b> {profile.country}</p>
-            <p><b>Product:</b> {profile.product}</p>
+            <p className="account-details-item"><b>Email:</b> {profile.email}</p>
+            <p className="account-details-item"><b>Country:</b> {profile.country}</p>
+            <p className="account-details-item"><b>Product:</b> {profile.product}</p>
           </div>
           <a className="account-link" href={profile.external_urls.spotify} target="_blank" rel="noopener noreferrer">Open Spotify Profile</a>
         </>

@@ -169,7 +169,7 @@ describe('AccountPage', () => {
 
         // Verify details section has correct class
         const details = screen.getByText(profileData.email);
-        expect(details).toHaveClass('account-details');
+        expect(details).toHaveClass('account-details-item');
 
         // Verify profile link has correct class
         const profileLink = screen.getByRole('link', { name: 'Open Spotify Profile' });
