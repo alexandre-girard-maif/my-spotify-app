@@ -156,7 +156,7 @@ describe('AccountPage', () => {
         await waitForLoadingToFinish();        
 
         // Verify main container has correct class
-        const container = screen.getByRole('main', { name: /spotify account info/i });
+        const container = screen.getByRole('region', { name: /spotify account info/i });
         expect(container).toHaveClass('account-page page-container');
 
         // Verify title has correct class
