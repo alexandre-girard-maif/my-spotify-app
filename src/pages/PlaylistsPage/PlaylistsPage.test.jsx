@@ -8,6 +8,7 @@ import PlaylistsPage, { limit } from './PlaylistsPage.jsx';
 import * as spotifyApi from '../../api/spotify-me.js';
 import { beforeEach, afterEach, jest } from '@jest/globals';
 import { KEY_ACCESS_TOKEN } from '../../constants/storageKeys.js';
+import { buildTitle } from '../../constants/appMeta.js';
 
 // Mock playlists data
 const playlistsData = {
@@ -65,7 +66,7 @@ describe('PlaylistsPage', () => {
         renderPlaylistsPage();
 
         // Check document title
-        expect(document.title).toBe('Playlists | Music Discovery App');
+        expect(document.title).toBe(buildTitle('Playlists'));
 
         // wait for loading to finish
         await waitForLoadingToFinish();

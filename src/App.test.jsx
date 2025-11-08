@@ -7,12 +7,14 @@ jest.mock('./pages/Callback.jsx', () => () => <div data-testid="callback-page">C
 jest.mock('./pages/LoginPage/LoginPage.jsx', () => () => <div data-testid="login-page">Login Page</div>);
 
 import App from './App.jsx';
+import { APP_NAME } from './constants/appMeta.js';
 
 describe('App basic render', () => {
     test('renders welcome page content and navigation', () => {
         render(<App />);
         // Welcome title (div with text content)
-        expect(screen.getByText(/welcome to music discovery app/i)).toBeInTheDocument();
+    // Assert dynamic branding using APP_NAME constant
+    expect(screen.getByText(new RegExp(`welcome to ${APP_NAME.toLowerCase()}`, 'i'))).toBeInTheDocument();
         // One of the nav links to confirm layout rendered
         expect(screen.getByRole('link', { name: /top tracks/i })).toBeInTheDocument();
     });

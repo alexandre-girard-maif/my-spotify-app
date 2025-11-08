@@ -7,6 +7,7 @@ import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import TopTracksPage, { limit, timeRange } from './TopTracksPage.jsx';
 import * as spotifyApi from '../../api/spotify-me.js';
 import { KEY_ACCESS_TOKEN } from '../../constants/storageKeys.js';
+import { buildTitle } from '../../constants/appMeta.js';
 
 // Mock top tracks data
 const tracksData = {
@@ -64,7 +65,7 @@ describe('TopTracksPage', () => {
         renderTopTracksPage();
 
         // Check document title
-        expect(document.title).toBe('Top Tracks | Music Discovery App');
+        expect(document.title).toBe(buildTitle('Top Tracks'));
 
         // wait for loading to finish
         await waitForLoadingToFinish();
