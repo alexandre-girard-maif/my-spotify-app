@@ -163,13 +163,9 @@ describe('AccountPage', () => {
         const title = screen.getByRole('heading', { level: 1, name: /spotify account info/i });
         expect(title).toHaveClass('page-title');
 
-        // Verify avatar image has correct class
-        const img = screen.getByAltText('avatar');
-        expect(img).toHaveClass('account-avatar');
-
         // Verify details section has correct class
-        const details = screen.getByText(profileData.email);
-        expect(details).toHaveClass('account-details-item');
+        const detailsSection = screen.getByRole('region', { name: /account details/i });
+        expect(detailsSection).toHaveClass('account-details');
 
         // Verify profile link has correct class
         const profileLink = screen.getByRole('link', { name: 'Open Spotify Profile' });

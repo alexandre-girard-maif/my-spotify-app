@@ -59,11 +59,12 @@ export default function AccountPage() {
         <>
           <img className="account-avatar" src={profile.images?.[0]?.url} alt="avatar" />
           <h2>{profile.display_name}</h2>
-          <div className="account-details">
+          <section className="account-details" aria-labelledby="account-details-title">
+            <h3 id="account-details-title" className="sr-only">Account Details</h3>
             <p className="account-details-item"><b>Email:</b> {profile.email}</p>
             <p className="account-details-item"><b>Country:</b> {profile.country}</p>
             <p className="account-details-item"><b>Product:</b> {profile.product}</p>
-          </div>
+          </section>
           <a className="account-link" href={profile.external_urls.spotify} target="_blank" rel="noopener noreferrer">Open Spotify Profile</a>
         </>
       )}
