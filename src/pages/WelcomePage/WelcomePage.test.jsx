@@ -8,7 +8,7 @@ import WelcomePage from './WelcomePage.jsx';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 describe('WelcomePage', () => {
-    // Helpter to render WelcomePage
+    // Helper to render WelcomePage
     const renderWelcomePage = () => {
         return render(
             <MemoryRouter initialEntries={['/']}>
