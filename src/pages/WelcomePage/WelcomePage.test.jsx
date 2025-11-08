@@ -24,14 +24,14 @@ describe('WelcomePage', () => {
         renderWelcomePage();
 
         // Check document title
-        expect(document.title).toBe('Welcome | Spotify App');
+        expect(document.title).toBe('Welcome | Music discovery App');
 
         // Check for welcome message
-        const welcomeMessage = screen.getByText(/Welcome to My Spotify App/i);
+        const welcomeMessage = screen.getByText(/Welcome to music discovery app/i);
         expect(welcomeMessage).toBeInTheDocument();
 
         // should have a description paragraph
-        const description = screen.getByText(/Explore your Spotify music stats, discover your top tracks and artists, and browse your playlists./i);
+        const description = screen.getByText(/Explore your music stats, discover your top tracks and artists, and browse your playlists./i);
         expect(description).toBeInTheDocument();
     });
 

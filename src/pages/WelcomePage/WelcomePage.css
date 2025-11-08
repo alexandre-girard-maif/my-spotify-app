@@ -17,13 +17,6 @@
   text-align: center;
 }
 
-.welcome-logo {
-  width: 160px;
-  height: auto;
-  display: block;
-  margin: 0 auto 1.5rem auto;
-}
-
 .welcome-title {
   font-size: 2rem;
   font-weight: 700;

@@ -12,7 +12,7 @@ describe('App basic render', () => {
     test('renders welcome page content and navigation', () => {
         render(<App />);
         // Welcome title (div with text content)
-        expect(screen.getByText(/welcome to my spotify app/i)).toBeInTheDocument();
+        expect(screen.getByText(/welcome to music discovery app/i)).toBeInTheDocument();
         // One of the nav links to confirm layout rendered
         expect(screen.getByRole('link', { name: /top tracks/i })).toBeInTheDocument();
     });
