@@ -28,7 +28,7 @@ describe('AccountPage', () => {
     beforeEach(() => {
         // Mock localStorage token access
         jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key) => key === 'spotify_access_token' ? tokenValue : null);
-        
+
         // Default mock: successful profile fetch
         jest.spyOn(spotifyApi, 'fetchAccountProfile').mockResolvedValue({ data: profileData, error: null });
     });
@@ -80,7 +80,7 @@ describe('AccountPage', () => {
         // should render a heading of level 1 with text 'Spotify Account Info'
         const heading = await screen.findByRole('heading', { level: 1, name: 'Spotify Account Info' });
         expect(heading).toBeInTheDocument();
-        
+
         // should render the profile avatar image with correct src and alt text 'avatar'
         const img = await screen.findByAltText('avatar');
         expect(img).toHaveAttribute('src', profileData.images[0].url);
@@ -89,12 +89,12 @@ describe('AccountPage', () => {
         // should render a heading of level 2 with the user's display name
         const heading2 = await screen.findByRole('heading', { level: 2, name: profileData.display_name });
         expect(heading2).toBeInTheDocument();
-        
+
         // should render profile details: email, country, product
         expect(await screen.findByText(profileData.email)).toBeInTheDocument();
         expect(await screen.findByText(profileData.country)).toBeInTheDocument();
         expect(await screen.findByText(profileData.product)).toBeInTheDocument();
-        
+
         // should render link to Spotify profile
         const profileLink = await screen.findByRole('link', { name: 'Open Spotify Profile' });
         expect(profileLink).toHaveAttribute('href', profileData.external_urls.spotify);
@@ -142,5 +142,37 @@ describe('AccountPage', () => {
 
         // Verify redirection to login page
         expect(screen.getByText('Login Page')).toBeInTheDocument();
+    });
+
+    test('verify styling and accessibility attributes using role', async () => {
+        // Render AccountPage
+        renderAccountPage();
+
+        // Verify loading indicator has correct attributes
+        const loadingIndicator = screen.getByRole('status');
+        expect(loadingIndicator).toHaveAttribute('aria-live', 'polite');
+
+        // Wait for loading to finish
+        await waitForLoadingToFinish();        
+
+        // Verify main container has correct class
+        const container = screen.getByRole('main', { name: /spotify account info/i });
+        expect(container).toHaveClass('account-page page-container');
+
+        // Verify title has correct class
+        const title = screen.getByRole('heading', { level: 1, name: /spotify account info/i });
+        expect(title).toHaveClass('page-title');
+
+        // Verify avatar image has correct class
+        const img = screen.getByAltText('avatar');
+        expect(img).toHaveClass('account-avatar');
+
+        // Verify details section has correct class
+        const details = screen.getByText(profileData.email);
+        expect(details).toHaveClass('account-details');
+
+        // Verify profile link has correct class
+        const profileLink = screen.getByRole('link', { name: 'Open Spotify Profile' });
+        expect(profileLink).toHaveClass('account-link');
     });
 });

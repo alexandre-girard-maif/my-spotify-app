@@ -47,16 +47,20 @@ export default function AccountPage() {
   }, [token, navigate]);
 
   return (
-    <div className="account-page page-container">
-      <h1 className="page-title">Spotify Account Info</h1>
-      {loading && <output className="account-loading" data-testid="loading-indicator">Loading account info…</output>}
+    <div className="account-page page-container" role="main" aria-labelledby="account-page-title">
+      <h1 id="account-page-title" className="page-title">Spotify Account Info</h1>
+      {loading && (
+        <output className="account-loading" data-testid="loading-indicator" aria-live="polite">
+          Loading account info…
+        </output>
+      )}
       {error && !loading && <div className="account-error" role="alert">{error}</div>}
       {!loading && !error && profile && (
         <>
           <img className="account-avatar" src={profile.images?.[0]?.url} alt="avatar" />
           <h2>{profile.display_name}</h2>
           <div className="account-details">
-            <p><b>Email:</b> {profile.email}</p>
+            <p className="account-details"><b>Email:</b> {profile.email}</p>
             <p><b>Country:</b> {profile.country}</p>
             <p><b>Product:</b> {profile.product}</p>
           </div>
