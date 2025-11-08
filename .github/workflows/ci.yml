@@ -3,10 +3,8 @@ on:
   push:
   pull_request:
 jobs:
-  build-and-analyze:
-    # don't run on dependabot branches
-    if: github.actor != 'dependabot[bot]'
-    name: Build and Analyze
+  build-and-test:
+    name: Build and Test
     runs-on: ubuntu-latest
     steps:
       # Checkout the code repository
