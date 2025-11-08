@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { render, waitFor, screen } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { useRequireToken } from './useRequireToken.js';
-import { SPOTIFY_TOKEN_KEY } from '../constants/auth.js';
+import { KEY_ACCESS_TOKEN } from '../constants/storageKeys.js';
 
 function HookConsumer({ onValue }) {
   const value = useRequireToken();
@@ -25,7 +25,7 @@ describe('useRequireToken', () => {
   });
 
   test('returns token after checking when token exists', async () => {
-    getItemSpy.mockImplementation((key) => key === SPOTIFY_TOKEN_KEY ? 'token-value' : null);
+  getItemSpy.mockImplementation((key) => key === KEY_ACCESS_TOKEN ? 'token-value' : null);
     const values = [];
     render(
       <MemoryRouter initialEntries={['/account']}>
@@ -45,7 +45,7 @@ describe('useRequireToken', () => {
   });
 
   test('redirects to /login when token missing', async () => {
-    getItemSpy.mockReturnValue(null);
+  getItemSpy.mockImplementation((key) => key === KEY_ACCESS_TOKEN ? null : null);
     const values = [];
     render(
       <MemoryRouter initialEntries={['/account']}>
@@ -67,7 +67,7 @@ describe('useRequireToken', () => {
 
   test('cleanup prevents state update after unmount before microtask resolves', async () => {
     // Delay getItem until next tick and unmount earlier
-    getItemSpy.mockImplementation((key) => key === SPOTIFY_TOKEN_KEY ? 'late-token' : null);
+  getItemSpy.mockImplementation((key) => key === KEY_ACCESS_TOKEN ? 'late-token' : null);
     const values = [];
     const { unmount } = render(
       <MemoryRouter initialEntries={['/account']}>
