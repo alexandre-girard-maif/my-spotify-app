@@ -151,5 +151,9 @@ describe('PlaylistsPage', () => {
         // should have heading level 2 with appropriate class name
         const heading2 = screen.getByRole('heading', { level: 2, name: new RegExp(`${limit} Playlists`, 'i') });
         expect(heading2).toHaveClass('playlists-count');
+
+        // should have ordered list with appropriate class name
+        const list = screen.getByRole('list');
+        expect(list).toHaveClass('playlists-list');
     });
 });
