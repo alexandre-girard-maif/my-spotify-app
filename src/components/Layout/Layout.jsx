@@ -8,8 +8,8 @@ import { APP_NAME } from '../../constants/appMeta.js';
 export default function Layout() {
   return (
     <div className="layout-root">
-    <header className="layout-header" role="banner">
-  <Link to="/" className="layout-brand" aria-label={`Go to home - ${APP_NAME}`}>{APP_NAME}</Link>
+      <header className="layout-header" role="banner">
+        <Link to="/" className="layout-brand" aria-label={`Go to home - ${APP_NAME}`}>{APP_NAME}</Link>
         <MainNav />
       </header>
       <main className="layout-main">
