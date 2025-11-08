@@ -75,7 +75,7 @@ describe('PlaylistsPage', () => {
         expect(spotifyApi.fetchUserPlaylists).toHaveBeenCalledTimes(1);
         expect(spotifyApi.fetchUserPlaylists).toHaveBeenCalledWith(tokenValue, limit);
 
-        /// should render a heading of level 1 with text 'Your Playlists'
+        // should render a heading of level 1 with text 'Your Playlists'
         const heading = await screen.findByRole('heading', { level: 1, name: 'Your Playlists' });
         expect(heading).toBeInTheDocument();
 
@@ -141,15 +141,15 @@ describe('PlaylistsPage', () => {
         await waitForLoadingToFinish();
 
         // should have section landmark with appropriate class names
-        const region = screen.getByRole('region', { name: /your playlists/i });
+        const region = screen.getByRole('region', { name: `Your Playlists` });
         expect(region).toHaveClass('playlists-container', 'page-container');
 
         // should have heading level 1 with appropriate class name
-        const heading1 = screen.getByRole('heading', { level: 1, name: /your playlists/i });
+        const heading1 = screen.getByRole('heading', { level: 1, name: `Your Playlists` });
         expect(heading1).toHaveClass('playlists-title', 'page-title');
 
         // should have heading level 2 with appropriate class name
-        const heading2 = screen.getByRole('heading', { level: 2, name: new RegExp(`${limit} Playlists`, 'i') });
+        const heading2 = screen.getByRole('heading', { level: 2, name: `${limit} Playlists` });
         expect(heading2).toHaveClass('playlists-count');
 
         // should have ordered list with appropriate class name
