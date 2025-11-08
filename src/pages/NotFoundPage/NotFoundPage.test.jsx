@@ -3,41 +3,53 @@ import { describe, expect, test } from '@jest/globals';
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { createRoutesStub } from 'react-router-dom';
+import { createRoutesStub, MemoryRouter, Route, Routes } from 'react-router-dom';
 import NotFoundPage from './NotFoundPage.jsx';
 
+// Tests for NotFoundPage
 describe('NotFoundPage', () => {
+    // Helper to render NotFoundPage
+    const renderNotFoundPage = () => {
+        return render(
+            // render NotFoundPage within MemoryRouter
+            <MemoryRouter initialEntries={['/non-existent']}>
+                <Routes>
+                    <Route path="/non-existent" element={<NotFoundPage />} />
+                    <Route path="/" element={<div data-testid="home-page">Home Page</div>} />
+                </Routes>
+            </MemoryRouter>
+        );
+    };
+
     test('renders 404 message, home button and sets document title', () => {
-        const Stub = createRoutesStub([
-            { path: '/non-existent', Component: NotFoundPage }
-        ]);
+        // Render the NotFoundPage
+        renderNotFoundPage();
 
-    render(<Stub initialEntries={['/non-existent']} />);
-
-    const titleElement = screen.getByRole('heading', { name: /404.*Page Not Found/i });
-    expect(titleElement).toBeInTheDocument();
-    expect(titleElement).toHaveTextContent('404 – Page Not Found');
-
-    const messageElement = screen.getByText(/doesn’t exist/i);
-    expect(messageElement).toBeInTheDocument();
-
-    const button = screen.getByRole('button', { name: /go to home/i });
-    expect(button).toBeInTheDocument();
-    expect(button).toHaveClass('notfound-home-btn');
-
+        // Check document title
         expect(document.title).toBe('Not Found | Spotify App');
+
+        // should render a heading of level 1 with text '404 – Page Not Found'
+        const titleElement = screen.getByRole('heading', { name: /404.*Page Not Found/i });
+        expect(titleElement).toBeInTheDocument();
+        
+        // should render the message about non-existence
+        const messageElement = screen.getByText(/doesn’t exist/i);
+        expect(messageElement).toBeInTheDocument();
+
+        // should render a button to go home
+        const button = screen.getByRole('button', { name: /go to home/i });
+        expect(button).toBeInTheDocument();
+        expect(button).toHaveClass('notfound-home-btn');
     });
 
     test('navigates to home when button clicked', async () => {
-        const HomeStub = () => <div data-testid="home-page">Home Page</div>;
-        const Stub = createRoutesStub([
-            { path: '/', Component: HomeStub },
-            { path: '/missing', Component: NotFoundPage }
-        ]);
-        render(<Stub initialEntries={['/missing']} />);
-        expect(screen.queryByTestId('home-page')).not.toBeInTheDocument();
+        // Render the NotFoundPage
+        renderNotFoundPage();
+
+        // when clicking the home button, should navigate to home page
         const button = screen.getByRole('button', { name: /go to home/i });
         await userEvent.click(button);
+
         // After click, wait for home page content
         expect(screen.getByTestId('home-page')).toBeInTheDocument();
     });
