@@ -47,7 +47,7 @@ export default function AccountPage() {
   }, [token, navigate]);
 
   return (
-    <div className="account-page page-container" role="main" aria-labelledby="account-page-title">
+    <main className="account-page page-container" aria-labelledby="account-page-title">
       <h1 id="account-page-title" className="page-title">Spotify Account Info</h1>
       {loading && (
         <output className="account-loading" data-testid="loading-indicator" aria-live="polite">
@@ -67,6 +67,6 @@ export default function AccountPage() {
           <a className="account-link" href={profile.external_urls.spotify} target="_blank" rel="noopener noreferrer">Open Spotify Profile</a>
         </>
       )}
-    </div>
+    </main>
   );
 }
