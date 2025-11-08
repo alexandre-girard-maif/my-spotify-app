@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { buildTitle, APP_NAME } from '../../constants/appMeta.js';
+import { buildTitle } from '../../constants/appMeta.js';
 import { useRequireToken } from '../../hooks/useRequireToken.js';
 import PlayListItem from '../../components/PlayListItem/PlayListItem.jsx';
 import { fetchUserPlaylists } from '../../api/spotify-me.js';

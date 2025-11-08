@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { buildTitle, APP_NAME } from '../../constants/appMeta.js';
+import { buildTitle } from '../../constants/appMeta.js';
 import { useRequireToken } from '../../hooks/useRequireToken.js';
 import TopArtistItem from '../../components/TopArtistItem/TopArtistItem.jsx';
 import { fetchUserTopArtists } from '../../api/spotify-me.js';
