@@ -8,7 +8,7 @@ export default function Layout() {
   return (
     <div className="layout-root">
     <header className="layout-header" role="banner">
-      <Link to="/" className="layout-brand" aria-label="Go to home">My Spotify App</Link>
+      <Link to="/" className="layout-brand" aria-label="Go to home">Music Discovery App</Link>
         <MainNav />
       </header>
       <main className="layout-main">
@@ -16,9 +16,7 @@ export default function Layout() {
       </main>
       <footer className="layout-footer" role="contentinfo">
         <p>
-          &copy; {new Date().getFullYear()} My Spotify App – v{version}
-          <br />
-          Spotify and related trademarks are owned by Spotify AB. This app is independent and not endorsed by Spotify.
+          &copy; {new Date().getFullYear()} Music Discovery App – v{version}
         </p>
       </footer>
     </div>
