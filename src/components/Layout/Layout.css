@@ -10,7 +10,7 @@
 .layout-header {
   background: #1DB954;
   color: #fff;
-  padding: 1em 0 0.5em 0;
+  padding: 1em 1.25em 0.5em 1.25em; /* add horizontal space from borders */
   position: sticky;
   top: 0;
   z-index: 100;
@@ -28,6 +28,7 @@
   text-decoration: none;
   color: inherit;
   transition: opacity 0.2s ease;
+  white-space: nowrap; /* keep brand on one line */
 }
 .layout-header .layout-brand:focus-visible {
   outline: 2px solid #fff;

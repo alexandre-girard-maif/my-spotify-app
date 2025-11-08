@@ -6,6 +6,7 @@ import { render, screen } from '@testing-library/react';
 
 import WelcomePage from './WelcomePage.jsx';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { APP_NAME, buildTitle } from '../../constants/appMeta.js';
 
 describe('WelcomePage', () => {
     // Helper to render WelcomePage
@@ -24,14 +25,14 @@ describe('WelcomePage', () => {
         renderWelcomePage();
 
         // Check document title
-        expect(document.title).toBe('Welcome | Spotify App');
+        expect(document.title).toBe(buildTitle('Welcome'));
 
         // Check for welcome message
-        const welcomeMessage = screen.getByText(/Welcome to My Spotify App/i);
+        const welcomeMessage = screen.getByText(`Welcome to ${APP_NAME}`);
         expect(welcomeMessage).toBeInTheDocument();
 
         // should have a description paragraph
-        const description = screen.getByText(/Explore your Spotify music stats, discover your top tracks and artists, and browse your playlists./i);
+        const description = screen.getByText(/Explore your music stats, discover your top tracks and artists, and browse your playlists./i);
         expect(description).toBeInTheDocument();
     });
 

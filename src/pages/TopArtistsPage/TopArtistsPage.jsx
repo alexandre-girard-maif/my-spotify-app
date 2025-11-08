@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { buildTitle } from '../../constants/appMeta.js';
 import { useRequireToken } from '../../hooks/useRequireToken.js';
 import TopArtistItem from '../../components/TopArtistItem/TopArtistItem.jsx';
 import { fetchUserTopArtists } from '../../api/spotify-me.js';
@@ -31,14 +32,12 @@ export default function TopArtistsPage() {
   // state for loading and error
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
   // require token to fetch playlists
   const { token } = useRequireToken();
 
   // Set document title
-  useEffect(() => {
-    document.title = `Top Artists | Spotify App`;
-  }, []);
+  useEffect(() => { document.title = buildTitle('Top Artists'); }, []);
 
   useEffect(() => {
     if (!token) return; // wait for auth check
@@ -52,7 +51,7 @@ export default function TopArtistsPage() {
         }
         setArtists(res.data.items);
       })
-      .catch(err => { setError(err.message ); })
+      .catch(err => { setError(err.message); })
       .finally(() => { setLoading(false); });
   }, [token, navigate]);
 

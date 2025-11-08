@@ -8,6 +8,7 @@ import TopArtistsPage, { limit, timeRange } from './TopArtistsPage.jsx';
 import * as spotifyApi from '../../api/spotify-me.js';
 import { beforeEach, afterEach, jest } from '@jest/globals';
 import { KEY_ACCESS_TOKEN } from '../../constants/storageKeys.js';
+import { buildTitle } from '../../constants/appMeta.js';
 
 // Mock top artists data
 const artistsData = {
@@ -64,7 +65,7 @@ describe('TopArtistsPage', () => {
         renderTopArtistsPage();
 
         // Check document title
-        expect(document.title).toBe('Top Artists | Spotify App');
+        expect(document.title).toBe(buildTitle('Top Artists'));
 
         // wait for loading to finish
         await waitForLoadingToFinish();
