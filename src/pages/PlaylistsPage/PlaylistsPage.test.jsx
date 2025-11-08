@@ -89,7 +89,7 @@ describe('PlaylistsPage', () => {
         }
     });
 
-    test('displays error message on fetch failure', async () => {
+    test('displays error message on fetchUserPlaylists error', async () => {
         // Mock fetchUserPlaylists to return error
         jest.spyOn(spotifyApi, 'fetchUserPlaylists').mockResolvedValue({ data: { items: [], total: 0 }, error: 'Failed to fetch playlists' });
 

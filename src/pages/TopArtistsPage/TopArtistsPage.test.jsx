@@ -84,7 +84,7 @@ describe('TopArtistsPage', () => {
         }
     });
 
-    test('displays error message on fetch failure', async () => {
+    test('displays error message on fetchUserTopArtists error', async () => {
         // Mock fetchUserTopArtists to return an error
         jest.spyOn(spotifyApi, 'fetchUserTopArtists').mockResolvedValue({ data: { items: [] }, error: 'Failed to fetch top artists' });
 
