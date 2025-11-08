@@ -7,6 +7,7 @@ import '@testing-library/jest-dom';
 import { MemoryRouter } from 'react-router-dom';
 import * as spotifyApi from '../../api/spotify-me.js';
 import MainNav from './MainNav';
+import { KEY_ACCESS_TOKEN } from '../../constants/storageKeys.js';
 
 const profileData = {
   display_name: 'User from API',
@@ -22,10 +23,10 @@ const profileData = {
 describe('MainNav', () => {
   beforeEach(() => {
     const tokenValue = 'test-token';
-    jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key) => {
-      if (key === 'spotify_access_token') return tokenValue;
-      return null;
-    });
+    
+    // Mock localStorage token access
+    jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key) => key === KEY_ACCESS_TOKEN ? tokenValue : null);
+    
     jest.spyOn(spotifyApi, 'fetchAccountProfile').mockResolvedValue({ data: profileData, error: null });
   });
 

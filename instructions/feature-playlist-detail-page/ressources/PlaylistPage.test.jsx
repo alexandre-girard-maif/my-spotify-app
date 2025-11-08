@@ -7,6 +7,7 @@ import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import PlaylistPage from './PlaylistPage.js';
 import * as spotifyApi from '../api/spotify-playlists.js';
 import { beforeEach, afterEach, jest } from '@jest/globals';
+import { KEY_ACCESS_TOKEN } from '../../../src/constants/storageKeys.js';
 
 const playlistData = {
     id: 'playlist1',
@@ -35,10 +36,7 @@ const playlistData = {
 describe('PlaylistPage', () => {
     beforeEach(() => {
         const tokenValue = 'test-token';
-        jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key) => {
-            if (key === 'spotify_access_token') return tokenValue;
-            return null;
-        });
+        jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key) => key === KEY_ACCESS_TOKEN ? tokenValue : null);
         jest.spyOn(spotifyApi, 'fetchPlaylistById').mockResolvedValue({ playlist: playlistData, error: null });
     });
 

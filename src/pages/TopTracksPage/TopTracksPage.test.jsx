@@ -6,6 +6,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import TopTracksPage, { limit, timeRange } from './TopTracksPage.jsx';
 import * as spotifyApi from '../../api/spotify-me.js';
+import { KEY_ACCESS_TOKEN } from '../../constants/storageKeys.js';
 
 // Mock top tracks data
 const tracksData = {
@@ -24,7 +25,7 @@ describe('TopTracksPage', () => {
     // Setup mocks before each test
     beforeEach(() => {
         // Mock localStorage token
-        jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key) => key === 'spotify_access_token' ? tokenValue : null);
+        jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key) => key === KEY_ACCESS_TOKEN ? tokenValue : null);
 
         // Default mock: successful top tracks fetch
         jest.spyOn(spotifyApi, 'fetchUserTopTracks').mockResolvedValue({ data: tracksData, error: null });
