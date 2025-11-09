@@ -46,3 +46,20 @@ Le fichier `.env.local` est ignoré par Git grâce au fichier `.gitignore`, ce q
 Le fichier `README.md` contient en premières lignes des badges de statut pour le build, la qualité du code et la couverture des tests. Assurez-vous de mettre à jour les liens des badges avec les informations de votre propre dépôt GitHub et de votre projet SonarCloud après avoir cloné le template.
 
 Le fichier `sonar-project.properties` doit également être mis à jour avec les informations de votre projet SonarCloud pour assurer une intégration correcte.
+
+## À propos du projet music-discovery-app-project
+
+Les instructions pour les exercices associés à ce template sont disponibles dans le projet GitHub [music-discovery-app-project](https://github.com/users/alexandre-girard-maif/projects/2/views/8).
+
+Le projet `music-discovery-app-project` contient une liste de tâches que vous devez suivre pour développer et améliorer l'application.
+
+### Tâches et instructions
+
+Chaque tâche est décrite en détail dans le projet GitHub, avec des critères d'acceptation pour vous guider tout au long du processus de développement.
+
+Chaque tâche possède plusieurs propriétés:
+- priorité (haute, moyenne, basse)
+- étiquette (feature, bug, etc.)
+- taille estimée (petite, moyenne, grande) permettant d'évaluer le temps nécessaire pour compléter la tâche.
+
+Le projet contient également un répertoire `instructions` avec des fichiers markdown détaillant chaque étape des exercices à réaliser, ainsi que des ressources utiles ou nécessaires pour compléter les tâches.

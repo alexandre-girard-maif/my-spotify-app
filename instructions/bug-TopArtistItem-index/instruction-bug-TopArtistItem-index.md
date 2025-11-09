@@ -1,7 +1,7 @@
-# Correction du bug d'index dans TopArtistItem.jsx
+# 🐛 - Correction du bug d'index dans l'affichage des top artistes
 
 ## Problème
-Le composant `TopArtistItem.jsx` affiche un index incorrect pour les artistes. Actuellement, l'index commence à 0, ce qui n'est pas intuitif pour les utilisateurs. 
+La page `Top Artists` affiche un index incorrect pour les artistes. Actuellement, l'index commence à 0, ce qui n'est pas intuitif pour les utilisateurs. 
 
 ## Correction
 
@@ -11,10 +11,8 @@ Adopter la méthode **TDD** (**T**est-**D**riven **D**evelopment) pour corriger 
 3. Corriger l'affichage de l'index dans le composant `TopArtistItem.jsx` pour qu'il commence à 1 au lieu de 0.
 4. Les tests doivent dorénavant passer avec succès après la correction.
 
-En respectant cette approche, nous garantissons que le bug est correctement identifié et corrigé tout en maintenant la qualité du code grâce aux tests automatisés.
+En respectant cette approche, nous garantissons que le bug est correctement identifié et corrigé tout en maintenant la qualité du code grâce à l'écriture de tests appropriés.
 
 ## Critères d'acceptation
 - Le composant `TopArtistItem.jsx` doit afficher l'index des artistes en commençant à 1.
-- Tous les tests dans `TopArtistItem.test.jsx` doivent passer avec succès après la correction.
-- Le code doit respecter les normes de style et de qualité existantes dans le projet.
-
+- Les tests dans `TopArtistItem.test.jsx` doivent refléter cette modification et passer avec succès après la correction.
