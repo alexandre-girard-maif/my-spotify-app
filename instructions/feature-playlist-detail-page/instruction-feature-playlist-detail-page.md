@@ -1,4 +1,4 @@
-# Ajout de la page de détail de la playlist
+# ✨ - Ajout de la page de détail de la playlist
 
 ## Objectif
 
@@ -16,6 +16,9 @@ Créer une page de détail pour afficher les informations d'une playlist Spotify
 3. **Fonctionnalités supplémentaires** :
    - Ajouter un bouton "Lire la playlist" qui ouvre la playlist dans l'application Spotify.
    - Permettre d'accéder à la page de détail de la playlist en cliquant sur une playlist dans la liste des playlists.
+
+![Copie d'écran](https://github.com/alexandre-girard-maif/music-discovery-app-template/blob/develop/instructions/feature-playlist-detail-page/playlist-detail-page.png?raw=true)
+
 
 ## Critères d'acceptation
 - La page de détail de la playlist doit afficher correctement les informations de la playlist et la liste des pistes.
