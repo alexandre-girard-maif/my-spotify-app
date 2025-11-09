@@ -5,10 +5,14 @@
 
 Application permettant d'intéroger l'API Spotify pour découvrir de la musique en fonction des préférences utilisateur.
 
-## Fonctionnalités
-
 - Authentification utilisateur avec Spotify
 - Affichage des titres, artistes et playlists favoris
+
+Projet template permettant aux étudiants de faire évoluer l'application en ajoutant des fonctionnalités supplémentaires décrites dans le projet github [music-discovery-app-project](https://github.com/users/alexandre-girard-maif/projects/2/views/8).
+
+Utiliser ce projet `template` afin d'initialiser votre propre projet de découverte musicale avec Spotify, pour cela utilisez le bouton "Use this template" disponible sur la page GitHub de ce dépôt.
+
+Copiez également le projet `music-discovery-app-project` associé à ce template pour suivre les différentes étapes de développement.
 
 ## Installation
 
