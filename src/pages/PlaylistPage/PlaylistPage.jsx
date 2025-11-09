@@ -1,3 +1,11 @@
+import { useParams } from "react-router-dom";
+
+/**
+ * Playlist Page
+ * @returns {JSX.Element}
+ */
 export default function PlaylistPage() {
-    return <div>Playlist Page</div>;
+    // retrieve id from params
+    const { id } = useParams();
+    return <div>Playlist Page {id}</div>;
 }
