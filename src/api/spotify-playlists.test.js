@@ -34,7 +34,7 @@ describe("spotify-playlists API", () => {
         }
       );
       expect(result).toEqual({
-        playlist: mockPlaylist,
+        data: mockPlaylist,
         error: null,
       });
     });
