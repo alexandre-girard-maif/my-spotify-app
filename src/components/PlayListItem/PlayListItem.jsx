@@ -22,12 +22,10 @@ export default function PlayListItem({ playlist }) {
         <div className="playlist-item-tracks">{playlist.tracks.total} tracks</div>
       </div>
       <a
-        href={playlist.external_urls.spotify}
-        target="_blank"
-        rel="noopener noreferrer"
+        href={`/playlist/${playlist.id}`}
         className="playlist-link"
       >
-        Open
+        View Playlist
       </a>
     </li>
   );

@@ -31,6 +31,6 @@ describe('PlayListItem component', () => {
         // track count is rendered correctly
         expect(screen.getByText(`${playlist.tracks.total} tracks`)).toBeInTheDocument();
         // link is rendered correctly
-        expect(screen.getByRole('link')).toHaveAttribute('href', playlist.external_urls.spotify);
+        expect(screen.getByRole('link')).toHaveAttribute('href', `/playlist/${playlist.id}`);
     });
 });
