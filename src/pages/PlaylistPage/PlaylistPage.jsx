@@ -7,6 +7,7 @@ import { buildTitle } from "../../constants/appMeta";
 
 import "./PlaylistPage.css";
 import "../PageLayout.css";
+import TrackItem from "../../components/TrackItem/TrackItem";
 
 /**
  * Playlist Page
@@ -44,7 +45,7 @@ export default function PlaylistPage() {
                         setError(res.error);
                     }
                 }
-                setPlaylist (res.playlist);
+                setPlaylist(res.playlist);
             })
             .catch(err => { setError(err.message); })
             .finally(() => { setLoading(false); });
@@ -55,38 +56,47 @@ export default function PlaylistPage() {
             {loading && <output className="playlist-loading" data-testid="loading-indicator">Loading playlist…</output>}
             {error && !loading && <div className="playlist-error" role="alert">{error}</div>}
             {!loading && !error && (
-                <section className="playlist-header">
-                    <div className="playlist-header-image">
-                    {playlist?.images?.[0]?.url && (
-                        <img
-                            className="playlist-cover"
-                            src={playlist.images[0].url}
-                            alt={`Cover of ${playlist.name}`}
-                        />
-                    )}
-                    </div>
-                    <div className="playlist-header-text-with-link">
-                        <div className="playlist-header-text">
-                            <h1 className="playlist-title page-title">{playlist?.name}</h1>
-                            <h2
-                                className="playlist-subtitle page-subtitle"
-                                title={playlist?.description || ''}
-                            >
-                                {playlist?.description}
-                            </h2>
+                <>
+                    <section className="playlist-header">
+                        <div className="playlist-header-image">
+                            {playlist?.images?.[0]?.url && (
+                                <img
+                                    className="playlist-cover"
+                                    src={playlist.images[0].url}
+                                    alt={`Cover of ${playlist.name}`}
+                                />
+                            )}
                         </div>
-                        {playlist?.external_urls?.spotify && (
-                            <a
-                                className="playlist-spotify-link"
-                                href={playlist.external_urls.spotify}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                Open in Spotify
-                            </a>
-                        )}
-                    </div>
-                </section>
+                        <div className="playlist-header-text-with-link">
+                            <div className="playlist-header-text">
+                                <h1 className="playlist-title page-title">{playlist?.name}</h1>
+                                <h2
+                                    className="playlist-subtitle page-subtitle"
+                                    title={playlist?.description || ''}
+                                >
+                                    {playlist?.description}
+                                </h2>
+                            </div>
+                            {playlist?.external_urls?.spotify && (
+                                <a
+                                    className="playlist-spotify-link"
+                                    href={playlist.external_urls.spotify}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    Open in Spotify
+                                </a>
+                            )}
+                        </div>
+                    </section>
+                    <ol className="playlist-list">
+                        {playlist?.tracks?.items.map((item, index) => (
+                            <div key={`track-item-${item.track?.id}-${index}`}>
+                                {item.track && <TrackItem track={item.track} />}
+                            </div>
+                        ))}
+                    </ol>
+                </>
             )}
         </section>
     );
