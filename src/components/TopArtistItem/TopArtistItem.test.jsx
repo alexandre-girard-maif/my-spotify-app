@@ -28,7 +28,7 @@ describe('TopArtistItem component', () => {
         expect(img).toHaveAttribute('src', artist.images[1].url);
 
         // details assertions
-        expect(listItem).toHaveTextContent(artist.name);
+        expect(listItem).toHaveTextContent(`1. ${artist.name}`);
         expect(listItem).toHaveTextContent(`Genres: ${artist.genres.join(', ')}`);
         expect(listItem).toHaveTextContent(`Followers: ${artist.followers.total.toLocaleString()}`);
         expect(listItem).toHaveTextContent(`Popularity: ${artist.popularity}`);
@@ -60,7 +60,7 @@ describe('TopArtistItem component', () => {
         expect(within(listItem).queryByAltText(artist.name)).not.toBeInTheDocument();
 
         // details assertions
-        expect(listItem).toHaveTextContent(artist.name);
+        expect(listItem).toHaveTextContent(`2. ${artist.name}`);
         expect(listItem).toHaveTextContent(`Genres: ${artist.genres.join(', ')}`);
         expect(listItem).toHaveTextContent(`Followers: ${artist.followers.total.toLocaleString()}`);
 
