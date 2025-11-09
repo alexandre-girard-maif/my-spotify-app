@@ -3,6 +3,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useRequireToken } from "../../hooks/useRequireToken";
 import { fetchPlaylistById } from "../../api/spotify-playlists";
 import { handleTokenError } from "../../utils/handleTokenError";
+import { buildTitle } from "../../constants/appMeta";
+
+import "./PlaylistPage.css";
+import "../PageLayout.css";
 
 /**
  * Playlist Page
@@ -15,8 +19,14 @@ export default function PlaylistPage() {
     // retrieve id from params
     const { id } = useParams();
 
+    // state for playlist data
+    const [playlist, setPlaylist] = useState(null);
+
     // require token to fetch top tracks
     const { token } = useRequireToken();
+
+    // set document title
+    useEffect(() => { document.title = buildTitle('Playlist'); }, []);
 
     // state for loading and error
     const [loading, setLoading] = useState(true);
@@ -34,11 +44,50 @@ export default function PlaylistPage() {
                         setError(res.error);
                     }
                 }
-                console.log(res);
+                setPlaylist (res.playlist);
             })
             .catch(err => { setError(err.message); })
             .finally(() => { setLoading(false); });
-    }, [id,token, navigate]);
+    }, [id, token, navigate]);
 
-    return <div>Playlist Page {id}</div>;
+    return (
+        <section className="playlist-container page-container">
+            {loading && <output className="playlist-loading" data-testid="loading-indicator">Loading playlist…</output>}
+            {error && !loading && <div className="playlist-error" role="alert">{error}</div>}
+            {!loading && !error && (
+                <section className="playlist-header">
+                    <div className="playlist-header-image">
+                    {playlist?.images?.[0]?.url && (
+                        <img
+                            className="playlist-cover"
+                            src={playlist.images[0].url}
+                            alt={`Cover of ${playlist.name}`}
+                        />
+                    )}
+                    </div>
+                    <div className="playlist-header-text-with-link">
+                        <div className="playlist-header-text">
+                            <h1 className="playlist-title page-title">{playlist?.name}</h1>
+                            <h2
+                                className="playlist-subtitle page-subtitle"
+                                title={playlist?.description || ''}
+                            >
+                                {playlist?.description}
+                            </h2>
+                        </div>
+                        {playlist?.external_urls?.spotify && (
+                            <a
+                                className="playlist-spotify-link"
+                                href={playlist.external_urls.spotify}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Open in Spotify
+                            </a>
+                        )}
+                    </div>
+                </section>
+            )}
+        </section>
+    );
 }
