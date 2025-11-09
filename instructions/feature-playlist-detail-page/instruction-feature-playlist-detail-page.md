@@ -1,4 +1,4 @@
-# Ajout de la page de détail de la playlist
+# ✨ - Ajout de la page de détail de la playlist
 
 ## Objectif
 
