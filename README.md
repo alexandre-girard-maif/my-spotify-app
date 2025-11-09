@@ -3,28 +3,36 @@
 
 # Music Discovery App
 
-A React application that integrates with the Spotify API to provide users with insights into their music preferences, including top tracks, artists, and playlists.
+Application permettant d'intéroger l'API Spotify pour découvrir de la musique en fonction des préférences utilisateur.
 
-## Features
+## Fonctionnalités
 
-- User authentication with Spotify
-- Display of top tracks, artists, and playlists
+- Authentification utilisateur avec Spotify
+- Affichage des titres, artistes et playlists favoris
 
 ## Installation
 
-1. Clone the repository
-2. Install dependencies
+1. Cloner le dépôt
+2. Installer les dépendances
     ```bash
     npm install
     ```
-3. Create a `.env.local` file with your Spotify API credentials, you can refer to the `.env.sample` file for the required variables:
+3. Créer un fichier `.env.local` avec vos identifiants API Spotify, vous pouvez vous référer au fichier `.env.sample` pour les variables requises:
     ```env
     VITE_SPOTIFY_CLIENT_ID=YOUR_SPOTIFY_CLIENT_ID
     ```
-4. Start the development server
+4. Démarrer le serveur de développement
     ```bash
     npm start
     ``` 
-5. Open your browser and navigate to `http://127.0.0.1:5173`
+5. Ouvrir votre navigateur et naviguer vers `http://127.0.0.1:5173`
 
+## Utilisation de l'API Spotify
 
+Pour utiliser l'API Spotify, vous devez d'abord créer une application sur le [Tableau de bord des développeurs Spotify](https://developer.spotify.com/dashboard/applications). Une fois l'application créée, vous obtiendrez un `Client ID` et un `Client Secret`. Utilisez ces informations pour configurer votre fichier `.env.local`. Assurez-vous également de définir les URI de redirection appropriés dans les paramètres de votre application Spotify pour permettre l'authentification OAuth.
+
+![Spotify Dashboard](assets/spotify-dashboard.png)
+
+**Attention:** ne partagez jamais votre `Client Secret` publiquement ou dans votre code source. 
+
+Le fichier `.env.local` est ignoré par Git grâce au fichier `.gitignore`, ce qui aide à protéger vos informations sensibles.
