@@ -40,3 +40,9 @@ Pour utiliser l'API Spotify, vous devez d'abord créer une application sur le [T
 **Attention:** ne partagez jamais votre `Client Secret` publiquement ou dans votre code source. 
 
 Le fichier `.env.local` est ignoré par Git grâce au fichier `.gitignore`, ce qui aide à protéger vos informations sensibles.
+
+## Modifications des fichiers liés au template
+
+Le fichier `README.md` contient en premières lignes des badges de statut pour le build, la qualité du code et la couverture des tests. Assurez-vous de mettre à jour les liens des badges avec les informations de votre propre dépôt GitHub et de votre projet SonarCloud après avoir cloné le template.
+
+Le fichier `sonar-project.properties` doit également être mis à jour avec les informations de votre projet SonarCloud pour assurer une intégration correcte.
