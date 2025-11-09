@@ -6,9 +6,11 @@ Ces instructions globales s'appliquent à toutes évolutions de l'application Sp
 
 Mettre en place la configuration nécessaire de votre projet **github** pour permettre un développement efficace, sécurisé et collaboratif.
 
-Chaque développement de fonctionnalité ou correction de bug doit être validé par le **lead developer** (alexandre-girard-maif) 
+Chaque développement de fonctionnalité ou correction de bug doit être validé par le **lead developer** (alexandre-girard-maif).
 
-Libre à vous de choiser quand une fonctionnalité (une fois validée par le lead developer) pourra être intégrée dans la branche principale `main` pour une nouvelle version de l'application.
+Il doit être possible de développer chaque fonctionnalité de manière indépendante et en parallèle.
+
+Libre à vous de choisir quand une fonctionnalité (une fois validée par le lead developer) pourra être intégrée dans la branche principale `main` pour une nouvelle version de l'application.
 
 Le numéro de version doit suivre les bonnes pratiques de gestion de versions sémantiques (semver).
 

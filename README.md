@@ -62,4 +62,4 @@ Chaque tâche possède plusieurs propriétés:
 - étiquette (feature, bug, etc.)
 - taille estimée (petite, moyenne, grande) permettant d'évaluer le temps nécessaire pour compléter la tâche.
 
-Le projet contient également un répertoire `instructions` avec des fichiers markdown détaillant chaque étape des exercices à réaliser, ainsi que des ressources utiles ou nécessaires pour compléter les tâches.
+Le projet contient également un répertoire `instructions` avec des fichiers markdown détaillant chaque étape des exercices à réaliser (même contenu que les tâches GitHub), ainsi que des ressources utiles ou nécessaires pour compléter les tâches. Il contient également des instructions globales à suivre pour toutes les tâches [voir `instruction-global.md`](instructions/instruction-global.md).
