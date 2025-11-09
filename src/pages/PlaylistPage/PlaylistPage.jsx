@@ -45,14 +45,14 @@ export default function PlaylistPage() {
                         setError(res.error);
                     }
                 }
-                setPlaylist(res.playlist);
+                setPlaylist(res.data);
             })
             .catch(err => { setError(err.message); })
             .finally(() => { setLoading(false); });
     }, [id, token, navigate]);
 
     return (
-        <section className="playlist-container page-container">
+        <section className="playlist-container page-container" aria-labelledby="playlist-title">
             {loading && <output className="playlist-loading" data-testid="loading-indicator">Loading playlist…</output>}
             {error && !loading && <div className="playlist-error" role="alert">{error}</div>}
             {!loading && !error && (
@@ -69,7 +69,7 @@ export default function PlaylistPage() {
                         </div>
                         <div className="playlist-header-text-with-link">
                             <div className="playlist-header-text">
-                                <h1 className="playlist-title page-title">{playlist?.name}</h1>
+                                <h1 id="playlist-title" className="playlist-title page-title">{playlist?.name}</h1>
                                 <h2
                                     className="playlist-subtitle page-subtitle"
                                     title={playlist?.description || ''}
