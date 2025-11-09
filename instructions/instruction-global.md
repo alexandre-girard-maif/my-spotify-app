@@ -2,6 +2,16 @@
 
 Ces instructions globales s'appliquent à toutes évolutions de l'application Spotify. Assurez-vous de suivre ces directives lors du développement de nouvelles fonctionnalités ou de la modification des fonctionnalités existantes.
 
+### 1. Processus de développement
+
+Mettre en place la configuration nécessaire de votre projet **github** pour permettre un développement efficace, sécurisé et collaboratif.
+
+Chaque développement de fonctionnalité ou correction de bug doit être validé par le **lead developer** (alexandre-girard-maif) 
+
+Libre à vous de choiser quand une fonctionnalité (une fois validée par le lead developer) pourra être intégrée dans la branche principale `main` pour une nouvelle version de l'application.
+
+Le numéro de version doit suivre les bonnes pratiques de gestion de versions sémantiques (semver).
+
 ### 1. Qualité du développement
 
 En vous inspirant de ce qui a été fait pour le projet **marvel-app**, assurez-vous de respecter les points suivants en respectant les bonnes pratiques de développement et en paramétrant correctement le projet :
