@@ -13,7 +13,7 @@ test("navigation in music discovery app is correct", async ({ page }) => {
   // await for the welcome title to be visible
   const welcomeTitle = page.locator(".welcome-title");
   await expect(welcomeTitle).toBeVisible();
-  await expect(welcomeTitle).toHaveText(`Welcome to ${APP_NAME.toLowerCase()}`);
+  await expect(welcomeTitle).toHaveText(`Welcome to ${APP_NAME}`);
 
   // click on Top Tracks element and expect to navigate to Top Tracks page
   await page.click("text=Top Tracks");
