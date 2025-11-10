@@ -1,4 +1,4 @@
-# Feature: Dashboard Page Instructions
+# ✨ - Ajout de la page de tableau de bord
 
 ## Objectif
 
@@ -10,15 +10,17 @@ Créer une page de tableau de bord pour afficher un aperçu des informations Spo
 1. **Récupération des données utilisateur** :
    - La fonction **fetchUserTopArtists** permet de récupérer les artistes les plus écoutés de l'utilisateur, le paramètre `limit` peut être utilisé pour définir le nombre d'artistes à récupérer.
    - Gérer les erreurs potentielles lors de la récupération des données.
+
 2. **Récupération des pistes utilisateur** :
    - La fonction **fetchUserTopTracks** permet de récupérer les pistes les plus écoutées de l'utilisateur, le paramètre `limit` peut être utilisé pour définir le nombre de pistes à récupérer.
    - Gérer les erreurs potentielles lors de la récupération des données.
+
 3. **Affichage des informations** :
    - Afficher l'artiste le plus écouté avec son nom et son image et ses genres musicaux.
    - Afficher la piste la plus écoutée avec son nom, le nom de l'artiste et l'image de l'album et les artistes associés.
 
 ## Critères d'acceptation
-- La page du tableau de bord doit afficher correctement l'artiste le plus écouté et la piste la plus écoutée.
+- La page du tableau de bord doit afficher correctement l'artiste le plus écouté et la piste la plus écoutée. 
 - Les erreurs lors de la récupération des données doivent être gérées et affichées de manière appropriée.
 - Les tests doivent être passés avec succès avec le test `instructions/feature-dashboard-page/ressources/DashboardPage.test.jsx` à déplacer dans les sources.
 - Le style de la page doit utiliser `src/styles/DashboardPage.css`.
@@ -33,4 +35,7 @@ Procédez par étapes pour implémenter cette fonctionnalité et testez chaque p
 - Utiliser la fonction `fetchUserTopTracks` pour récupérer les données des pistes les plus écoutées de l'utilisateur et afficher le résultat dans la console pour vérifier que les données sont correctement récupérées et le format des données. Par exemple, pour accéder à la première piste, vous pouvez utiliser : `topTracks.items[0]`.
 - Mettre en place l'affichage de la piste la plus écoutée avec son nom, le nom de l'artiste, l'image de l'album et les artistes associés.
 - Le composant `SimpleCard` peut être réutilisé pour afficher l'artiste et la piste.
+- Ajouter les tests nécessaires pour valider le bon fonctionnement de la page du tableau de bord en déplaçant le test fourni `instructions/feature-dashboard-page/ressources/DashboardPage.test.jsx` dans les sources.
+- Ajouter des tests supplémentaires si nécessaire pour couvrir les cas d'erreur lors de la récupération des données.
 
+Des commits clairs et descriptifs doivent être faits à chaque étape pour permettre une revue de code efficace.
