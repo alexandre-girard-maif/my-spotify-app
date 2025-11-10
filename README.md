@@ -27,7 +27,7 @@ Copiez également le projet `music-discovery-app-project` associé à ce templat
     ```
 4. Démarrer le serveur de développement
     ```bash
-    npm start
+    npm run dev
     ``` 
 5. Ouvrir votre navigateur et naviguer vers `http://127.0.0.1:5173`
 
