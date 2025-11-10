@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { KEY_CODE_VERIFIER, KEY_ACCESS_TOKEN } from '../constants/storageKeys.js';
+import { consumePostAuthRedirect } from '../utils/authRedirect.js';
 
 const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
 let redirectUri = `${globalThis.location.origin}/callback`;
@@ -18,7 +20,7 @@ export default function Callback() {
         setLoading(false);
         return;
       }
-      const codeVerifier = localStorage.getItem('spotify_code_verifier');
+  const codeVerifier = localStorage.getItem(KEY_CODE_VERIFIER);
       if (!codeVerifier) {
         setError('No code verifier found.');
         setLoading(false);
@@ -41,10 +43,8 @@ export default function Callback() {
         });
         const data = await response.json();
         if (data.access_token) {
-          localStorage.setItem('spotify_access_token', data.access_token);
-          const storedNext = localStorage.getItem('post_auth_redirect');
-          const target = storedNext?.startsWith('/') ? storedNext : '/';
-          localStorage.removeItem('post_auth_redirect');
+          localStorage.setItem(KEY_ACCESS_TOKEN, data.access_token);
+          const target = consumePostAuthRedirect();
           globalThis.location.replace(globalThis.location.origin + target);
         } else {
           setError(data.error_description || 'Failed to get access token.');

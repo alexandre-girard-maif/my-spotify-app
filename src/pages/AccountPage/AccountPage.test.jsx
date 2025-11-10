@@ -6,6 +6,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import AccountPage from './AccountPage.jsx';
 import * as spotifyApi from '../../api/spotify-me.js';
+import { KEY_ACCESS_TOKEN } from '../../constants/storageKeys.js';
 
 // Mock profile data
 const profileData = {
@@ -27,7 +28,7 @@ describe('AccountPage', () => {
     // Setup mocks before each test
     beforeEach(() => {
         // Mock localStorage token access
-        jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key) => key === 'spotify_access_token' ? tokenValue : null);
+        jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key) => key === KEY_ACCESS_TOKEN ? tokenValue : null);
 
         // Default mock: successful profile fetch
         jest.spyOn(spotifyApi, 'fetchAccountProfile').mockResolvedValue({ data: profileData, error: null });

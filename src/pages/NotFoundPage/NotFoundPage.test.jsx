@@ -5,6 +5,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import NotFoundPage from './NotFoundPage.jsx';
+import { buildTitle } from '../../constants/appMeta.js';
 
 // Tests for NotFoundPage
 describe('NotFoundPage', () => {
@@ -26,7 +27,7 @@ describe('NotFoundPage', () => {
         renderNotFoundPage();
 
         // Check document title
-        expect(document.title).toBe('Not Found | Spotify App');
+        expect(document.title).toBe(buildTitle('Not Found'));
 
         // should render a heading of level 1 with text '404 – Page Not Found'
         const titleElement = screen.getByRole('heading', { name: /404.*Page Not Found/i });

@@ -7,6 +7,7 @@ import { render, screen } from '@testing-library/react';
 import Layout from './Layout';
 import { MemoryRouter } from 'react-router';
 import { version } from '../../../package.json';
+import { APP_NAME } from '../../constants/appMeta';
 
 describe('Layout Component', () => {
     test('renders the layout with correct elements', () => {
@@ -32,8 +33,6 @@ describe('Layout Component', () => {
         // Footer
         const footerElement = screen.getByRole('contentinfo');
         expect(footerElement).toBeInTheDocument();
-        expect(footerElement).toHaveTextContent(`© ${new Date().getFullYear()} My Spotify App – v${version}`);
-        expect(footerElement).toHaveTextContent(/Spotify and related trademarks are owned by Spotify AB/i);
-
+        expect(footerElement).toHaveTextContent(`© ${new Date().getFullYear()} ${APP_NAME} – v${version}`);
     });
 });

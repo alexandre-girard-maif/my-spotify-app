@@ -2,6 +2,7 @@ import { describe, test, beforeEach, afterEach, jest } from '@jest/globals';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import LoginPage from './LoginPage';
+import { APP_NAME } from '../../constants/appMeta';
 /* eslint-env node */
 
 // Mock createPkcePair to avoid heavy crypto work and make deterministic assertions
@@ -26,7 +27,7 @@ describe('LoginPage', () => {
     test('renders heading', () => {
         // use explicit override prop to avoid relying on env mutation
         render(<LoginPage clientIdOverride="test-client-id" />);
-        const heading = screen.getByRole('heading', { name: /welcome to my spotify app/i });
+        const heading = screen.getByRole('heading', { name: `Welcome to ${APP_NAME}` });
         expect(heading).toBeInTheDocument();
         // button should be enabled when client id provided via override
         expect(screen.getByRole('button', { name: /login with spotify/i })).toBeEnabled();

@@ -7,6 +7,8 @@ import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import PlaylistsPage, { limit } from './PlaylistsPage.jsx';
 import * as spotifyApi from '../../api/spotify-me.js';
 import { beforeEach, afterEach, jest } from '@jest/globals';
+import { KEY_ACCESS_TOKEN } from '../../constants/storageKeys.js';
+import { buildTitle } from '../../constants/appMeta.js';
 
 // Mock playlists data
 const playlistsData = {
@@ -25,7 +27,7 @@ describe('PlaylistsPage', () => {
     // Setup mocks before each test
     beforeEach(() => {
         // Mock localStorage token access
-        jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key) => key === 'spotify_access_token' ? tokenValue : null);
+        jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key) => key === KEY_ACCESS_TOKEN ? tokenValue : null);
 
         // Default mock: successful playlists fetch
         jest.spyOn(spotifyApi, 'fetchUserPlaylists').mockResolvedValue({ data: playlistsData, error: null });
@@ -64,7 +66,7 @@ describe('PlaylistsPage', () => {
         renderPlaylistsPage();
 
         // Check document title
-        expect(document.title).toBe('Playlists | Spotify App');
+        expect(document.title).toBe(buildTitle('Playlists'));
 
         // wait for loading to finish
         await waitForLoadingToFinish();

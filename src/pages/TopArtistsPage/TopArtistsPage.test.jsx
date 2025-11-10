@@ -7,6 +7,8 @@ import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import TopArtistsPage, { limit, timeRange } from './TopArtistsPage.jsx';
 import * as spotifyApi from '../../api/spotify-me.js';
 import { beforeEach, afterEach, jest } from '@jest/globals';
+import { KEY_ACCESS_TOKEN } from '../../constants/storageKeys.js';
+import { buildTitle } from '../../constants/appMeta.js';
 
 // Mock top artists data
 const artistsData = {
@@ -24,7 +26,7 @@ describe('TopArtistsPage', () => {
     // Setup mocks before each test
     beforeEach(() => {
         // Mock localStorage token access
-        jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key) => key === 'spotify_access_token' ? tokenValue : null);
+        jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key) => key === KEY_ACCESS_TOKEN ? tokenValue : null);
 
         // Default mock: successful top artists fetch
         jest.spyOn(spotifyApi, 'fetchUserTopArtists').mockResolvedValue({ data: artistsData, error: null });
@@ -63,7 +65,7 @@ describe('TopArtistsPage', () => {
         renderTopArtistsPage();
 
         // Check document title
-        expect(document.title).toBe('Top Artists | Spotify App');
+        expect(document.title).toBe(buildTitle('Top Artists'));
 
         // wait for loading to finish
         await waitForLoadingToFinish();

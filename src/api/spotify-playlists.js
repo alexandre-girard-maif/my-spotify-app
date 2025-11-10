@@ -23,7 +23,7 @@ export async function fetchPlaylistById(token, playlistId) {
       return { error: data.error.message, playlist: null };
     }
     // return fetched playlist
-    return { playlist: data, error: null };
+    return { data, error: null };
   } catch {
     return { error: 'Failed to fetch playlist.', playlist: null };
   }

@@ -1,9 +1,12 @@
 
 import { createPkcePair } from '../../api/pkce.js';
 import { normalizePostAuthTarget } from '../../utils/redirect.js';
+import { storePostAuthRedirect } from '../../utils/authRedirect.js';
+import { KEY_CODE_VERIFIER } from '../../constants/storageKeys.js';
 import '../../styles/theme.css';
 import '../PageLayout.css';
 import './LoginPage.css';
+import { APP_NAME } from '../../constants/appMeta.js';
 
 // Redirect URI must match the one set in Spotify Developer Dashboard
 const redirectUri = `${globalThis.location.origin}/callback`;
@@ -34,9 +37,9 @@ export default function LoginPage({ clientIdOverride, onNavigate }) {
   // Handle login button click to initiate Spotify OAuth2 flow
   const handleLogin = async () => {
     // Create PKCE code verifier and challenge pair for secure OAuth2 flow
-    const { codeVerifier, codeChallenge } = await createPkcePair(128);
-    localStorage.setItem('spotify_code_verifier', codeVerifier);
-    localStorage.setItem('post_auth_redirect', safeNext);
+  const { codeVerifier, codeChallenge } = await createPkcePair(128);
+  localStorage.setItem(KEY_CODE_VERIFIER, codeVerifier);
+  storePostAuthRedirect(safeNext);
     const args = new URLSearchParams({
       response_type: 'code',
       client_id: effectiveClientId,
@@ -51,7 +54,7 @@ export default function LoginPage({ clientIdOverride, onNavigate }) {
 
   return (
     <div className="login-container page-container">
-      <h1 className="login-title page-title">Welcome to My Spotify App</h1>
+      <h1 className="login-title page-title">Welcome to {APP_NAME}</h1>
       <p className="login-desc">Log in with your Spotify account to explore your music stats, playlists, and more!</p>
       <button
         className={`login-btn btn btn--spotify${missingClientId ? ' btn--disabled' : ''}`}

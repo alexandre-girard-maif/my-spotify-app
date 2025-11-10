@@ -1,7 +1,7 @@
 ## Commit Message Guidelines
 
-les messages de commit doivent suivre des directives spécifiques pour assurer la clarté et la cohérence dans le projet. Voici les règles à suivre :
-Les messages de commit doivent utiliser le format de commit conventionnel. Par exemple :
+Commit messages must follow specific guidelines to ensure clarity and consistency in the project. Here are the rules to follow:
+Commit messages must use the Conventional Commit format. For example:
 
 ```
 feat: add new feature
@@ -17,8 +17,8 @@ perf: improve performance
 revert: revert to previous commit
 ```
 
-Le message de commit doit être à l'impératif, c'est-à-dire qu'il doit décrire ce que fait le commit, et non ce qu'il a fait.
+The commit message must use the imperative mood; it should describe what the commit does, not what it did.
 
-Le message de commit doit être concis et aller droit au but, idéalement pas plus de 72 caractères. Si le message de commit dépasse 72 caractères, il doit être enveloppé à la ligne suivante.
+The commit message should be concise and to the point—ideally no more than 72 characters. If it exceeds 72 characters, wrap the text to the next line.
 
-Les commits sont controlés par husky et parametré dans le répertoire `.husky`.
+Commits are enforced by Husky and configured in the `.husky` directory.

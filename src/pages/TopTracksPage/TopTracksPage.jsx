@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { buildTitle } from '../../constants/appMeta.js';
 import { useRequireToken } from '../../hooks/useRequireToken.js';
 import './TopTracksPage.css';
 import '../PageLayout.css';
@@ -34,9 +35,7 @@ export default function TopTracksPage() {
   const { token } = useRequireToken();
 
   // set document title
-  useEffect(() => {
-    document.title = `Top Tracks | Spotify App`;
-  }, []);
+  useEffect(() => { document.title = buildTitle('Top Tracks'); }, []);
 
 
   useEffect(() => {
