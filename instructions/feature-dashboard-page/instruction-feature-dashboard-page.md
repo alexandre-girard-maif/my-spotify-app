@@ -19,6 +19,8 @@ Créer une page de tableau de bord pour afficher un aperçu des informations Spo
    - Afficher l'artiste le plus écouté avec son nom et son image et ses genres musicaux.
    - Afficher la piste la plus écoutée avec son nom, le nom de l'artiste et l'image de l'album et les artistes associés.
 
+![Copie d'écran](https://github.com/alexandre-girard-maif/music-discovery-app-template/blob/develop/instructions/feature-dashboard-page/dashboard-page.png?raw=true)
+
 ## Critères d'acceptation
 - La page du tableau de bord doit afficher correctement l'artiste le plus écouté et la piste la plus écoutée. 
 - Les erreurs lors de la récupération des données doivent être gérées et affichées de manière appropriée.
