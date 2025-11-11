@@ -3,7 +3,7 @@ name: Template Sync
 on:
   # cronjob trigger
   schedule:
-  - cron: "0 0 * * 1"  # runs at 00:00 each first day of the week
+  - cron: "0 0 1 * *"
   # manual trigger
   workflow_dispatch:
 jobs:
@@ -13,6 +13,7 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+      actions: write
 
     steps:
       # To use this repository's private action, you must check out the repository
@@ -30,4 +31,4 @@ jobs:
           upstream_branch: develop # defaults to main
           pr_labels: template_sync # defaults to template_sync
           pr_title: "Template Sync Update"
-          token: ${{ secrets.GH_PAT }}
+          # target_gh_token: ${{ secrets.GH_PAT }}
