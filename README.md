@@ -65,3 +65,14 @@ Chaque tâche possède plusieurs propriétés:
 - taille estimée (petite, moyenne, grande) permettant d'évaluer le temps nécessaire pour compléter la tâche.
 
 Le projet contient également un répertoire `instructions` avec des fichiers markdown détaillant chaque étape des exercices à réaliser (même contenu que les tâches GitHub), ainsi que des ressources utiles ou nécessaires pour compléter les tâches. Il contient également des instructions globales à suivre pour toutes les tâches [voir `instruction-global.md`](instructions/instruction-global.md).
+
+## Synchronisation avec le template
+
+Ce projet utilise un workflow GitHub Actions pour synchroniser automatiquement les modifications apportées au template `music-discovery-app-template` avec votre propre dépôt cloné.
+
+Le workflow est configuré pour s'exécuter périodiquement (toutes les semaines) et vérifier les mises à jour dans le template. Si des modifications sont détectées, une pull request est automatiquement créée dans votre dépôt avec les changements du template.
+Pour plus de détails sur le fonctionnement de la synchronisation, vous pouvez consulter le fichier `.github/workflows/template-sync.yml`.
+
+Vous devrez configurer votre repository pour autoriser cette synchronisation à créer des pull requests. 
+
+![Workflow Permissions](assets/workflow-permissions.png)
