@@ -8,8 +8,8 @@ on:
       - develop
 jobs:
   build-and-analyze:
-    # only run SonarCloud analysis if the repository owner is the same as the actor (to avoid running on forks)
-    if: ${{ !github.event.repository.fork && !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork) }}
+    # only run SonarCloud analysis if the repository owner is the same as the actor (to avoid running on forks) and not dependabot PRs
+    if: ${{ !github.event.repository.fork && !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork) && github.actor != 'dependabot[bot]' }}
     name: Build and Analyze
     runs-on: ubuntu-latest
     steps:
