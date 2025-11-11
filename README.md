@@ -25,6 +25,8 @@ Copiez également le projet `music-discovery-app-project` associé à ce templat
     ```env
     VITE_SPOTIFY_CLIENT_ID=YOUR_SPOTIFY_CLIENT_ID
     ```
+`YOUR_SPOTIFY_CLIENT_ID`est à récupérer depuis le tableau de bord des développeurs Spotify après avoir créé une application, voir la section suivante pour plus de détails.
+
 4. Démarrer le serveur de développement
     ```bash
     npm run dev
