@@ -20,11 +20,11 @@ export async function fetchPlaylistById(token, playlistId) {
 
     // handle potential API error
     if (data.error) {
-      return { error: data.error.message, playlist: null };
+      return { error: data.error.message, data: null };
     }
     // return fetched playlist
     return { data, error: null };
   } catch {
-    return { error: 'Failed to fetch playlist.', playlist: null };
+    return { error: 'Failed to fetch playlist.', data: null };
   }
 }
