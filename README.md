@@ -73,6 +73,6 @@ Ce projet utilise un workflow GitHub Actions pour synchroniser automatiquement l
 Le workflow est configuré pour s'exécuter périodiquement (toutes les semaines) et vérifier les mises à jour dans le template. Si des modifications sont détectées, une pull request est automatiquement créée dans votre dépôt avec les changements du template.
 Pour plus de détails sur le fonctionnement de la synchronisation, vous pouvez consulter le fichier `.github/workflows/template-sync.yml`.
 
-Vous devrez configurer votre repository pour autoriser cette synchronisation à créer des pull requests. 
+Vous devrez configurer votre repository pour autoriser cette synchronisation à créer des pull requests (Settings > Actions > General > Workflow permissions > Allow GitHub Actions to create and approve pull requests) :
 
 ![Workflow Permissions](assets/workflow-permissions.png)
