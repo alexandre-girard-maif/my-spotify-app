@@ -1,1 +1,2 @@
 .github/workflows/template-sync.yml
+.github/workflows/quality.yml
