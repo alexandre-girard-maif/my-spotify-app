@@ -9,7 +9,7 @@ import { SPOTIFY_API_BASE } from "./spotify-commons.js";
 export async function fetchPlaylistById(token, playlistId) {
   // early return if no token
   if (!token) {
-    return { error: 'No access token found.', playlist: null };
+    return { error: 'No access token found.', data: null };
   }
   try {
     // fetch playlist from Spotify API

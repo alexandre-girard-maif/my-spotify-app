@@ -16,7 +16,7 @@ describe("spotify-playlists API", () => {
       const result = await fetchPlaylistById("", "playlist123");
       expect(result).toEqual({
         error: "No access token found.",
-        playlist: null,
+        data: null,
       });
     });
 
@@ -48,7 +48,7 @@ describe("spotify-playlists API", () => {
       const result = await fetchPlaylistById("valid_token", "bad_id");
       expect(result).toEqual({
         error: "Invalid playlist ID",
-        playlist: null,
+        data: null,
       });
     });
 
@@ -58,7 +58,7 @@ describe("spotify-playlists API", () => {
       const result = await fetchPlaylistById("any_token", "playlist123");
       expect(result).toEqual({
         error: "Failed to fetch playlist.",
-        playlist: null,
+        data: null,
       });
     });
   });
