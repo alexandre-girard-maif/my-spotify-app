@@ -76,3 +76,6 @@ Pour plus de détails sur le fonctionnement de la synchronisation, vous pouvez c
 Vous devrez configurer votre repository pour autoriser cette synchronisation à créer des pull requests (Settings > Actions > General > Workflow permissions > Allow GitHub Actions to create and approve pull requests) :
 
 ![Workflow Permissions](assets/workflow-permissions.png)
+
+
+Demo
