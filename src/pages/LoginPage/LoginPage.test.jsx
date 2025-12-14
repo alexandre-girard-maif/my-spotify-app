@@ -3,7 +3,6 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import LoginPage from './LoginPage';
 import { APP_NAME } from '../../constants/appMeta';
-/* eslint-env node */
 
 // Mock createPkcePair to avoid heavy crypto work and make deterministic assertions
 jest.mock('../../api/pkce.js', () => ({
